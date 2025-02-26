@@ -16,4 +16,10 @@ const val TOTAL_VALUE_KEY = "total_value"
 
 const val STORAGE_TYPE_KEY = "storage_type"
 
+const val PROGRAM_ARGUMENT_KEY = "program_arguments"
+
 const val PURGE_NOHUP_OUT_AFTER_REBOOT_KEY = "purge_nohup_out_after_reboot"
+
+const val AUTO_RUN_AFTER_HOST_REBOOT = "auto_run_after_host_reboot"
+
+const val EVENT_DATE_KEY = "event_date"
