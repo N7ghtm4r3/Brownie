@@ -15,3 +15,5 @@ const val USAGE_VALUE_KEY = "usage_value"
 const val TOTAL_VALUE_KEY = "total_value"
 
 const val STORAGE_TYPE_KEY = "storage_type"
+
+const val PURGE_NOHUP_OUT_AFTER_REBOOT_KEY = "purge_nohup_out_after_reboot"
