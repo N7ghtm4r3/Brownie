@@ -6,12 +6,12 @@ object BrownieInputsValidator : InputsValidator() {
 
     private const val BROWNIE_ITEM_NAME_MAX_LENGTH = 30
 
-    fun isServiceNameValid(
-        serviceName: String?,
+    fun isItemNameValid(
+        itemName: String?,
     ): Boolean {
         return isInputValid(
-            field = serviceName
-        ) && serviceName!!.length <= BROWNIE_ITEM_NAME_MAX_LENGTH
+            field = itemName
+        ) && itemName!!.length <= BROWNIE_ITEM_NAME_MAX_LENGTH
     }
 
 }
