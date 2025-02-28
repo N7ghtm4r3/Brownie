@@ -9,7 +9,9 @@
         "wrong_surname_key": "Surname is not valid",
         "wrong_language_key": "Language is not supported",
         "wrong_email_key": "Email is not valid",
-        "not_authorized_key": "Not authorized or wrong details"
+        "not_authorized_key": "Not authorized or wrong details",
+        "wrong_host_address_key": "Host address non valid",
+        "ssh_credentials_are_not_valid_key": "The SSH credentials are not valid"
     },
     "ignored_resources": {},
     "it": {
@@ -22,7 +24,9 @@
         "wrong_surname_key": "Cognome non valido",
         "wrong_language_key": "Lingua non supportata",
         "wrong_email_key": "Email non valida",
-        "not_authorized_key": "Non autorizzat o dati errati"
+        "not_authorized_key": "Non autorizzat o dati errati",
+        "wrong_host_address_key": "Indirizzo host non valido",
+        "ssh_credentials_are_not_valid_key": "Le credenziali SSH non sono valide"
     },
     "fr": {
         "connection_error_message_key": "Le serveur est temporairement indisponible",
@@ -34,7 +38,9 @@
         "wrong_surname_key": "Le nom n'est pas valide",
         "wrong_language_key": "La langue n'est pas prise en charge",
         "wrong_email_key": "Le courriel n'est pas valide",
-        "not_authorized_key": "Non autorisa ou faux datails"
+        "not_authorized_key": "Non autorisa ou faux datails",
+        "wrong_host_address_key": "Adresse de l'hôte non valide",
+        "ssh_credentials_are_not_valid_key": "Les identifiants SSH ne sont pas valides"
     },
     "es": {
         "connection_error_message_key": "El servidor no està disponible temporalmente",
@@ -46,6 +52,8 @@
         "wrong_surname_key": "El apellido no es valido",
         "wrong_language_key": "El idioma no es compatible",
         "wrong_email_key": "El correo electrinico no es valido",
-        "not_authorized_key": "No autorizados o datos incorrectos"
+        "not_authorized_key": "No autorizados o datos incorrectos",
+        "wrong_host_address_key": "Dirección de host no válida",
+        "ssh_credentials_are_not_valid_key": "Las credenciales SSH no son válidas"
     }
 }

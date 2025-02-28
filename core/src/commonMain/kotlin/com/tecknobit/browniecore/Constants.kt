@@ -1,6 +1,8 @@
 package com.tecknobit.browniecore
 
-const val IP_ADDRESS_KEY = "ip_address"
+import com.tecknobit.equinoxcore.annotations.FutureEquinoxApi
+
+const val HOST_ADDRESS_KEY = "host_address"
 
 const val CPU_USAGE_KEY = "cpu_usage"
 
@@ -27,3 +29,18 @@ const val EVENT_DATE_KEY = "event_date"
 const val JOIN_CODE_KEY = "join_code"
 
 const val SESSIONS_KEY = "sessions"
+
+const val SESSION_KEY = "session"
+
+const val HOSTS_KEY = "hosts"
+
+const val SSH_USER_KEY = "ssh_user"
+
+const val SSH_PASSWORD_KEY = "ssh_password"
+
+const val HOST_IDENTIFIER_KEY = "host_id"
+
+@FutureEquinoxApi(
+    releaseVersion = "1.0.9"
+)
+const val KEYWORDS_KEY = "keywords"

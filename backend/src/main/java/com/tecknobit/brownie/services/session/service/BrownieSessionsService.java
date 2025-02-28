@@ -30,6 +30,10 @@ public class BrownieSessionsService {
         return sessionsRepository.validateSessionConnectionAttempt(joinCode, password);
     }
 
+    public BrownieSession getBrownieSession(String sessionId) {
+        return sessionsRepository.findById(sessionId).orElse(null);
+    }
+
     public BrownieSession getBrownieSession(String sessionId, String password) throws NoSuchAlgorithmException {
         BrownieSession session = sessionsRepository.findById(sessionId).orElse(null);
         if (session == null)

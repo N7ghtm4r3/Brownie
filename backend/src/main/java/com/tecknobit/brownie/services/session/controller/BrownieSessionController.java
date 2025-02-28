@@ -2,9 +2,7 @@ package com.tecknobit.brownie.services.session.controller;
 
 import com.tecknobit.apimanager.apis.ServerProtector;
 import com.tecknobit.brownie.services.session.entity.BrownieSession;
-import com.tecknobit.brownie.services.session.service.BrownieSessionsService;
-import com.tecknobit.equinoxbackend.environment.services.DefaultEquinoxController;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -22,12 +20,9 @@ import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQU
 
 @RestController
 @RequestMapping(value = BASE_EQUINOX_ENDPOINT + SESSIONS_KEY)
-public class BrownieSessionController extends DefaultEquinoxController {
+public class BrownieSessionController extends DefaultBrownieController {
 
     public static ServerProtector brownieServerProtector;
-
-    @Autowired
-    private BrownieSessionsService sessionsService;
 
     @PostMapping
     public String createSession(
