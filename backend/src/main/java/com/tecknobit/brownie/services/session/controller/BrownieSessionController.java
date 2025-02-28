@@ -1,7 +1,7 @@
 package com.tecknobit.brownie.services.session.controller;
 
 import com.tecknobit.apimanager.apis.ServerProtector;
-import com.tecknobit.brownie.services.session.repository.BrownieSessionsService;
+import com.tecknobit.brownie.services.session.service.BrownieSessionsService;
 import com.tecknobit.equinoxbackend.environment.services.DefaultEquinoxController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.PostMapping;

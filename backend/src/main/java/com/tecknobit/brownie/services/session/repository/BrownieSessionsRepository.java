@@ -1,4 +1,4 @@
-package com.tecknobit.brownie.services.session.service;
+package com.tecknobit.brownie.services.session.repository;
 
 import com.tecknobit.brownie.services.session.entity.BrownieSession;
 import org.springframework.data.jpa.repository.JpaRepository;

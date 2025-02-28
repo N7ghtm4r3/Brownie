@@ -1,8 +1,8 @@
-package com.tecknobit.brownie.services.session.repository;
+package com.tecknobit.brownie.services.session.service;
 
 import com.tecknobit.apimanager.apis.APIRequest;
 import com.tecknobit.brownie.services.session.entity.BrownieSession;
-import com.tecknobit.brownie.services.session.service.BrownieSessionsRepository;
+import com.tecknobit.brownie.services.session.repository.BrownieSessionsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -17,7 +17,6 @@ public class BrownieSessionsService {
     private BrownieSessionsRepository sessionsRepository;
 
     public void createSession(String sessionId, String joinCode, String password) throws NoSuchAlgorithmException {
-        joinCode = hash(joinCode);
         password = hash(password);
         sessionsRepository.save(new BrownieSession(
                 sessionId,
