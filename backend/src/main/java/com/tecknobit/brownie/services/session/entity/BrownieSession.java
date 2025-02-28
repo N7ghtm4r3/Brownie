@@ -1,5 +1,7 @@
 package com.tecknobit.brownie.services.session.entity;
 
+import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -32,10 +34,12 @@ public class BrownieSession extends EquinoxItem {
         this.password = password;
     }
 
+    @JsonGetter(JOIN_CODE_KEY)
     public String getJoinCode() {
         return joinCode;
     }
 
+    @JsonIgnore
     public String getPassword() {
         return password;
     }

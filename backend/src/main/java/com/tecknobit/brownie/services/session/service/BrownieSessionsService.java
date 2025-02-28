@@ -25,6 +25,11 @@ public class BrownieSessionsService {
         ));
     }
 
+    public BrownieSession connectToSession(String joinCode, String password) throws NoSuchAlgorithmException {
+        password = hash(password);
+        return sessionsRepository.validateSessionConnectionAttempt(joinCode, password);
+    }
+
     /**
      * Method to hash a sensitive user data
      *
