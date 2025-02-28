@@ -30,6 +30,20 @@ public class BrownieSessionsService {
         return sessionsRepository.validateSessionConnectionAttempt(joinCode, password);
     }
 
+    public BrownieSession getBrownieSession(String sessionId, String password) throws NoSuchAlgorithmException {
+        BrownieSession session = sessionsRepository.findById(sessionId).orElse(null);
+        if (session == null)
+            return null;
+        password = hash(password);
+        if (!session.getPassword().equals(password))
+            return null;
+        return session;
+    }
+
+    public void deleteSession(String sessionId) {
+        sessionsRepository.deleteById(sessionId);
+    }
+
     /**
      * Method to hash a sensitive user data
      *

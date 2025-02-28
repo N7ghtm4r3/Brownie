@@ -61,20 +61,19 @@ public class BrownieSessionController extends DefaultEquinoxController {
     }
 
     @DeleteMapping(
-            path = CONNECT_ENDPOINT + "/{" + IDENTIFIER_KEY + "}"
+            path = "/{" + IDENTIFIER_KEY + "}"
     )
-    public <T> T connectToSession(
-            @PathVariable(IDENTIFIER_KEY) String sessionId
-    ) {
-        /*loadJsonHelper(payload);
-        if (!brownieServerProtector.serverSecretMatches(jsonHelper.getString(SERVER_SECRET_KEY)))
-            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        String joinCode = jsonHelper.getString(JOIN_CODE_KEY);
-        String password = jsonHelper.getString(PASSWORD_KEY);
-        BrownieSession session = sessionsService.connectToSession(joinCode, password);
+    public String deleteSession(
+            @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @RequestBody Map<String, String> payload
+    ) throws NoSuchAlgorithmException {
+        loadJsonHelper(payload);
+        String password = jsonHelper.getString(PASSWORD_KEY, "");
+        BrownieSession session = sessionsService.getBrownieSession(sessionId, password);
         if(session == null)
-            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) successResponse(session);*/
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        sessionsService.deleteSession(sessionId);
+        return successResponse();
     }
 
 }
