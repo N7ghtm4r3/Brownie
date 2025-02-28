@@ -23,3 +23,7 @@ const val PURGE_NOHUP_OUT_AFTER_REBOOT_KEY = "purge_nohup_out_after_reboot"
 const val AUTO_RUN_AFTER_HOST_REBOOT = "auto_run_after_host_reboot"
 
 const val EVENT_DATE_KEY = "event_date"
+
+const val JOIN_CODE_KEY = "join_code"
+
+const val SESSIONS_KEY = "sessions"
