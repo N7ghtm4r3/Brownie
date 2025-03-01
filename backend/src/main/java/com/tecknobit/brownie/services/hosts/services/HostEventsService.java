@@ -2,6 +2,7 @@ package com.tecknobit.brownie.services.hosts.services;
 
 import com.tecknobit.brownie.services.hosts.repositories.HostEventsRepository;
 import com.tecknobit.browniecore.enums.HostEventType;
+import com.tecknobit.browniecore.enums.HostStatus;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,18 +17,19 @@ public class HostEventsService {
     private HostEventsRepository hostEventsRepository;
 
     @Wrapper
-    public void registerHostStartedEvent(String hostId) {
-        registerEvent(ONLINE, hostId);
+    public void registerHostStatusChangedEvent(String hostId, HostStatus status) {
+        HostEventType type = null;
+        switch (status) {
+            case ONLINE -> type = ONLINE;
+            case OFFLINE -> type = OFFLINE;
+            case REBOOTING -> type = REBOOTING;
+        }
+        registerEvent(type, hostId);
     }
 
     @Wrapper
-    public void registerHostStoppedEvent(String hostId) {
-        registerEvent(OFFLINE, hostId);
-    }
-
-    @Wrapper
-    public void registerHostRebootedEvent(String hostId) {
-        registerEvent(REBOOTING, hostId);
+    public void registerHostRestartedEvent(String hostId) {
+        registerEvent(RESTARTED, hostId);
     }
 
     @Wrapper

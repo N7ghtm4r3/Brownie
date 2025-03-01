@@ -12,10 +12,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.Executors;
 
 import static com.tecknobit.browniecore.enums.HostStatus.*;
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 @Service
 public class HostsService {
@@ -60,7 +64,6 @@ public class HostsService {
         wakeOnLanExecutor.execWoL("", "");*/
         // TODO: 01/03/2025 THEN
         setOnlineStatus(hostId);
-        eventsService.registerHostStartedEvent(hostId);
     }
 
     public void stopHost(BrownieHost host) throws Exception {
@@ -69,7 +72,6 @@ public class HostsService {
             ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
             commandsExecutor.stopHost(() -> {
                 setOfflineStatus(hostId);
-                eventsService.registerHostStoppedEvent(hostId);
             });
         }
     }
@@ -80,14 +82,24 @@ public class HostsService {
             ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
             commandsExecutor.rebootHost(() -> {
                 setRebootingStatus(hostId);
-                eventsService.registerHostRebootedEvent(hostId);
                 waitHostRestarted(host);
             });
         }
     }
 
     private void waitHostRestarted(BrownieHost host) {
-
+        Executors.newCachedThreadPool().execute(() -> {
+            try (Socket socket = new Socket()) {
+                int timeout = Math.toIntExact(MINUTES.toMillis(2));
+                socket.connect(new InetSocketAddress(host.getHostAddress(), 22), timeout);
+                String hostId = host.getId();
+                hostsRepository.handleHostStatus(hostId, ONLINE.name());
+                eventsService.registerHostRestartedEvent(hostId);
+                // TODO: 01/03/2025 RESTART ALL THE SERVICES WHERE autoRun = true
+            } catch (IOException e) {
+                throw new IllegalStateException("Impossible reach the " + host + " address, you need to restart manually as needed");
+            }
+        });
     }
 
     @Wrapper
@@ -107,6 +119,7 @@ public class HostsService {
 
     private void handleHostStatus(String hostId, HostStatus status) {
         hostsRepository.handleHostStatus(hostId, status.name());
+        eventsService.registerHostStatusChangedEvent(hostId, status);
     }
 
 }
