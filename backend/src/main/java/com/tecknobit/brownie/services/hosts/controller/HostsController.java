@@ -6,6 +6,7 @@ import com.tecknobit.equinoxcore.helpers.InputsValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -32,12 +33,17 @@ public class HostsController extends DefaultBrownieController {
     public <T> T getHosts(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @RequestParam(name = KEYWORDS_KEY, defaultValue = "", required = false) Set<String> keywords,
+            @RequestParam(
+                    name = STATUSES_KEY,
+                    defaultValue = "ONLINE, OFFLINE, REBOOTING",
+                    required = false
+            ) List<String> statuses,
             @RequestParam(name = PAGE_KEY, defaultValue = DEFAULT_PAGE_HEADER_VALUE, required = false) int page,
             @RequestParam(name = PAGE_SIZE_KEY, defaultValue = DEFAULT_PAGE_SIZE_HEADER_VALUE, required = false) int pageSize
     ) {
         if (!sessionExists(sessionId))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) successResponse(hostsService.getHosts(keywords, page, pageSize));
+        return (T) successResponse(hostsService.getHosts(keywords, statuses, page, pageSize));
     }
 
     @PostMapping

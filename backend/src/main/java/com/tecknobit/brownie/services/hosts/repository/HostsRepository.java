@@ -19,22 +19,30 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
 
     @Query(
             value = "SELECT COUNT(*) FROM " + HOSTS_KEY + _WHERE_ +
+                    "( " +
                     "MATCH(" + NAME_KEY + "," + HOST_ADDRESS_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
-                    "OR :" + KEYWORDS_KEY + " = ''",
+                    "OR :" + KEYWORDS_KEY + " = ''" +
+                    ") " +
+                    "AND " + STATUS_KEY + " IN (:" + STATUSES_KEY + ")",
             nativeQuery = true
     )
     long countHosts(
-            @Param(KEYWORDS_KEY) String keywords
+            @Param(KEYWORDS_KEY) String keywords,
+            @Param(STATUSES_KEY) List<String> statuses
     );
 
     @Query(
             value = "SELECT * FROM " + HOSTS_KEY + _WHERE_ +
+                    "( " +
                     "MATCH(" + NAME_KEY + "," + HOST_ADDRESS_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
-                    "OR :" + KEYWORDS_KEY + " = ''",
+                    "OR :" + KEYWORDS_KEY + " = ''" +
+                    ") " +
+                    "AND " + STATUS_KEY + " IN (:" + STATUSES_KEY + ")",
             nativeQuery = true
     )
     List<BrownieHost> getHosts(
             @Param(KEYWORDS_KEY) String keywords,
+            @Param(STATUSES_KEY) List<String> statuses,
             Pageable pageable
     );
 

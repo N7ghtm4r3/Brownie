@@ -20,10 +20,11 @@ public class HostsService {
     @Autowired
     private HostsRepository hostsRepository;
 
-    public PaginatedResponse<BrownieHost> getHosts(Set<String> keywords, int page, int pageSize) {
-        String fullTextKeywords = IndexesCreator.formatFullTextKeywords(keywords, "*", true);
-        long totalHosts = hostsRepository.countHosts(fullTextKeywords);
-        List<BrownieHost> hosts = hostsRepository.getHosts(fullTextKeywords, PageRequest.of(page, pageSize));
+    public PaginatedResponse<BrownieHost> getHosts(Set<String> keywords, List<String> statuses, int page,
+                                                   int pageSize) {
+        String fullTextKeywords = IndexesCreator.formatFullTextKeywords(keywords, "+", "*", true);
+        long totalHosts = hostsRepository.countHosts(fullTextKeywords, statuses);
+        List<BrownieHost> hosts = hostsRepository.getHosts(fullTextKeywords, statuses, PageRequest.of(page, pageSize));
         return new PaginatedResponse<>(hosts, page, pageSize, totalHosts);
     }
 

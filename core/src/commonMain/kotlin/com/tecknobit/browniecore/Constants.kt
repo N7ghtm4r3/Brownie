@@ -44,3 +44,7 @@ const val HOST_IDENTIFIER_KEY = "host_id"
     releaseVersion = "1.0.9"
 )
 const val KEYWORDS_KEY = "keywords"
+
+const val STATUS_KEY = "status"
+
+const val STATUSES_KEY = "statuses"
