@@ -6,7 +6,7 @@ import com.tecknobit.equinoxcore.annotations.Wrapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import static com.tecknobit.browniecore.enums.HostEventType.ONLINE;
+import static com.tecknobit.browniecore.enums.HostEventType.*;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.generateIdentifier;
 
 @Service
@@ -18,6 +18,16 @@ public class HostEventsService {
     @Wrapper
     public void registerHostStartedEvent(String hostId) {
         registerEvent(ONLINE, hostId);
+    }
+
+    @Wrapper
+    public void registerHostStoppedEvent(String hostId) {
+        registerEvent(OFFLINE, hostId);
+    }
+
+    @Wrapper
+    public void registerHostRebootedEvent(String hostId) {
+        registerEvent(REBOOTING, hostId);
     }
 
     @Wrapper

@@ -1,5 +1,6 @@
 package com.tecknobit.brownie.services.hosts.services;
 
+import com.tecknobit.brownie.services.hosts.commands.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
 import com.tecknobit.browniecore.enums.HostStatus;
@@ -14,7 +15,7 @@ import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
-import static com.tecknobit.browniecore.enums.HostStatus.ONLINE;
+import static com.tecknobit.browniecore.enums.HostStatus.*;
 
 @Service
 public class HostsService {
@@ -62,9 +63,46 @@ public class HostsService {
         eventsService.registerHostStartedEvent(hostId);
     }
 
+    public void stopHost(BrownieHost host) throws Exception {
+        String hostId = host.getId();
+        if (host.isRemoteHost()) {
+            ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
+            commandsExecutor.stopHost(() -> {
+                setOfflineStatus(hostId);
+                eventsService.registerHostStoppedEvent(hostId);
+            });
+        }
+    }
+
+    public void rebootHost(BrownieHost host) throws Exception {
+        String hostId = host.getId();
+        if (host.isRemoteHost()) {
+            ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
+            commandsExecutor.rebootHost(() -> {
+                setRebootingStatus(hostId);
+                eventsService.registerHostRebootedEvent(hostId);
+                waitHostRestarted(host);
+            });
+        }
+    }
+
+    private void waitHostRestarted(BrownieHost host) {
+
+    }
+
     @Wrapper
     private void setOnlineStatus(String hostId) {
         handleHostStatus(hostId, ONLINE);
+    }
+
+    @Wrapper
+    private void setOfflineStatus(String hostId) {
+        handleHostStatus(hostId, OFFLINE);
+    }
+
+    @Wrapper
+    private void setRebootingStatus(String hostId) {
+        handleHostStatus(hostId, REBOOTING);
     }
 
     private void handleHostStatus(String hostId, HostStatus status) {
