@@ -32,6 +32,8 @@ const val SESSIONS_KEY = "sessions"
 
 const val SESSION_KEY = "session"
 
+const val SESSION_IDENTIFIER_KEY = "session_id"
+
 const val HOSTS_KEY = "hosts"
 
 const val SSH_USER_KEY = "ssh_user"

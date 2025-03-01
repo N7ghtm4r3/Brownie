@@ -64,7 +64,35 @@ public class HostsController extends DefaultBrownieController {
         if (!SSHCredentialsAreValid(sshUser, sshPassword))
             return failedResponse(WRONG_SSH_CREDENTIALS_MESSAGE);
         try {
-            hostsService.registerHost(generateIdentifier(), hostName, hostAddress, sshUser, sshPassword, currentBrownieSession);
+            hostsService.registerHost(generateIdentifier(), hostName, hostAddress, sshUser, sshPassword, sessionId);
+        } catch (Exception e) {
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        }
+        return successResponse();
+    }
+
+    @PatchMapping(
+            path = "/{" + HOST_IDENTIFIER_KEY + "}"
+    )
+    public String editHost(
+            @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @RequestBody Map<String, Object> payload
+    ) {
+        if (!hostsService.hostBelongsToSession(sessionId, hostId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        loadJsonHelper(payload);
+        String hostName = jsonHelper.getString(NAME_KEY);
+        String hostAddress = jsonHelper.getString(HOST_ADDRESS_KEY);
+        String requiredFormDataAreValid = validateHostPayload(hostName, hostAddress);
+        if (requiredFormDataAreValid != null)
+            return requiredFormDataAreValid;
+        String sshUser = jsonHelper.getString(SSH_USER_KEY);
+        String sshPassword = jsonHelper.getString(SSH_PASSWORD_KEY);
+        if (!SSHCredentialsAreValid(sshUser, sshPassword))
+            return failedResponse(WRONG_SSH_CREDENTIALS_MESSAGE);
+        try {
+            hostsService.editHost(hostId, hostName, hostAddress, sshUser, sshPassword);
         } catch (Exception e) {
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         }

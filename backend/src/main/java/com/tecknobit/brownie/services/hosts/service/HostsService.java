@@ -2,7 +2,6 @@ package com.tecknobit.brownie.services.hosts.service;
 
 import com.tecknobit.brownie.services.hosts.entity.BrownieHost;
 import com.tecknobit.brownie.services.hosts.repository.HostsRepository;
-import com.tecknobit.brownie.services.session.entity.BrownieSession;
 import com.tecknobit.equinoxbackend.configuration.IndexesCreator;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,8 +28,19 @@ public class HostsService {
     }
 
     public void registerHost(String hostId, String hostName, String hostAddress, String sshUser, String sshPassword,
-                             BrownieSession session) {
-        hostsRepository.save(new BrownieHost(hostId, hostName, hostAddress, ONLINE, sshUser, sshPassword, session));
+                             String sessionId) {
+        hostsRepository.registerHost(hostId, hostName, hostAddress, sshUser, sshPassword, ONLINE.name(), sessionId);
+    }
+
+    public void editHost(String hostId, String hostAddress, String hostName, String sshUser, String sshPassword) {
+        if (sshUser == null)
+            hostsRepository.editHost(hostId, hostAddress, hostName);
+        else
+            hostsRepository.editHost(hostId, hostAddress, hostName, sshUser, sshPassword);
+    }
+
+    public boolean hostBelongsToSession(String sessionId, String hostId) {
+        return hostsRepository.hostBelongsToSession(hostId, sessionId) != null;
     }
 
 }
