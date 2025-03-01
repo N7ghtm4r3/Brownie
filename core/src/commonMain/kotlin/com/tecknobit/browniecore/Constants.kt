@@ -36,6 +36,8 @@ const val SESSION_IDENTIFIER_KEY = "session_id"
 
 const val HOSTS_KEY = "hosts"
 
+const val HOST_KEY = "host"
+
 const val SSH_USER_KEY = "ssh_user"
 
 const val SSH_PASSWORD_KEY = "ssh_password"
@@ -50,3 +52,9 @@ const val KEYWORDS_KEY = "keywords"
 const val STATUS_KEY = "status"
 
 const val STATUSES_KEY = "statuses"
+
+const val HOST_EVENTS_KEY = "host_events"
+
+const val TYPE_KEY = "type"
+
+const val EXTRA_KEY = "extra"

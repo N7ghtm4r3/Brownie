@@ -1,4 +1,4 @@
-package com.tecknobit.brownie.services.hosts.entity;
+package com.tecknobit.brownie.services.hosts.entities;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -8,6 +8,8 @@ import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxI
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
+
+import java.util.List;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
 
@@ -34,12 +36,20 @@ public class BrownieHost extends EquinoxItem {
     @OnDelete(action = OnDeleteAction.CASCADE)
     private final BrownieSession session;
 
+    @OneToMany(
+            mappedBy = HOST_KEY,
+            fetch = FetchType.LAZY,
+            cascade = CascadeType.ALL
+    )
+    @OrderBy(EVENT_DATE_KEY + " DESC")
+    private final List<HostHistoryEvent> events;
+
     public BrownieHost() {
-        this(null, null, null, null, null, null, null);
+        this(null, null, null, null, null, null, null, List.of());
     }
 
     public BrownieHost(String id, String name, String hostAddress, HostStatus status, String sshUser,
-                       String sshPassword, BrownieSession session) {
+                       String sshPassword, BrownieSession session, List<HostHistoryEvent> events) {
         super(id);
         this.name = name;
         this.hostAddress = hostAddress;
@@ -47,6 +57,7 @@ public class BrownieHost extends EquinoxItem {
         this.sshUser = sshUser;
         this.sshPassword = sshPassword;
         this.session = session;
+        this.events = events;
     }
 
     public String getName() {
@@ -77,9 +88,24 @@ public class BrownieHost extends EquinoxItem {
         return session;
     }
 
+    @JsonGetter(HOST_EVENTS_KEY)
+    public List<HostHistoryEvent> getEvents() {
+        return events;
+    }
+
+    @JsonIgnore
+    public boolean isOnline() {
+        return status.isOnline();
+    }
+
+    @JsonIgnore
+    public boolean isOffline() {
+        return status.isOffline();
+    }
+
     @JsonIgnore
     public boolean isRemoteHost() {
-        return sshUser == null;
+        return sshUser != null;
     }
 
 }

@@ -2,7 +2,7 @@ package com.tecknobit.brownie.services.session.entity;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
-import com.tecknobit.brownie.services.hosts.entity.BrownieHost;
+import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import jakarta.persistence.*;
 

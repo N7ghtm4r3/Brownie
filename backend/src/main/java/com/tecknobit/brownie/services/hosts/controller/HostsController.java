@@ -1,16 +1,19 @@
 package com.tecknobit.brownie.services.hosts.controller;
 
-import com.tecknobit.brownie.services.hosts.service.HostsService;
+import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.brownie.services.hosts.services.HostsService;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
 import com.tecknobit.equinoxcore.helpers.InputsValidator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
+import static com.tecknobit.browniecore.helpers.BrownieEndpoints.START_HOST_ENDPOINT;
 import static com.tecknobit.browniecore.helpers.BrownieInputsValidator.INSTANCE;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.NAME_KEY;
@@ -111,6 +114,33 @@ public class HostsController extends DefaultBrownieController {
         boolean sshUserFilled = sshUser != null && !sshUser.isEmpty();
         boolean sshPasswordFilled = sshPassword != null && !sshPassword.isEmpty();
         return sshUserFilled && sshPasswordFilled || !sshUserFilled && !sshPasswordFilled;
+    }
+
+    @PatchMapping(
+            path = "/{" + HOST_IDENTIFIER_KEY + "}" + START_HOST_ENDPOINT
+    )
+    // TODO: 01/03/2025 ADD THE REFERENCE TO WoL documentation
+    public String startHost(
+            @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId
+    ) {
+        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
+        if (brownieHost == null)
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        if (!brownieHost.isRemoteHost() || !brownieHost.isOffline())
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        try {
+            hostsService.startHost(hostId);
+            return successResponse();
+        } catch (IOException e) {
+            e.printStackTrace();
+            // TODO: 01/03/2025 CUSTOMIZE THE ERROR
+            return failedResponse("gg");
+        }
+    }
+
+    private BrownieHost getBrownieHostIfAllowed(String sessionId, String hostId) {
+        return hostsService.getBrownieHost(sessionId, hostId);
     }
 
 }

@@ -1,13 +1,16 @@
-package com.tecknobit.brownie.services.hosts.service;
+package com.tecknobit.brownie.services.hosts.services;
 
-import com.tecknobit.brownie.services.hosts.entity.BrownieHost;
-import com.tecknobit.brownie.services.hosts.repository.HostsRepository;
+import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
+import com.tecknobit.browniecore.enums.HostStatus;
 import com.tecknobit.equinoxbackend.configuration.IndexesCreator;
+import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.io.IOException;
 import java.util.List;
 import java.util.Set;
 
@@ -18,6 +21,9 @@ public class HostsService {
 
     @Autowired
     private HostsRepository hostsRepository;
+
+    @Autowired
+    private HostEventsService eventsService;
 
     public PaginatedResponse<BrownieHost> getHosts(Set<String> keywords, List<String> statuses, int page,
                                                    int pageSize) {
@@ -40,7 +46,29 @@ public class HostsService {
     }
 
     public boolean hostBelongsToSession(String sessionId, String hostId) {
-        return hostsRepository.hostBelongsToSession(hostId, sessionId) != null;
+        return getBrownieHost(sessionId, hostId) != null;
+    }
+
+    public BrownieHost getBrownieHost(String sessionId, String hostId) {
+        return hostsRepository.hostBelongsToSession(hostId, sessionId);
+    }
+
+    public void startHost(String hostId) throws IOException {
+        // TODO: 01/03/2025 EXECUTE THE WoL
+        /*WakeOnLanExecutor wakeOnLanExecutor = new WakeOnLanExecutor();
+        wakeOnLanExecutor.execWoL("", "");*/
+        // TODO: 01/03/2025 THEN
+        setOnlineStatus(hostId);
+        eventsService.registerHostStartedEvent(hostId);
+    }
+
+    @Wrapper
+    private void setOnlineStatus(String hostId) {
+        handleHostStatus(hostId, ONLINE);
+    }
+
+    private void handleHostStatus(String hostId, HostStatus status) {
+        hostsRepository.handleHostStatus(hostId, status.name());
     }
 
 }

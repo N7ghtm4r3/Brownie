@@ -1,6 +1,6 @@
-package com.tecknobit.brownie.services.hosts.repository;
+package com.tecknobit.brownie.services.hosts.repositories;
 
-import com.tecknobit.brownie.services.hosts.entity.BrownieHost;
+import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -122,6 +122,19 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
     BrownieHost hostBelongsToSession(
             @Param(IDENTIFIER_KEY) String hostId,
             @Param(SESSION_IDENTIFIER_KEY) String sessionId
+    );
+
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(
+            value = "UPDATE " + HOSTS_KEY + " SET " +
+                    STATUS_KEY + "=:" + STATUS_KEY +
+                    _WHERE_ + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void handleHostStatus(
+            @Param(IDENTIFIER_KEY) String hostId,
+            @Param(STATUS_KEY) String status
     );
 
 }
