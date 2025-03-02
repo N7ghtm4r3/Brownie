@@ -59,14 +59,18 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
                     SSH_USER_KEY + "," +
                     SSH_PASSWORD_KEY + "," +
                     STATUS_KEY + "," +
-                    SESSION_IDENTIFIER_KEY + ") VALUES (" +
+                    SESSION_IDENTIFIER_KEY + "," +
+                    BROADCAST_IP_KEY + "," +
+                    MAC_ADDRESS_KEY + ") VALUES (" +
                     ":" + IDENTIFIER_KEY + "," +
                     ":" + NAME_KEY + "," +
                     ":" + HOST_ADDRESS_KEY + "," +
                     ":" + SSH_USER_KEY + "," +
                     ":" + SSH_PASSWORD_KEY + "," +
                     ":" + STATUS_KEY + "," +
-                    ":" + SESSION_IDENTIFIER_KEY + ")",
+                    ":" + SESSION_IDENTIFIER_KEY + "," +
+                    ":" + BROADCAST_IP_KEY + "," +
+                    ":" + MAC_ADDRESS_KEY + ")",
             nativeQuery = true
     )
     void registerHost(
@@ -76,7 +80,9 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
             @Param(SSH_USER_KEY) String sshUser,
             @Param(SSH_PASSWORD_KEY) String sshPassword,
             @Param(STATUS_KEY) String status,
-            @Param(SESSION_IDENTIFIER_KEY) String sessionId
+            @Param(SESSION_IDENTIFIER_KEY) String sessionId,
+            @Param(BROADCAST_IP_KEY) String broadcastIp,
+            @Param(MAC_ADDRESS_KEY) String macAddress
     );
 
     @Transactional

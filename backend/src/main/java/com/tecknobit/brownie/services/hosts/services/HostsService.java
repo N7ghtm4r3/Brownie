@@ -1,12 +1,14 @@
 package com.tecknobit.brownie.services.hosts.services;
 
 import com.tecknobit.brownie.services.hosts.commands.ShellCommandsExecutor;
+import com.tecknobit.brownie.services.hosts.commands.WakeOnLanExecutor;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
 import com.tecknobit.browniecore.enums.HostStatus;
 import com.tecknobit.equinoxbackend.configuration.IndexesCreator;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
+import kotlin.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -39,8 +41,17 @@ public class HostsService {
     }
 
     public void registerHost(String hostId, String hostName, String hostAddress, String sshUser, String sshPassword,
-                             String sessionId) {
-        hostsRepository.registerHost(hostId, hostName, hostAddress, sshUser, sshPassword, ONLINE.name(), sessionId);
+                             String sessionId) throws Exception {
+        String macAddress = null;
+        String broadcastIp = null;
+        if (sshUser != null) {
+            ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(sshUser, hostAddress, sshPassword);
+            Pair<String, String> details = commandsExecutor.getNetworkInterfaceDetails();
+            macAddress = details.getFirst();
+            broadcastIp = details.getSecond();
+        }
+        hostsRepository.registerHost(hostId, hostName, hostAddress, sshUser, sshPassword, ONLINE.name(), sessionId,
+                broadcastIp, macAddress);
     }
 
     public void editHost(String hostId, String hostAddress, String hostName, String sshUser, String sshPassword) {
@@ -58,12 +69,13 @@ public class HostsService {
         return hostsRepository.hostBelongsToSession(hostId, sessionId);
     }
 
-    public void startHost(String hostId) throws IOException {
+    public void startHost(BrownieHost host) throws IOException {
         // TODO: 01/03/2025 EXECUTE THE WoL
-        /*WakeOnLanExecutor wakeOnLanExecutor = new WakeOnLanExecutor();
-        wakeOnLanExecutor.execWoL("", "");*/
+        WakeOnLanExecutor wakeOnLanExecutor = new WakeOnLanExecutor();
+        wakeOnLanExecutor.execWoL(host);
         // TODO: 01/03/2025 THEN
-        setOnlineStatus(hostId);
+        // setOnlineStatus(hostId);
+        // TODO: 01/03/2025 RESTART ALL THE SERVICES WHERE autoRun = true
     }
 
     public void stopHost(BrownieHost host) throws Exception {
@@ -97,7 +109,7 @@ public class HostsService {
                 eventsService.registerHostRestartedEvent(hostId);
                 // TODO: 01/03/2025 RESTART ALL THE SERVICES WHERE autoRun = true
             } catch (IOException e) {
-                throw new IllegalStateException("Impossible reach the " + host + " address, you need to restart manually as needed");
+                throw new IllegalStateException("Impossible reach the " + host.getHostAddress() + " address, you need to restart manually as needed");
             }
         });
     }

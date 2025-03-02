@@ -4,7 +4,6 @@ import com.jcraft.jsch.JSchException;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.services.HostsService;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
-import com.tecknobit.equinoxcore.helpers.InputsValidator;
 import com.tecknobit.equinoxcore.network.ResponseStatus;
 import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -76,6 +75,8 @@ public class HostsController extends DefaultBrownieController {
             return failedResponse(WRONG_SSH_CREDENTIALS_MESSAGE);
         try {
             hostsService.registerHost(generateIdentifier(), hostName, hostAddress, sshUser, sshPassword, sessionId);
+        } catch (JSchException e) {
+            return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
         } catch (Exception e) {
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         }
@@ -113,7 +114,7 @@ public class HostsController extends DefaultBrownieController {
     private String validateHostPayload(String hostName, String hostAddress) {
         if (!INSTANCE.isItemNameValid(hostName))
             return failedResponse(WRONG_NAME_MESSAGE);
-        if (!InputsValidator.Companion.isHostValid(hostAddress))
+        if (!INSTANCE.isHostAddressValid(hostAddress))
             return failedResponse(WRONG_HOST_ADDRESS_MESSAGE);
         return null;
     }
@@ -138,7 +139,7 @@ public class HostsController extends DefaultBrownieController {
         if (!brownieHost.isRemoteHost() || !brownieHost.isOffline())
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         try {
-            hostsService.startHost(hostId);
+            hostsService.startHost(brownieHost);
             return successResponse();
         } catch (IOException e) {
             e.printStackTrace();

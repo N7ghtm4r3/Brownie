@@ -42,6 +42,10 @@ const val SSH_USER_KEY = "ssh_user"
 
 const val SSH_PASSWORD_KEY = "ssh_password"
 
+const val MAC_ADDRESS_KEY = "mac_address"
+
+const val BROADCAST_IP_KEY = "broadcast_ip"
+
 const val HOST_IDENTIFIER_KEY = "host_id"
 
 @FutureEquinoxApi(

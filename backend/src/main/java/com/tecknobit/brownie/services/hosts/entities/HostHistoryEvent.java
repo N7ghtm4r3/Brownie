@@ -1,6 +1,7 @@
 package com.tecknobit.brownie.services.hosts.entities;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.browniecore.enums.HostEventType;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import jakarta.persistence.*;
@@ -25,6 +26,7 @@ public class HostHistoryEvent extends EquinoxItem {
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnoreProperties(HOST_EVENTS_KEY)
     private BrownieHost host;
 
     public HostHistoryEvent() {

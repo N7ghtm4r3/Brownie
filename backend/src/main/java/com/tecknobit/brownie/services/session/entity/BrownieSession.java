@@ -2,6 +2,7 @@ package com.tecknobit.brownie.services.session.entity;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import jakarta.persistence.*;
@@ -29,6 +30,7 @@ public class BrownieSession extends EquinoxItem {
             fetch = FetchType.EAGER,
             cascade = CascadeType.ALL
     )
+    @JsonIgnoreProperties(SESSION_KEY)
     private final List<BrownieHost> hosts;
 
     public BrownieSession() {

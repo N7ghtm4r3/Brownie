@@ -2,6 +2,7 @@ package com.tecknobit.brownie.services.hosts.entities;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.brownie.services.session.entity.BrownieSession;
 import com.tecknobit.browniecore.enums.HostStatus;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
@@ -34,7 +35,14 @@ public class BrownieHost extends EquinoxItem {
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
+    @JsonIgnoreProperties(HOSTS_KEY)
     private final BrownieSession session;
+
+    @Column(name = MAC_ADDRESS_KEY)
+    private final String macAddress;
+
+    @Column(name = BROADCAST_IP_KEY)
+    private final String broadcastIp;
 
     @OneToMany(
             mappedBy = HOST_KEY,
@@ -42,14 +50,16 @@ public class BrownieHost extends EquinoxItem {
             cascade = CascadeType.ALL
     )
     @OrderBy(EVENT_DATE_KEY + " DESC")
+    @JsonIgnoreProperties(HOST_KEY)
     private final List<HostHistoryEvent> events;
 
     public BrownieHost() {
-        this(null, null, null, null, null, null, null, List.of());
+        this(null, null, null, null, null, null, null, null, null, List.of());
     }
 
     public BrownieHost(String id, String name, String hostAddress, HostStatus status, String sshUser,
-                       String sshPassword, BrownieSession session, List<HostHistoryEvent> events) {
+                       String sshPassword, BrownieSession session, String macAddress, String broadcastIp,
+                       List<HostHistoryEvent> events) {
         super(id);
         this.name = name;
         this.hostAddress = hostAddress;
@@ -57,6 +67,8 @@ public class BrownieHost extends EquinoxItem {
         this.sshUser = sshUser;
         this.sshPassword = sshPassword;
         this.session = session;
+        this.macAddress = macAddress;
+        this.broadcastIp = broadcastIp;
         this.events = events;
     }
 
@@ -86,6 +98,16 @@ public class BrownieHost extends EquinoxItem {
     @JsonIgnore
     public BrownieSession getSession() {
         return session;
+    }
+
+    @JsonIgnore
+    public String getMacAddress() {
+        return macAddress;
+    }
+
+    @JsonIgnore
+    public String getBroadcastIp() {
+        return broadcastIp;
     }
 
     @JsonGetter(HOST_EVENTS_KEY)

@@ -1,5 +1,7 @@
 package com.tecknobit.brownie.services.hosts.commands;
 
+import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -8,14 +10,14 @@ import java.net.InetAddress;
 public class WakeOnLanExecutor {
 
     // TODO: 01/03/2025 CREDITS TO https://gist.github.com/jumar/9200840 
-    public void execWoL(String macAddress, String broadcastIp) throws IOException {
-        byte[] macBytes = getMacBytes(macAddress);
+    public void execWoL(BrownieHost host) throws IOException {
+        byte[] macBytes = getMacBytes(host.getMacAddress());
         byte[] magicPacket = new byte[102];
         for (int i = 0; i < 6; i++)
             magicPacket[i] = (byte) 0xFF;
         for (int i = 6; i < magicPacket.length; i += macBytes.length)
             System.arraycopy(macBytes, 0, magicPacket, i, macBytes.length);
-        InetAddress address = InetAddress.getByName(broadcastIp);
+        InetAddress address = InetAddress.getByName(host.getBroadcastIp());
         DatagramPacket packet = new DatagramPacket(magicPacket, magicPacket.length, address, 9);
         DatagramSocket socket = new DatagramSocket();
         socket.send(packet);
