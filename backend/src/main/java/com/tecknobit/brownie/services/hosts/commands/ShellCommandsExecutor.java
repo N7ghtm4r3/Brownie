@@ -4,6 +4,7 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
+import com.tecknobit.brownie.services.hosts.dtos.CPUUsage;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import kotlin.Pair;
@@ -24,6 +25,12 @@ public class ShellCommandsExecutor {
 
     private static final String SUDO_REBOOT = "sudo reboot";
 
+    private static final String GET_CURRENT_HOST_STATS = """
+            echo -e "$(top -bn1 | grep 'Cpu(s)' | awk '{print 100 - $8}'),\
+            $(awk '{s+=$1} END {print s/NR/1000000}' /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq),\
+            $(free -h | grep 'Mem' | awk '{print $3 "/" $2}' | sed 's/[A-Za-z]//g'),\
+            $(df -h --total | grep 'total' | awk '{print $3 "/" $2}' | sed 's/[A-Za-z]//g')\"""";
+
     private static final String EXEC_CHANNEL_TYPE = "exec";
 
     private final Session session;
@@ -41,10 +48,9 @@ public class ShellCommandsExecutor {
         session.connect();
     }
 
-    @Wrapper
     public Pair<String, String> getNetworkInterfaceDetails() throws Exception {
-        String macAddress = execBashCommand(GET_MAC_ADDRESS_COMMAND, null, false);
-        String broadcastIp = execBashCommand(GET_BROADCAST_IP_ADDRESS_COMMAND, null, true);
+        String macAddress = execBashCommand(GET_MAC_ADDRESS_COMMAND, false);
+        String broadcastIp = execBashCommand(GET_BROADCAST_IP_ADDRESS_COMMAND, true);
         return new Pair<>(macAddress, broadcastIp);
     }
 
@@ -58,8 +64,25 @@ public class ShellCommandsExecutor {
         execBashCommand(SUDO_REBOOT, onCommandExecuted);
     }
 
+    public CPUUsage getCurrentHostStats() throws Exception {
+        String rawCpuUsage = execBashCommand(GET_CURRENT_HOST_STATS, false);
+        System.out.println(rawCpuUsage);
+        return null;
+    }
+
+    @Wrapper
+    private String execBashCommand(String command) throws Exception {
+        return execBashCommand(command, null, true);
+    }
+
+    @Wrapper
     private String execBashCommand(String command, OnCommandExecuted onCommandExecuted) throws Exception {
         return execBashCommand(command, onCommandExecuted, true);
+    }
+
+    @Wrapper
+    private String execBashCommand(String command, boolean closeSession) throws Exception {
+        return execBashCommand(command, null, closeSession);
     }
 
     private String execBashCommand(String command, OnCommandExecuted onCommandExecuted, boolean closeSession) throws Exception {

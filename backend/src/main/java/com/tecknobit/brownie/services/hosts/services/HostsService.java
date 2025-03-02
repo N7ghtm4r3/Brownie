@@ -2,6 +2,7 @@ package com.tecknobit.brownie.services.hosts.services;
 
 import com.tecknobit.brownie.services.hosts.commands.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.commands.WakeOnLanExecutor;
+import com.tecknobit.brownie.services.hosts.dtos.BrownieHostOverview;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
 import com.tecknobit.browniecore.enums.HostStatus;
@@ -132,6 +133,12 @@ public class HostsService {
     private void handleHostStatus(String hostId, HostStatus status) {
         hostsRepository.handleHostStatus(hostId, status.name());
         eventsService.registerHostStatusChangedEvent(hostId, status);
+    }
+
+    public BrownieHostOverview getHostOverView(BrownieHost brownieHost) throws Exception {
+        ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(brownieHost);
+        commandsExecutor.getCurrentHostStats();
+        return null;
     }
 
 }

@@ -192,6 +192,27 @@ public class HostsController extends DefaultBrownieController {
         }
     }
 
+    @GetMapping(
+            path = "/{" + HOST_IDENTIFIER_KEY + "}"
+    )
+    public <T> T getHostOverview(
+            @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId
+    ) {
+        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
+        if (brownieHost == null)
+            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        if (!brownieHost.isOnline())
+            return (T) failedResponse(WRONG_PROCEDURE_MESSAGE);
+        try {
+            return (T) successResponse(hostsService.getHostOverView(brownieHost));
+        } catch (JSchException e) {
+            return (T) failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
+        } catch (Exception e) {
+            return (T) plainResponse(FAILED, e.getMessage());
+        }
+    }
+
     private BrownieHost getBrownieHostIfAllowed(String sessionId, String hostId) {
         return hostsService.getBrownieHost(sessionId, hostId);
     }
