@@ -46,20 +46,27 @@ public class BrownieHost extends EquinoxItem {
 
     @OneToMany(
             mappedBy = HOST_KEY,
-            fetch = FetchType.LAZY,
             cascade = CascadeType.ALL
     )
     @OrderBy(EVENT_DATE_KEY + " DESC")
     @JsonIgnoreProperties(HOST_KEY)
     private final List<HostHistoryEvent> events;
 
+    @OneToMany(
+            mappedBy = HOST_KEY,
+            cascade = CascadeType.ALL
+    )
+    @OrderBy(INSERTION_DATE_KEY + " DESC")
+    @JsonIgnoreProperties(HOST_KEY)
+    private final List<BrownieHostService> services;
+
     public BrownieHost() {
-        this(null, null, null, null, null, null, null, null, null, List.of());
+        this(null, null, null, null, null, null, null, null, null, List.of(), List.of());
     }
 
     public BrownieHost(String id, String name, String hostAddress, HostStatus status, String sshUser,
                        String sshPassword, BrownieSession session, String macAddress, String broadcastIp,
-                       List<HostHistoryEvent> events) {
+                       List<HostHistoryEvent> events, List<BrownieHostService> services) {
         super(id);
         this.name = name;
         this.hostAddress = hostAddress;
@@ -70,6 +77,7 @@ public class BrownieHost extends EquinoxItem {
         this.macAddress = macAddress;
         this.broadcastIp = broadcastIp;
         this.events = events;
+        this.services = services;
     }
 
     public String getName() {
@@ -113,6 +121,11 @@ public class BrownieHost extends EquinoxItem {
     @JsonGetter(HOST_EVENTS_KEY)
     public List<HostHistoryEvent> getEvents() {
         return events;
+    }
+
+    @JsonGetter(SERVICES_KEY)
+    public List<BrownieHostService> getServices() {
+        return services;
     }
 
     @JsonIgnore

@@ -7,25 +7,22 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
-import static com.tecknobit.browniecore.ConstantsKt.HOST_EVENTS_KEY;
+import static com.tecknobit.browniecore.ConstantsKt.SERVICE_EVENTS_KEY;
 
 @Entity
-@Table(name = HOST_EVENTS_KEY)
-public class HostHistoryEvent extends BrownieEvent {
+@Table(name = SERVICE_EVENTS_KEY)
+public class ServiceEvent extends BrownieEvent {
 
-    @Enumerated(EnumType.STRING)
+    @Column
+    @Enumerated(value = EnumType.STRING)
     private final HostEventType type;
 
     @ManyToOne
     @OnDelete(action = OnDeleteAction.CASCADE)
-    @JsonIgnoreProperties(HOST_EVENTS_KEY)
-    private BrownieHost host;
+    @JsonIgnoreProperties(SERVICE_EVENTS_KEY)
+    private BrownieHostService service;
 
-    public HostHistoryEvent() {
-        this(null, null, 0, null);
-    }
-
-    public HostHistoryEvent(String id, HostEventType type, long eventDate, Object extra) {
+    public ServiceEvent(String id, long eventDate, Object extra, HostEventType type) {
         super(id, eventDate, extra);
         this.type = type;
     }

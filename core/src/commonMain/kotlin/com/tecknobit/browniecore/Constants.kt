@@ -18,7 +18,7 @@ const val TOTAL_VALUE_KEY = "total_value"
 
 const val STORAGE_TYPE_KEY = "storage_type"
 
-const val PROGRAM_ARGUMENT_KEY = "program_arguments"
+const val PROGRAM_ARGUMENTS_KEY = "program_arguments"
 
 const val PURGE_NOHUP_OUT_AFTER_REBOOT_KEY = "purge_nohup_out_after_reboot"
 
@@ -64,3 +64,13 @@ const val TYPE_KEY = "type"
 const val EXTRA_KEY = "extra"
 
 const val SERVICES_KEY = "services"
+
+const val SERVICE_KEY = "service"
+
+const val SERVICES_CONFIGURATIONS_KEY = "services_configurations"
+
+const val CONFIGURATION_KEY = "configuration"
+
+const val INSERTION_DATE_KEY = "insertion_date_key"
+
+const val SERVICE_EVENTS_KEY = "service_events"
