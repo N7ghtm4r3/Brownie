@@ -67,6 +67,8 @@ const val SERVICES_KEY = "services"
 
 const val SERVICE_KEY = "service"
 
+const val SERVICE_PATH_KEY = "service_path"
+
 const val SERVICES_CONFIGURATIONS_KEY = "services_configurations"
 
 const val CONFIGURATION_KEY = "configuration"

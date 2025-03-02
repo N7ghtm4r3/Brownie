@@ -39,6 +39,10 @@ public class ShellCommandsExecutor {
              then echo "SSD"; else echo "HARD_DISK"; fi)"
             \s""";
 
+    private static final String FIND_SERVICE_PATH = """
+            find . -type f -name "%s"
+            """;
+
     private static final String EXEC_CHANNEL_TYPE = "exec";
 
     private final Session session;
@@ -74,6 +78,10 @@ public class ShellCommandsExecutor {
 
     public String[] getCurrentHostStats() throws Exception {
         return execBashCommand(GET_CURRENT_HOST_STATS).replaceAll(" ", "").split(COMMA);
+    }
+
+    public String findServicePath(String name) throws Exception {
+        return execBashCommand(String.format(FIND_SERVICE_PATH, name));
     }
 
     @Wrapper

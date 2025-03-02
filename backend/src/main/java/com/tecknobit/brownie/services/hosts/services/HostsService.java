@@ -1,6 +1,7 @@
 package com.tecknobit.brownie.services.hosts.services;
 
 import com.jcraft.jsch.JSchException;
+import com.tecknobit.apimanager.formatters.JsonHelper;
 import com.tecknobit.brownie.services.hosts.commands.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.commands.WakeOnLanExecutor;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostOverview;
@@ -152,6 +153,14 @@ public class HostsService {
                 return new BrownieHostOverview(brownieHost);
             throw e;
         }
+    }
+
+    public void addService(BrownieHost host, String serviceName, JsonHelper hPayload) throws Exception {
+        ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
+        String servicePath = commandsExecutor.findServicePath(serviceName);
+        if (servicePath.isEmpty())
+            throw new JSchException("Could not locate the " + serviceName);
+        System.out.println(servicePath);
     }
 
 }

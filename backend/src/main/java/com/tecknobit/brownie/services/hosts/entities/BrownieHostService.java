@@ -1,6 +1,7 @@
 package com.tecknobit.brownie.services.hosts.entities;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.browniecore.enums.ServiceStatus;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
@@ -22,6 +23,9 @@ public class BrownieHostService extends EquinoxItem {
 
     @Column
     private final String name;
+
+    @Column(name = SERVICE_PATH_KEY)
+    private final String servicePath;
 
     @Column
     private final long pid;
@@ -46,11 +50,12 @@ public class BrownieHostService extends EquinoxItem {
     @JsonIgnoreProperties(SERVICES_KEY)
     private BrownieHost host;
 
-    public BrownieHostService(String id, ServiceStatus status, String name, long pid, long insertionDate,
-                              ServiceConfiguration configuration, List<ServiceEvent> events) {
+    public BrownieHostService(String id, ServiceStatus status, String name, String servicePath, long pid,
+                              long insertionDate, ServiceConfiguration configuration, List<ServiceEvent> events) {
         super(id);
         this.status = status;
         this.name = name;
+        this.servicePath = servicePath;
         this.pid = pid;
         this.insertionDate = insertionDate;
         this.configuration = configuration;
@@ -63,6 +68,11 @@ public class BrownieHostService extends EquinoxItem {
 
     public String getName() {
         return name;
+    }
+
+    @JsonIgnore
+    public String getServicePath() {
+        return servicePath;
     }
 
     public long getPid() {
