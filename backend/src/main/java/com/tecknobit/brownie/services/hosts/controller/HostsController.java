@@ -202,12 +202,8 @@ public class HostsController extends DefaultBrownieController {
         BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
         if (brownieHost == null)
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        if (!brownieHost.isOnline())
-            return (T) failedResponse(WRONG_PROCEDURE_MESSAGE);
         try {
-            return (T) successResponse(hostsService.getHostOverView(brownieHost));
-        } catch (JSchException e) {
-            return (T) failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
+            return (T) successResponse(hostsService.getHostOverview(brownieHost));
         } catch (Exception e) {
             return (T) plainResponse(FAILED, e.getMessage());
         }

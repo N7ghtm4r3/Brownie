@@ -62,3 +62,5 @@ const val HOST_EVENTS_KEY = "host_events"
 const val TYPE_KEY = "type"
 
 const val EXTRA_KEY = "extra"
+
+const val SERVICES_KEY = "services"

@@ -1,8 +1,12 @@
 package com.tecknobit.brownie.services.hosts.services;
 
+import com.jcraft.jsch.JSchException;
 import com.tecknobit.brownie.services.hosts.commands.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.commands.WakeOnLanExecutor;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostOverview;
+import com.tecknobit.brownie.services.hosts.dtos.BrownieHostStat;
+import com.tecknobit.brownie.services.hosts.dtos.usages.CPUUsage;
+import com.tecknobit.brownie.services.hosts.dtos.usages.StorageUsage;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
 import com.tecknobit.browniecore.enums.HostStatus;
@@ -135,10 +139,19 @@ public class HostsService {
         eventsService.registerHostStatusChangedEvent(hostId, status);
     }
 
-    public BrownieHostOverview getHostOverView(BrownieHost brownieHost) throws Exception {
-        ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(brownieHost);
-        commandsExecutor.getCurrentHostStats();
-        return null;
+    public BrownieHostOverview getHostOverview(BrownieHost brownieHost) throws Exception {
+        try {
+            ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(brownieHost);
+            String[] currentHostStats = commandsExecutor.getCurrentHostStats();
+            CPUUsage cpuUsage = new CPUUsage(currentHostStats[0], currentHostStats[1]);
+            BrownieHostStat memoryUsage = new BrownieHostStat(currentHostStats[2]);
+            StorageUsage storageUsage = new StorageUsage(currentHostStats[3], currentHostStats[4]);
+            return new BrownieHostOverview(brownieHost, cpuUsage, memoryUsage, storageUsage);
+        } catch (JSchException e) {
+            if (e.getLocalizedMessage().equals("timeout: socket is not established"))
+                return new BrownieHostOverview(brownieHost);
+            throw e;
+        }
     }
 
 }

@@ -4,7 +4,6 @@ import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
-import com.tecknobit.brownie.services.hosts.dtos.CPUUsage;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import kotlin.Pair;
@@ -13,13 +12,18 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 
+import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.COMMA;
+
 public class ShellCommandsExecutor {
 
     private static final String STRICT_HOST_KEY_CHECKING_OPTION = "StrictHostKeyChecking";
 
-    private static final String GET_MAC_ADDRESS_COMMAND = "ip link show | awk -F': ' '/^[0-9]+: e/{print $2}' | head -n 1 | xargs -I {} ip link show {} | awk '/ether/ {print $2}'";
+    private static final String GET_MAC_ADDRESS_COMMAND = """
+            ip link show | awk -F': ' '/^[0-9]+: e/{print $2}' | head -n \
+            1 | xargs -I {} ip link show {} | awk '/ether/ {print $2}'""";
 
-    private static final String GET_BROADCAST_IP_ADDRESS_COMMAND = "ip -4 addr show | grep -E 'inet .*brd' | awk '{print $4}'";
+    private static final String GET_BROADCAST_IP_ADDRESS_COMMAND = """
+            ip -4 addr show | grep -E 'inet .*brd' | awk '{print $4}'""";
 
     private static final String SUDO_SHUTDOWN_NOW = "sudo shutdown now";
 
@@ -29,7 +33,11 @@ public class ShellCommandsExecutor {
             echo -e "$(top -bn1 | grep 'Cpu(s)' | awk '{print 100 - $8}'),\
             $(awk '{s+=$1} END {print s/NR/1000000}' /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq),\
             $(free -h | grep 'Mem' | awk '{print $3 "/" $2}' | sed 's/[A-Za-z]//g'),\
-            $(df -h --total | grep 'total' | awk '{print $3 "/" $2}' | sed 's/[A-Za-z]//g')\"""";
+             $(df -h --total | grep 'total' | awk '{print $3 "/" $2}' | sed 's/[A-Za-z]//g'),\
+             $(if lsblk -d -o NAME | grep -q mmcblk; then echo "SD_CARD";\s
+             elif lsblk -d -o ROTA | awk 'NR>1' | grep -q 0;\s
+             then echo "SSD"; else echo "HARD_DISK"; fi)"
+            \s""";
 
     private static final String EXEC_CHANNEL_TYPE = "exec";
 
@@ -64,10 +72,8 @@ public class ShellCommandsExecutor {
         execBashCommand(SUDO_REBOOT, onCommandExecuted);
     }
 
-    public CPUUsage getCurrentHostStats() throws Exception {
-        String rawCpuUsage = execBashCommand(GET_CURRENT_HOST_STATS, false);
-        System.out.println(rawCpuUsage);
-        return null;
+    public String[] getCurrentHostStats() throws Exception {
+        return execBashCommand(GET_CURRENT_HOST_STATS).replaceAll(" ", "").split(COMMA);
     }
 
     @Wrapper

@@ -9,7 +9,7 @@ import static com.tecknobit.browniecore.ConstantsKt.*;
 
 @DTO
 @Structure
-public abstract class BrownieHostStat {
+public class BrownieHostStat {
 
     private final double usageValue;
 
@@ -17,10 +17,23 @@ public abstract class BrownieHostStat {
 
     private final double percentValue;
 
-    public BrownieHostStat(double usageValue, long totalValue) {
-        this.usageValue = usageValue;
+    public BrownieHostStat() {
+        usageValue = 0;
+        totalValue = 0;
+        percentValue = 0;
+    }
+
+    public BrownieHostStat(String rawStats) {
+        String[] statsSlices = rawStats.split("/");
+        usageValue = Double.parseDouble(statsSlices[0]);
+        totalValue = Long.parseLong(statsSlices[1]);
+        percentValue = TradingTools.computeProportion(totalValue, this.usageValue, 2);
+    }
+
+    public BrownieHostStat(String usageValue, long totalValue) {
+        this.usageValue = Double.parseDouble(usageValue);
         this.totalValue = totalValue;
-        percentValue = TradingTools.computeProportion(totalValue, usageValue, 2);
+        percentValue = TradingTools.computeProportion(totalValue, this.usageValue, 2);
     }
 
     @JsonGetter(USAGE_VALUE_KEY)

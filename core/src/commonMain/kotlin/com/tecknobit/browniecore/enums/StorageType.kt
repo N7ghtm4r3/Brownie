@@ -4,6 +4,10 @@ enum class StorageType {
 
     HARD_DISK,
 
-    SSD
+    SSD,
+
+    SD_CARD,
+
+    UKNOWN
 
 }
