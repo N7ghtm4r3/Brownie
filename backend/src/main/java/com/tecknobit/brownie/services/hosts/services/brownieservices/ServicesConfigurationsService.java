@@ -18,4 +18,10 @@ public class ServicesConfigurationsService {
                 purgeNohupOutAfterReboot, serviceId);
     }
 
+    public void editConfiguration(String serviceId, String programArguments, boolean purgeNohupOutAfterReboot,
+                                  boolean autoRunAfterHostReboot) {
+        servicesConfigurationsRepository.editConfiguration(autoRunAfterHostReboot, programArguments,
+                purgeNohupOutAfterReboot, serviceId);
+    }
+
 }

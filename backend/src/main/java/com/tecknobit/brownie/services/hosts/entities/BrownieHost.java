@@ -128,6 +128,20 @@ public class BrownieHost extends EquinoxItem {
         return services;
     }
 
+    public boolean hasService(String serviceId) {
+        for (BrownieHostService service : services)
+            if (service.getId().equals(serviceId))
+                return true;
+        return false;
+    }
+
+    public BrownieHostService getService(String serviceId) {
+        for (BrownieHostService service : services)
+            if (service.getId().equals(serviceId))
+                return service;
+        return null;
+    }
+
     @JsonIgnore
     public boolean isOnline() {
         return status.isOnline();

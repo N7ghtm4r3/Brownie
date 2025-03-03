@@ -9,6 +9,7 @@ import com.tecknobit.brownie.services.hosts.dtos.BrownieHostStat;
 import com.tecknobit.brownie.services.hosts.dtos.usages.CPUUsage;
 import com.tecknobit.brownie.services.hosts.dtos.usages.StorageUsage;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.brownie.services.hosts.entities.BrownieHostService;
 import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
 import com.tecknobit.brownie.services.hosts.services.brownieservices.HostServicesService;
 import com.tecknobit.browniecore.enums.HostStatus;
@@ -161,13 +162,29 @@ public class HostsService {
     }
 
     public void addService(BrownieHost host, String serviceName, JsonHelper hPayload) throws Exception {
-        ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
-        String servicePath = commandsExecutor.findServicePath(serviceName);
-        if (servicePath.isEmpty())
-            throw new JSchException("Could not locate the " + serviceName);
+        String servicePath = findServicePath(host, serviceName);
         servicesService.storeService(serviceName, servicePath, host.getId(), hPayload.getString(PROGRAM_ARGUMENTS_KEY),
                 hPayload.getBoolean(PURGE_NOHUP_OUT_AFTER_REBOOT_KEY),
                 hPayload.getBoolean(AUTO_RUN_AFTER_HOST_REBOOT_KEY));
+    }
+
+    public void editService(BrownieHost host, String serviceId, String serviceName, JsonHelper hPayload) throws Exception {
+        BrownieHostService currentService = host.getService(serviceId);
+        String servicePath = currentService.getServicePath();
+        if (!currentService.getName().equals(serviceName))
+            servicePath = findServicePath(host, serviceName);
+        servicesService.editService(serviceId, serviceName, servicePath, hPayload.getString(PROGRAM_ARGUMENTS_KEY),
+                hPayload.getBoolean(PURGE_NOHUP_OUT_AFTER_REBOOT_KEY),
+                hPayload.getBoolean(AUTO_RUN_AFTER_HOST_REBOOT_KEY));
+    }
+
+    private String findServicePath(BrownieHost host, String serviceName) throws Exception {
+        String servicePath;
+        ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
+        servicePath = commandsExecutor.findServicePath(serviceName);
+        if (servicePath.isEmpty())
+            throw new JSchException("Could not locate the " + serviceName);
+        return servicePath;
     }
 
 }

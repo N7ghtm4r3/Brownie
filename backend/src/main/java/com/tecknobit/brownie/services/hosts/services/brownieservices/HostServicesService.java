@@ -29,4 +29,11 @@ public class HostServicesService {
         eventsService.registerServiceAddedEvent(hostId, serviceName);
     }
 
+    public void editService(String serviceId, String serviceName, String servicePath, String programArguments,
+                            boolean purgeNohupOutAfterReboot, boolean autoRunAfterHostReboot) {
+        servicesRepository.editService(serviceId, serviceName, servicePath);
+        configurationsService.editConfiguration(serviceId, programArguments, purgeNohupOutAfterReboot,
+                autoRunAfterHostReboot);
+    }
+
 }

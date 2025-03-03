@@ -209,10 +209,6 @@ public class HostsController extends DefaultBrownieController {
         }
     }
 
-    private BrownieHost getBrownieHostIfAllowed(String sessionId, String hostId) {
-        return hostsService.getBrownieHost(sessionId, hostId);
-    }
-
     @PutMapping(
             path = "/{" + HOST_IDENTIFIER_KEY + "}/" + SERVICES_KEY
     )
@@ -238,6 +234,38 @@ public class HostsController extends DefaultBrownieController {
         } catch (Exception e) {
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         }
+    }
+
+    @PatchMapping(
+            path = "/{" + HOST_IDENTIFIER_KEY + "}/" + SERVICES_KEY + "/{" + SERVICE_IDENTIFIER_KEY + "}"
+    )
+    public String editService(
+            @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId,
+            @RequestBody Map<String, Object> payload
+    ) {
+        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
+        if (brownieHost == null || !brownieHost.hasService(serviceId))
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        if (!brownieHost.isOnline())
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        loadJsonHelper(payload);
+        String serviceName = jsonHelper.getString(NAME_KEY);
+        if (!INSTANCE.isItemNameValid(serviceName))
+            return failedResponse(WRONG_NAME_MESSAGE);
+        try {
+            hostsService.editService(brownieHost, serviceId, serviceName, jsonHelper);
+            return successResponse();
+        } catch (JSchException e) {
+            return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
+        } catch (Exception e) {
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        }
+    }
+
+    private BrownieHost getBrownieHostIfAllowed(String sessionId, String hostId) {
+        return hostsService.getBrownieHost(sessionId, hostId);
     }
 
     /**
