@@ -14,6 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.util.List;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
+import static com.tecknobit.browniecore.enums.ServiceStatus.RUNNING;
 import static com.tecknobit.browniecore.enums.ServiceStatus.STOPPED;
 
 @Entity
@@ -112,6 +113,11 @@ public class BrownieHostService extends EquinoxItem {
         return status == STOPPED;
     }
 
+    @JsonIgnore
+    public boolean isRunning() {
+        return status == RUNNING;
+    }
+
     @Entity
     @Table(name = SERVICES_CONFIGURATIONS_KEY)
     public static class ServiceConfiguration extends EquinoxItem {
@@ -152,12 +158,12 @@ public class BrownieHostService extends EquinoxItem {
         }
 
         @JsonGetter(PURGE_NOHUP_OUT_AFTER_REBOOT_KEY)
-        public boolean isPurgeNohupOutAfterReboot() {
+        public boolean purgeNohupOutAfterReboot() {
             return purgeNohupOutAfterReboot;
         }
 
         @JsonGetter(AUTO_RUN_AFTER_HOST_REBOOT_KEY)
-        public boolean isAutoRunAfterHostReboot() {
+        public boolean autoRunAfterHostReboot() {
             return autoRunAfterHostReboot;
         }
 

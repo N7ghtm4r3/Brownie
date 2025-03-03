@@ -69,4 +69,12 @@ public class HostServicesService {
         serviceEvents.registerServiceStarted(serviceId, pid);
     }
 
+    public void stopService(BrownieHost brownieHost, BrownieHostService service) throws Exception {
+        ShellCommandsExecutor shellCommandsExecutor = new ShellCommandsExecutor(brownieHost);
+        shellCommandsExecutor.stopService(service);
+        String serviceId = service.getId();
+        servicesRepository.updateServiceStatus(serviceId, STOPPED.name(), -1);
+        serviceEvents.registerServiceStopped(serviceId, 34);// TODO: 03/03/2025 TO SET
+    }
+
 }

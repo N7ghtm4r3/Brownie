@@ -17,15 +17,7 @@ import static com.tecknobit.equinoxbackend.environment.services.builtin.service.
 
 public class ShellCommandsExecutor {
 
-    private static final InputStream SERVICE_STARTER_SCRIPT;
-
-    static {
-        try {
-            SERVICE_STARTER_SCRIPT = getResourceStream("service-starter.sh", ShellCommandsExecutor.class);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
+    private static final String SERVICE_STARTER_SCRIPT = "service-starter.sh";
 
     private static final String STRICT_HOST_KEY_CHECKING_OPTION = "StrictHostKeyChecking";
 
@@ -57,6 +49,12 @@ public class ShellCommandsExecutor {
             """;
 
     private static final String EXECUTE_BASH_SCRIPT = "bash -s";
+
+    private static final String REMOVE_FILE_COMMAND = "rm %s";
+
+    private static final String REMOVE_NOHUP_OUT_FILE_COMMAND = "rm -f nohup.out";
+
+    private static final String KILL_SERVICE = "kill %s";
 
     private final Session session;
 
@@ -100,12 +98,15 @@ public class ShellCommandsExecutor {
     }
 
     public long startService(BrownieHostService service) throws Exception {
+        if (service.getConfiguration().purgeNohupOutAfterReboot())
+            removeNohupOut();
         ChannelExec channel = (ChannelExec) session.openChannel(EXEC_CHANNEL_TYPE);
         channel.setInputStream(null);
         channel.setCommand(EXECUTE_BASH_SCRIPT);
         InputStream commandResultStream = channel.getInputStream();
         channel.connect();
-        String serviceStarter = String.format(new String(SERVICE_STARTER_SCRIPT.readAllBytes()), service.getServicePath(),
+        InputStream serviceStarterScript = getResourceStream(SERVICE_STARTER_SCRIPT, ShellCommandsExecutor.class);
+        String serviceStarter = String.format(new String(serviceStarterScript.readAllBytes()), service.getServicePath(),
                 service.getConfiguration().getProgramArguments());
         OutputStream out = channel.getOutputStream();
         out.write(serviceStarter.getBytes(StandardCharsets.UTF_8));
@@ -118,6 +119,21 @@ public class ShellCommandsExecutor {
         channel.disconnect();
         session.disconnect();
         return pid;
+    }
+
+    public void removeNohupOut() {
+        try {
+            execBashCommand(REMOVE_NOHUP_OUT_FILE_COMMAND, false);
+        } catch (Exception ignored) {
+        }
+    }
+
+    public String stopService(BrownieHostService service) throws Exception {
+        return execBashCommand(String.format(KILL_SERVICE, service.getPid()));
+    }
+
+    public String removeService(String filename, boolean closeSession) throws Exception {
+        return execBashCommand(String.format(REMOVE_FILE_COMMAND, filename), closeSession);
     }
 
     @Wrapper
@@ -144,13 +160,13 @@ public class ShellCommandsExecutor {
         try {
             String errorMessage = new String(channel.getErrStream().readAllBytes());
             if (errorMessage.isEmpty()) {
-                StringBuilder commandOutPUT = new StringBuilder();
+                StringBuilder commandOutput = new StringBuilder();
                 String resultLine;
                 while ((resultLine = reader.readLine()) != null)
-                    commandOutPUT.append(resultLine).append("\n");
+                    commandOutput.append(resultLine).append("\n");
                 if (onCommandExecuted != null)
                     onCommandExecuted.afterExecution();
-                return commandOutPUT.toString().replaceAll("\n", "");
+                return commandOutput.toString().replaceAll("\n", "");
             } else {
                 errorMessage += "Exit status:" + channel.getExitStatus();
                 throw new RuntimeException(errorMessage);

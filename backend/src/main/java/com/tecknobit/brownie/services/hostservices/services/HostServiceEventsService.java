@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import static com.tecknobit.browniecore.enums.ServiceEventType.RUNNING;
+import static com.tecknobit.browniecore.enums.ServiceEventType.STOPPED;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.generateIdentifier;
 
 @Service
@@ -18,6 +19,11 @@ public class HostServiceEventsService {
     @Wrapper
     public void registerServiceStarted(String serviceId, long pid) {
         registerEvent(RUNNING, serviceId, pid);
+    }
+
+    @Wrapper
+    public void registerServiceStopped(String serviceId, int days) {
+        registerEvent(STOPPED, serviceId, days);
     }
 
     @Wrapper
