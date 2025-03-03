@@ -118,7 +118,8 @@ public class BrownieHostService extends EquinoxItem {
 
         @Column(
                 name = PROGRAM_ARGUMENTS_KEY,
-                columnDefinition = "TEXT DEFAULT ''"
+                columnDefinition = "TEXT DEFAULT ''",
+                insertable = false
         )
         private final String programArguments;
 

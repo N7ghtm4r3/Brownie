@@ -163,7 +163,7 @@ public class HostsService {
 
     public void addService(BrownieHost host, String serviceName, JsonHelper hPayload) throws Exception {
         String servicePath = findServicePath(host, serviceName);
-        servicesService.storeService(serviceName, servicePath, host.getId(), hPayload.getString(PROGRAM_ARGUMENTS_KEY),
+        servicesService.storeService(serviceName, servicePath, host.getId(), hPayload.getString(PROGRAM_ARGUMENTS_KEY, ""),
                 hPayload.getBoolean(PURGE_NOHUP_OUT_AFTER_REBOOT_KEY),
                 hPayload.getBoolean(AUTO_RUN_AFTER_HOST_REBOOT_KEY));
     }
@@ -173,7 +173,7 @@ public class HostsService {
         String servicePath = currentService.getServicePath();
         if (!currentService.getName().equals(serviceName))
             servicePath = findServicePath(host, serviceName);
-        servicesService.editService(serviceId, serviceName, servicePath, hPayload.getString(PROGRAM_ARGUMENTS_KEY),
+        servicesService.editService(serviceId, serviceName, servicePath, hPayload.getString(PROGRAM_ARGUMENTS_KEY, ""),
                 hPayload.getBoolean(PURGE_NOHUP_OUT_AFTER_REBOOT_KEY),
                 hPayload.getBoolean(AUTO_RUN_AFTER_HOST_REBOOT_KEY));
     }
