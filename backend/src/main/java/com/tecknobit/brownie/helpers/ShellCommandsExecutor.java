@@ -5,18 +5,31 @@ import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import kotlin.Pair;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
+import java.io.*;
+import java.nio.charset.StandardCharsets;
 
+import static com.tecknobit.apimanager.apis.ResourcesUtils.getResourceStream;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.COMMA;
 
 public class ShellCommandsExecutor {
 
+    private static final InputStream SERVICE_STARTER_SCRIPT;
+
+    static {
+        try {
+            SERVICE_STARTER_SCRIPT = getResourceStream("service-starter.sh", ShellCommandsExecutor.class);
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
     private static final String STRICT_HOST_KEY_CHECKING_OPTION = "StrictHostKeyChecking";
+
+    private static final String EXEC_CHANNEL_TYPE = "exec";
 
     private static final String GET_MAC_ADDRESS_COMMAND = """
             ip link show | awk -F': ' '/^[0-9]+: e/{print $2}' | head -n \
@@ -43,7 +56,7 @@ public class ShellCommandsExecutor {
             find . -type f -name "%s"
             """;
 
-    private static final String EXEC_CHANNEL_TYPE = "exec";
+    private static final String EXECUTE_BASH_SCRIPT = "bash -s";
 
     private final Session session;
 
@@ -76,12 +89,35 @@ public class ShellCommandsExecutor {
         execBashCommand(SUDO_REBOOT, onCommandExecuted);
     }
 
+    @Wrapper
     public String[] getCurrentHostStats() throws Exception {
         return execBashCommand(GET_CURRENT_HOST_STATS).replaceAll(" ", "").split(COMMA);
     }
 
+    @Wrapper
     public String findServicePath(String name) throws Exception {
         return execBashCommand(String.format(FIND_SERVICE_PATH, name));
+    }
+
+    public long startService(BrownieHostService service) throws Exception {
+        ChannelExec channel = (ChannelExec) session.openChannel(EXEC_CHANNEL_TYPE);
+        channel.setInputStream(null);
+        channel.setCommand(EXECUTE_BASH_SCRIPT);
+        InputStream commandResultStream = channel.getInputStream();
+        channel.connect();
+        String serviceStarter = String.format(new String(SERVICE_STARTER_SCRIPT.readAllBytes()), service.getServicePath(),
+                service.getConfiguration().getProgramArguments());
+        OutputStream out = channel.getOutputStream();
+        out.write(serviceStarter.getBytes(StandardCharsets.UTF_8));
+        out.flush();
+        out.close();
+        String commandResult = new String(commandResultStream.readAllBytes()).trim();
+        if (commandResult.isEmpty())
+            return -1;
+        long pid = Long.parseLong(commandResult);
+        channel.disconnect();
+        session.disconnect();
+        return pid;
     }
 
     @Wrapper

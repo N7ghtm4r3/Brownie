@@ -95,4 +95,19 @@ public interface HostServicesRepository extends JpaRepository<BrownieHostService
             Pageable pageable
     );
 
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(
+            value = "UPDATE " + SERVICES_KEY + " SET " +
+                    STATUS_KEY + "=:" + STATUS_KEY + "," +
+                    PID_KEY + "=:" + PID_KEY +
+                    _WHERE_ + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void updateServiceStatus(
+            @Param(IDENTIFIER_KEY) String serviceId,
+            @Param(STATUS_KEY) String status,
+            @Param(PID_KEY) long pid
+    );
+
 }

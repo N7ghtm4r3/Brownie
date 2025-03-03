@@ -119,7 +119,7 @@ public class HostsController extends DefaultBrownieController {
     }
 
     @PatchMapping(
-            path = "/{" + HOST_IDENTIFIER_KEY + "}" + START_HOST_ENDPOINT
+            path = "/{" + HOST_IDENTIFIER_KEY + "}" + START_ENDPOINT
     )
     // TODO: 01/03/2025 ADD THE REFERENCE TO WoL documentation
     public String startHost(
@@ -142,7 +142,7 @@ public class HostsController extends DefaultBrownieController {
     }
 
     @PatchMapping(
-            path = "/{" + HOST_IDENTIFIER_KEY + "}" + REBOOT_HOST_ENDPOINT
+            path = "/{" + HOST_IDENTIFIER_KEY + "}" + REBOOT_ENDPOINT
     )
     public String rebootHost(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
@@ -164,7 +164,7 @@ public class HostsController extends DefaultBrownieController {
     }
 
     @PatchMapping(
-            path = "/{" + HOST_IDENTIFIER_KEY + "}" + STOP_HOST_ENDPOINT
+            path = "/{" + HOST_IDENTIFIER_KEY + "}" + STOP_ENDPOINT
     )
     public String stopHost(
             @PathVariable(IDENTIFIER_KEY) String sessionId,

@@ -14,6 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.util.List;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
+import static com.tecknobit.browniecore.enums.ServiceStatus.STOPPED;
 
 @Entity
 @Table(name = SERVICES_KEY)
@@ -52,6 +53,7 @@ public class BrownieHostService extends EquinoxItem {
             cascade = CascadeType.ALL
     )
     @JsonIgnoreProperties(SERVICE_KEY)
+    @OrderBy(EVENT_DATE_KEY + " DESC")
     private final List<ServiceEvent> events;
 
     @ManyToOne
@@ -105,11 +107,19 @@ public class BrownieHostService extends EquinoxItem {
         return events;
     }
 
+    @JsonIgnore
+    public boolean isStopped() {
+        return status == STOPPED;
+    }
+
     @Entity
     @Table(name = SERVICES_CONFIGURATIONS_KEY)
     public static class ServiceConfiguration extends EquinoxItem {
 
-        @Column(name = PROGRAM_ARGUMENTS_KEY)
+        @Column(
+                name = PROGRAM_ARGUMENTS_KEY,
+                columnDefinition = "TEXT DEFAULT ''"
+        )
         private final String programArguments;
 
         @Column(name = PURGE_NOHUP_OUT_AFTER_REBOOT_KEY)

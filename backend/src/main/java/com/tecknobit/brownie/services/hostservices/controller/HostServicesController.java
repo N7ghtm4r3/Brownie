@@ -2,6 +2,7 @@ package com.tecknobit.brownie.services.hostservices.controller;
 
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.services.HostServicesService;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -12,6 +13,7 @@ import java.util.Map;
 import java.util.Set;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
+import static com.tecknobit.browniecore.helpers.BrownieEndpoints.START_ENDPOINT;
 import static com.tecknobit.browniecore.helpers.BrownieInputsValidator.INSTANCE;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.NAME_KEY;
@@ -102,6 +104,32 @@ public class HostServicesController extends DefaultBrownieController {
         if (!brownieHost.isOnline())
             return (T) failedResponse(WRONG_PROCEDURE_MESSAGE);
         return (T) successResponse(service.getServices(hostId, keywords, statuses, page, pageSize));
+    }
+
+    @PatchMapping(
+            path = "/{" + SERVICE_IDENTIFIER_KEY + "}" + START_ENDPOINT
+    )
+    public String startService(
+            @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId
+    ) {
+        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
+        if (brownieHost == null)
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        if (!brownieHost.isOnline())
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        BrownieHostService brownieHostService = brownieHost.getService(serviceId);
+        if (brownieHostService == null || !brownieHostService.isStopped())
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        try {
+            service.startService(brownieHost, brownieHostService);
+        } catch (JSchException e) {
+            return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
+        } catch (Exception e) {
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        }
+        return successResponse();
     }
 
 }
