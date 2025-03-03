@@ -128,10 +128,22 @@ public class ShellCommandsExecutor {
         }
     }
 
-    public String stopService(BrownieHostService service) throws Exception {
-        return execBashCommand(String.format(KILL_SERVICE, service.getPid()));
+    public void rebootService(BrownieHostService service, OnCommandExecuted onCommandExecuted) throws Exception {
+        stopService(service, false);
+        long pid = startService(service);
+        onCommandExecuted.afterExecution(pid);
     }
 
+    @Wrapper
+    public String stopService(BrownieHostService service) throws Exception {
+        return stopService(service, true);
+    }
+
+    public String stopService(BrownieHostService service, boolean closeSession) throws Exception {
+        return execBashCommand(String.format(KILL_SERVICE, service.getPid()), closeSession);
+    }
+
+    @Wrapper
     public String removeService(String filename, boolean closeSession) throws Exception {
         return execBashCommand(String.format(REMOVE_FILE_COMMAND, filename), closeSession);
     }
@@ -182,7 +194,7 @@ public class ShellCommandsExecutor {
 
     public interface OnCommandExecuted {
 
-        void afterExecution();
+        void afterExecution(Object... extra);
 
     }
 

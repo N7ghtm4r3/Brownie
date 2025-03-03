@@ -9,6 +9,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
+import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper._WHERE_;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 
 @Repository
@@ -56,6 +57,16 @@ public interface HostServiceEventsRepository extends JpaRepository<ServiceEvent,
             @Param(TYPE_KEY) String type,
             @Param(EVENT_DATE_KEY) long eventDate,
             @Param(EXTRA_KEY) String extra,
+            @Param(SERVICE_IDENTIFIER_KEY) String serviceId
+    );
+
+    @Query(
+            value = "SELECT MAX(" + EVENT_DATE_KEY + ") FROM " + SERVICE_EVENTS_KEY +
+                    _WHERE_ + TYPE_KEY + " IN ('RUNNING', 'RESTARTED') AND " +
+                    SERVICE_IDENTIFIER_KEY + "=:" + SERVICE_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    long getLastRunningEvent(
             @Param(SERVICE_IDENTIFIER_KEY) String serviceId
     );
 

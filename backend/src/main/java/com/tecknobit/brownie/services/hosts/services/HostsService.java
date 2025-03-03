@@ -94,9 +94,7 @@ public class HostsService {
         String hostId = host.getId();
         if (host.isRemoteHost()) {
             ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
-            commandsExecutor.stopHost(() -> {
-                setOfflineStatus(hostId);
-            });
+            commandsExecutor.stopHost(extra -> HostsService.this.setOfflineStatus(hostId));
         }
     }
 
@@ -104,26 +102,36 @@ public class HostsService {
         String hostId = host.getId();
         if (host.isRemoteHost()) {
             ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
-            commandsExecutor.rebootHost(() -> {
-                setRebootingStatus(hostId);
-                waitHostRestarted(host);
+            commandsExecutor.rebootHost(extra -> {
+                HostsService.this.setRebootingStatus(hostId);
+                HostsService.this.waitHostRestarted(host);
             });
         }
     }
 
     private void waitHostRestarted(BrownieHost host) {
+        /* TODO: 03/03/2025 TO FIX AND WHEN IS THE SAME MACHINE SAVE A PROPERTY THAT WHEN RELAUNCHED RESTART SERVICES */
         Executors.newCachedThreadPool().execute(() -> {
             try (Socket socket = new Socket()) {
                 int timeout = Math.toIntExact(MINUTES.toMillis(2));
+                socket.setSoTimeout(timeout);
                 socket.connect(new InetSocketAddress(host.getHostAddress(), 22), timeout);
                 String hostId = host.getId();
                 hostsRepository.handleHostStatus(hostId, ONLINE.name());
                 eventsService.registerHostRestartedEvent(hostId);
-                // TODO: 01/03/2025 RESTART ALL THE SERVICES WHERE autoRun = true
+                restartAutoRunnableServices(host);
             } catch (IOException e) {
                 throw new IllegalStateException("Impossible reach the " + host.getHostAddress() + " address, you need to restart manually as needed");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
             }
         });
+    }
+
+    private void restartAutoRunnableServices(BrownieHost host) throws Exception {
+        List<BrownieHostService> autoRunnableServices = servicesService.getAutoRunnableServices(host);
+        for (BrownieHostService service : autoRunnableServices)
+            servicesService.startService(host, service);
     }
 
     @Wrapper

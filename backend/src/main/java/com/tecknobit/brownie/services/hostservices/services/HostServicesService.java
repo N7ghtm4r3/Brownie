@@ -14,8 +14,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Set;
 
-import static com.tecknobit.browniecore.enums.ServiceStatus.RUNNING;
-import static com.tecknobit.browniecore.enums.ServiceStatus.STOPPED;
+import static com.tecknobit.browniecore.enums.ServiceStatus.*;
 import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.generateIdentifier;
 
@@ -59,6 +58,10 @@ public class HostServicesService {
         return new PaginatedResponse<>(services, page, pageSize, totalServices);
     }
 
+    public List<BrownieHostService> getAutoRunnableServices(BrownieHost host) {
+        return servicesRepository.getAutoRunnableServices(host.getId());
+    }
+
     public void startService(BrownieHost brownieHost, BrownieHostService service) throws Exception {
         ShellCommandsExecutor shellCommandsExecutor = new ShellCommandsExecutor(brownieHost);
         long pid = shellCommandsExecutor.startService(service);
@@ -69,12 +72,24 @@ public class HostServicesService {
         serviceEvents.registerServiceStarted(serviceId, pid);
     }
 
+    public void rebootService(BrownieHost brownieHost, BrownieHostService service) throws Exception {
+        String serviceId = service.getId();
+        servicesRepository.updateServiceStatus(serviceId, REBOOTING.name(), -1);
+        serviceEvents.registerServiceRebooted(serviceId);
+        ShellCommandsExecutor shellCommandsExecutor = new ShellCommandsExecutor(brownieHost);
+        shellCommandsExecutor.rebootService(service, extra -> {
+            long pid = (long) extra[0];
+            servicesRepository.updateServiceStatus(serviceId, RUNNING.name(), pid);
+            serviceEvents.registerServiceRestarted(serviceId, pid);
+        });
+    }
+
     public void stopService(BrownieHost brownieHost, BrownieHostService service) throws Exception {
         ShellCommandsExecutor shellCommandsExecutor = new ShellCommandsExecutor(brownieHost);
         shellCommandsExecutor.stopService(service);
         String serviceId = service.getId();
         servicesRepository.updateServiceStatus(serviceId, STOPPED.name(), -1);
-        serviceEvents.registerServiceStopped(serviceId, 34);// TODO: 03/03/2025 TO SET
+        serviceEvents.registerServiceStopped(serviceId);
     }
 
 }
