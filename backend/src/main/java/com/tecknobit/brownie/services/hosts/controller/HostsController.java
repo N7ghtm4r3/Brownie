@@ -236,7 +236,7 @@ public class HostsController extends DefaultBrownieController {
         } catch (JSchException e) {
             return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
         } catch (Exception e) {
-            return plainResponse(FAILED, e.getMessage());
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
         }
     }
 

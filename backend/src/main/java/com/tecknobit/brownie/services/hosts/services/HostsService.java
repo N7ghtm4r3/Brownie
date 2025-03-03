@@ -10,6 +10,7 @@ import com.tecknobit.brownie.services.hosts.dtos.usages.CPUUsage;
 import com.tecknobit.brownie.services.hosts.dtos.usages.StorageUsage;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
+import com.tecknobit.brownie.services.hosts.services.brownieservices.HostServicesService;
 import com.tecknobit.browniecore.enums.HostStatus;
 import com.tecknobit.equinoxbackend.configuration.IndexesCreator;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
@@ -26,6 +27,7 @@ import java.util.List;
 import java.util.Set;
 import java.util.concurrent.Executors;
 
+import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.browniecore.enums.HostStatus.*;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
@@ -37,6 +39,9 @@ public class HostsService {
 
     @Autowired
     private HostEventsService eventsService;
+
+    @Autowired
+    private HostServicesService servicesService;
 
     public PaginatedResponse<BrownieHost> getHosts(Set<String> keywords, List<String> statuses, int page,
                                                    int pageSize) {
@@ -160,7 +165,9 @@ public class HostsService {
         String servicePath = commandsExecutor.findServicePath(serviceName);
         if (servicePath.isEmpty())
             throw new JSchException("Could not locate the " + serviceName);
-        System.out.println(servicePath);
+        servicesService.storeService(serviceName, servicePath, host.getId(), hPayload.getString(PROGRAM_ARGUMENTS_KEY),
+                hPayload.getBoolean(PURGE_NOHUP_OUT_AFTER_REBOOT_KEY),
+                hPayload.getBoolean(AUTO_RUN_AFTER_HOST_REBOOT_KEY));
     }
 
 }

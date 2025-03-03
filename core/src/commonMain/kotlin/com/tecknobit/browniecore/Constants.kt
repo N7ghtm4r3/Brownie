@@ -22,7 +22,7 @@ const val PROGRAM_ARGUMENTS_KEY = "program_arguments"
 
 const val PURGE_NOHUP_OUT_AFTER_REBOOT_KEY = "purge_nohup_out_after_reboot"
 
-const val AUTO_RUN_AFTER_HOST_REBOOT = "auto_run_after_host_reboot"
+const val AUTO_RUN_AFTER_HOST_REBOOT_KEY = "auto_run_after_host_reboot"
 
 const val EVENT_DATE_KEY = "event_date"
 
@@ -67,12 +67,16 @@ const val SERVICES_KEY = "services"
 
 const val SERVICE_KEY = "service"
 
+const val SERVICE_IDENTIFIER_KEY = "service_id"
+
+const val PID_KEY = "pid"
+
 const val SERVICE_PATH_KEY = "service_path"
 
 const val SERVICES_CONFIGURATIONS_KEY = "services_configurations"
 
 const val CONFIGURATION_KEY = "configuration"
 
-const val INSERTION_DATE_KEY = "insertion_date_key"
+const val INSERTION_DATE_KEY = "insertion_date"
 
 const val SERVICE_EVENTS_KEY = "service_events"

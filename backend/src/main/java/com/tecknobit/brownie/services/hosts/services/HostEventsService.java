@@ -33,6 +33,11 @@ public class HostEventsService {
     }
 
     @Wrapper
+    public void registerServiceAddedEvent(String hostId, String serviceName) {
+        registerEvent(SERVICE_ADDED, hostId, serviceName);
+    }
+
+    @Wrapper
     private void registerEvent(HostEventType type, String hostId) {
         registerEvent(type, hostId, null);
     }

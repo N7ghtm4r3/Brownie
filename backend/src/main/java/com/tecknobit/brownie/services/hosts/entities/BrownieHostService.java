@@ -24,17 +24,24 @@ public class BrownieHostService extends EquinoxItem {
     @Column
     private final String name;
 
-    @Column(name = SERVICE_PATH_KEY)
+    @Column(
+            name = SERVICE_PATH_KEY,
+            unique = true
+    )
     private final String servicePath;
 
-    @Column
+    @Column(
+            columnDefinition = "BIGINT DEFAULT -1",
+            insertable = false
+    )
     private final long pid;
 
     @Column(name = INSERTION_DATE_KEY)
     private final long insertionDate;
 
     @OneToOne(
-            mappedBy = SERVICE_KEY
+            mappedBy = SERVICE_KEY,
+            cascade = CascadeType.ALL
     )
     private final ServiceConfiguration configuration;
 
@@ -49,6 +56,10 @@ public class BrownieHostService extends EquinoxItem {
     @OnDelete(action = OnDeleteAction.CASCADE)
     @JsonIgnoreProperties(SERVICES_KEY)
     private BrownieHost host;
+
+    public BrownieHostService() {
+        this(null, null, null, null, -1, 0, null, List.of());
+    }
 
     public BrownieHostService(String id, ServiceStatus status, String name, String servicePath, long pid,
                               long insertionDate, ServiceConfiguration configuration, List<ServiceEvent> events) {
@@ -102,13 +113,17 @@ public class BrownieHostService extends EquinoxItem {
         @Column(name = PURGE_NOHUP_OUT_AFTER_REBOOT_KEY)
         private final boolean purgeNohupOutAfterReboot;
 
-        @Column(name = AUTO_RUN_AFTER_HOST_REBOOT)
+        @Column(name = AUTO_RUN_AFTER_HOST_REBOOT_KEY)
         private final boolean autoRunAfterHostReboot;
 
         @OneToOne
         @OnDelete(action = OnDeleteAction.CASCADE)
         @JsonIgnoreProperties(CONFIGURATION_KEY)
         private BrownieHostService service;
+
+        public ServiceConfiguration() {
+            this(null, null, false, false);
+        }
 
         public ServiceConfiguration(String id, String programArguments, boolean purgeNohupOutAfterReboot,
                                     boolean autoRunAfterHostReboot) {
@@ -128,7 +143,7 @@ public class BrownieHostService extends EquinoxItem {
             return purgeNohupOutAfterReboot;
         }
 
-        @JsonGetter(AUTO_RUN_AFTER_HOST_REBOOT)
+        @JsonGetter(AUTO_RUN_AFTER_HOST_REBOOT_KEY)
         public boolean isAutoRunAfterHostReboot() {
             return autoRunAfterHostReboot;
         }
