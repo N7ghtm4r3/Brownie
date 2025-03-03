@@ -63,8 +63,8 @@ public class HostServicesService {
     }
 
     public void startService(BrownieHost brownieHost, BrownieHostService service) throws Exception {
-        ShellCommandsExecutor shellCommandsExecutor = new ShellCommandsExecutor(brownieHost);
-        long pid = shellCommandsExecutor.startService(service);
+        ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(brownieHost);
+        long pid = commandsExecutor.startService(service);
         if (pid == -1)
             throw new JSchException();
         String serviceId = service.getId();
@@ -76,8 +76,8 @@ public class HostServicesService {
         String serviceId = service.getId();
         servicesRepository.updateServiceStatus(serviceId, REBOOTING.name(), -1);
         serviceEvents.registerServiceRebooted(serviceId);
-        ShellCommandsExecutor shellCommandsExecutor = new ShellCommandsExecutor(brownieHost);
-        shellCommandsExecutor.rebootService(service, extra -> {
+        ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(brownieHost);
+        commandsExecutor.rebootService(service, extra -> {
             long pid = (long) extra[0];
             servicesRepository.updateServiceStatus(serviceId, RUNNING.name(), pid);
             serviceEvents.registerServiceRestarted(serviceId, pid);
@@ -85,11 +85,21 @@ public class HostServicesService {
     }
 
     public void stopService(BrownieHost brownieHost, BrownieHostService service) throws Exception {
-        ShellCommandsExecutor shellCommandsExecutor = new ShellCommandsExecutor(brownieHost);
-        shellCommandsExecutor.stopService(service);
+        ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(brownieHost);
+        commandsExecutor.stopService(service);
         String serviceId = service.getId();
         servicesRepository.updateServiceStatus(serviceId, STOPPED.name(), -1);
         serviceEvents.registerServiceStopped(serviceId);
+    }
+
+    public void removeService(BrownieHost host, BrownieHostService service, boolean removeFromTheHost) throws Exception {
+        String serviceName = service.getName();
+        if (removeFromTheHost) {
+            ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
+            commandsExecutor.removeService(serviceName, true);
+        }
+        servicesRepository.removeService(service.getId());
+        hostEventsService.registerServiceRemovedEvent(host.getId(), serviceName, removeFromTheHost);
     }
 
 }

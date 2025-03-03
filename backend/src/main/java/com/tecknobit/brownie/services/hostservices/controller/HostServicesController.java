@@ -184,4 +184,34 @@ public class HostServicesController extends DefaultBrownieController {
         return successResponse();
     }
 
+    @DeleteMapping(
+            path = "/{" + SERVICE_IDENTIFIER_KEY + "}"
+    )
+    public String removeService(
+            @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId,
+            @RequestParam(
+                    value = REMOVE_FROM_THE_HOST_KEY,
+                    required = false,
+                    defaultValue = "false"
+            ) boolean removeFromTheHost) {
+        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
+        if (brownieHost == null)
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        if (!brownieHost.isOnline())
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        BrownieHostService brownieHostService = brownieHost.getService(serviceId);
+        if (brownieHostService == null)
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        try {
+            service.removeService(brownieHost, brownieHostService, removeFromTheHost);
+        } catch (JSchException e) {
+            return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
+        } catch (Exception e) {
+            return failedResponse(WRONG_PROCEDURE_MESSAGE);
+        }
+        return successResponse();
+    }
+
 }

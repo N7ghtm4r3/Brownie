@@ -52,7 +52,9 @@ public class ShellCommandsExecutor {
 
     private static final String REMOVE_FILE_COMMAND = "rm %s";
 
-    private static final String REMOVE_NOHUP_OUT_FILE_COMMAND = "rm -f nohup.out";
+    private static final String NOHUP_OUT_FILE = "nohup.out";
+
+    private static final String REMOVE_NOHUP_OUT_FILE_COMMAND = "rm -f %s";
 
     private static final String KILL_SERVICE = "kill %s";
 
@@ -98,15 +100,16 @@ public class ShellCommandsExecutor {
     }
 
     public long startService(BrownieHostService service) throws Exception {
+        String servicePath = service.getServicePath();
         if (service.getConfiguration().purgeNohupOutAfterReboot())
-            removeNohupOut();
+            removeNohupOut(service.getName(), servicePath);
         ChannelExec channel = (ChannelExec) session.openChannel(EXEC_CHANNEL_TYPE);
         channel.setInputStream(null);
         channel.setCommand(EXECUTE_BASH_SCRIPT);
         InputStream commandResultStream = channel.getInputStream();
         channel.connect();
         InputStream serviceStarterScript = getResourceStream(SERVICE_STARTER_SCRIPT, ShellCommandsExecutor.class);
-        String serviceStarter = String.format(new String(serviceStarterScript.readAllBytes()), service.getServicePath(),
+        String serviceStarter = String.format(new String(serviceStarterScript.readAllBytes()), servicePath,
                 service.getConfiguration().getProgramArguments());
         OutputStream out = channel.getOutputStream();
         out.write(serviceStarter.getBytes(StandardCharsets.UTF_8));
@@ -121,9 +124,10 @@ public class ShellCommandsExecutor {
         return pid;
     }
 
-    public void removeNohupOut() {
+    private void removeNohupOut(String serviceName, String servicePath) {
+        String nohupOutPath = String.format(REMOVE_NOHUP_OUT_FILE_COMMAND, servicePath.replace(serviceName, NOHUP_OUT_FILE));
         try {
-            execBashCommand(REMOVE_NOHUP_OUT_FILE_COMMAND, false);
+            execBashCommand(nohupOutPath, false);
         } catch (Exception ignored) {
         }
     }

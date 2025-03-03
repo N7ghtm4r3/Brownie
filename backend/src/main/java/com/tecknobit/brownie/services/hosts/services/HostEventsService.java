@@ -38,6 +38,14 @@ public class HostEventsService {
     }
 
     @Wrapper
+    public void registerServiceRemovedEvent(String hostId, String serviceName, boolean removeFromTheHost) {
+        HostEventType type = SERVICE_REMOVED;
+        if (removeFromTheHost)
+            type = SERVICE_DELETED;
+        registerEvent(type, hostId, serviceName);
+    }
+
+    @Wrapper
     private void registerEvent(HostEventType type, String hostId) {
         registerEvent(type, hostId, null);
     }

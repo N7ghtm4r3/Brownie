@@ -120,4 +120,14 @@ public interface HostServicesRepository extends JpaRepository<BrownieHostService
             @Param(HOST_IDENTIFIER_KEY) String hostId
     );
 
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(
+            value = "DELETE FROM " + SERVICES_KEY + _WHERE_ + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void removeService(
+            @Param(IDENTIFIER_KEY) String serviceId
+    );
+
 }

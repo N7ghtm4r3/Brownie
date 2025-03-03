@@ -80,3 +80,5 @@ const val CONFIGURATION_KEY = "configuration"
 const val INSERTION_DATE_KEY = "insertion_date"
 
 const val SERVICE_EVENTS_KEY = "service_events"
+
+const val REMOVE_FROM_THE_HOST_KEY = "remove_from_the_host"
