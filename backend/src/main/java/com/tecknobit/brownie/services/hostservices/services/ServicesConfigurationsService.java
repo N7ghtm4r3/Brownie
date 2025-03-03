@@ -1,6 +1,6 @@
-package com.tecknobit.brownie.services.hosts.services.brownieservices;
+package com.tecknobit.brownie.services.hostservices.services;
 
-import com.tecknobit.brownie.services.hosts.repositories.services.ServicesConfigurationsRepository;
+import com.tecknobit.brownie.services.hostservices.repositories.ServicesConfigurationsRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

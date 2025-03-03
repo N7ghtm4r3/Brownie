@@ -1,6 +1,7 @@
 package com.tecknobit.brownie.services.hosts.entities;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 import com.tecknobit.brownie.services.shared.entities.BrownieEvent;
 import com.tecknobit.browniecore.enums.HostEventType;
 import jakarta.persistence.*;

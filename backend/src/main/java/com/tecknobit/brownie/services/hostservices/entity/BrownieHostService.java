@@ -1,8 +1,10 @@
-package com.tecknobit.brownie.services.hosts.entities;
+package com.tecknobit.brownie.services.hostservices.entity;
 
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.brownie.services.hosts.entities.ServiceEvent;
 import com.tecknobit.browniecore.enums.ServiceStatus;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import jakarta.persistence.*;

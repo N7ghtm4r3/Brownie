@@ -1,6 +1,6 @@
-package com.tecknobit.brownie.services.hosts.repositories.services;
+package com.tecknobit.brownie.services.hostservices.repositories;
 
-import com.tecknobit.brownie.services.hosts.entities.BrownieHostService.ServiceConfiguration;
+import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService.ServiceConfiguration;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;

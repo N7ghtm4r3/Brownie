@@ -3,6 +3,7 @@ package com.tecknobit.brownie.services.hosts.entities;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 import com.tecknobit.brownie.services.session.entity.BrownieSession;
 import com.tecknobit.browniecore.enums.HostStatus;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
