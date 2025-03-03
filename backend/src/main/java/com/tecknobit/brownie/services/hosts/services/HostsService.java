@@ -2,7 +2,7 @@ package com.tecknobit.brownie.services.hosts.services;
 
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.apimanager.formatters.JsonHelper;
-import com.tecknobit.brownie.services.hosts.commands.ShellCommandsExecutor;
+import com.tecknobit.brownie.helpers.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.commands.WakeOnLanExecutor;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostOverview;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostStat;

@@ -6,8 +6,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.List;
 
-import static com.tecknobit.browniecore.ConstantsKt.HOSTS_KEY;
-import static com.tecknobit.browniecore.ConstantsKt.HOST_ADDRESS_KEY;
+import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.NAME_KEY;
 
 @Component
@@ -17,6 +16,7 @@ public class BrownieIndexesCreator extends IndexesCreator {
     @PostConstruct
     public void createIndexes() {
         createFullTextIndex(HOSTS_KEY, "name_address_idx", List.of(NAME_KEY, HOST_ADDRESS_KEY));
+        createFullTextIndex(SERVICES_KEY, "name_pid_idx", List.of(NAME_KEY, PID_KEY));
     }
 
 }

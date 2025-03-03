@@ -2,10 +2,14 @@ package com.tecknobit.brownie.services.hostservices.controller;
 
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.brownie.services.hostservices.services.HostServicesService;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.browniecore.helpers.BrownieInputsValidator.INSTANCE;
@@ -13,11 +17,15 @@ import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.NAME_KEY;
 import static com.tecknobit.equinoxcore.helpers.InputsValidator.WRONG_NAME_MESSAGE;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
+import static com.tecknobit.equinoxcore.pagination.PaginatedResponse.*;
 
 @RestController
 @RequestMapping(value = BASE_EQUINOX_ENDPOINT + SESSIONS_KEY + "/{" + IDENTIFIER_KEY + "}/" + HOSTS_KEY +
         "/{" + HOST_IDENTIFIER_KEY + "}/" + SERVICES_KEY)
 public class HostServicesController extends DefaultBrownieController {
+
+    @Autowired
+    private HostServicesService service;
 
     @PutMapping
     public String addService(
@@ -70,6 +78,30 @@ public class HostServicesController extends DefaultBrownieController {
         } catch (Exception e) {
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         }
+    }
+
+    @GetMapping(
+            path = "/{" + SERVICE_IDENTIFIER_KEY + "}"
+    )
+    public <T> T getServices(
+            @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId,
+            @RequestParam(name = KEYWORDS_KEY, defaultValue = "", required = false) Set<String> keywords,
+            @RequestParam(
+                    name = STATUSES_KEY,
+                    defaultValue = "RUNNING, STOPPED, REBOOTING",
+                    required = false
+            ) List<String> statuses,
+            @RequestParam(name = PAGE_KEY, defaultValue = DEFAULT_PAGE_HEADER_VALUE, required = false) int page,
+            @RequestParam(name = PAGE_SIZE_KEY, defaultValue = DEFAULT_PAGE_SIZE_HEADER_VALUE, required = false) int pageSize
+    ) {
+        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
+        if (brownieHost == null || !brownieHost.hasService(serviceId))
+            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        if (!brownieHost.isOnline())
+            return (T) failedResponse(WRONG_PROCEDURE_MESSAGE);
+        return (T) successResponse(service.getServices(hostId, keywords, statuses, page, pageSize));
     }
 
 }

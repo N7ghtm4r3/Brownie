@@ -33,7 +33,7 @@ public class BrownieHostService extends EquinoxItem {
     private final String servicePath;
 
     @Column(
-            columnDefinition = "BIGINT DEFAULT -1",
+            columnDefinition = "VARCHAR(30) DEFAULT '-1'",
             insertable = false
     )
     private final long pid;

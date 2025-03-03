@@ -1,4 +1,4 @@
-package com.tecknobit.brownie.services.hosts.commands;
+package com.tecknobit.brownie.helpers;
 
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
