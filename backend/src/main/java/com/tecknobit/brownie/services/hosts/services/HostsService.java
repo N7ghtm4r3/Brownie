@@ -114,7 +114,6 @@ public class HostsService {
         Executors.newCachedThreadPool().execute(() -> {
             try (Socket socket = new Socket()) {
                 int timeout = Math.toIntExact(MINUTES.toMillis(2));
-                socket.setSoTimeout(timeout);
                 socket.connect(new InetSocketAddress(host.getHostAddress(), 22), timeout);
                 String hostId = host.getId();
                 hostsRepository.handleHostStatus(hostId, ONLINE.name());
@@ -193,6 +192,10 @@ public class HostsService {
         if (servicePath.isEmpty())
             throw new JSchException("Could not locate the " + serviceName);
         return servicePath;
+    }
+
+    public void unregisterHost(String hostId) {
+        hostsRepository.unregisterHost(hostId);
     }
 
 }

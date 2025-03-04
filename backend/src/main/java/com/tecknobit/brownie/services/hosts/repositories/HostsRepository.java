@@ -143,4 +143,14 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
             @Param(STATUS_KEY) String status
     );
 
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(
+            value = "DELETE FROM " + HOSTS_KEY + _WHERE_ + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    void unregisterHost(
+            @Param(IDENTIFIER_KEY) String hostId
+    );
+
 }

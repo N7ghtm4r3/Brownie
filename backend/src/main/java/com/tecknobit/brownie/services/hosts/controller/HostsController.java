@@ -3,6 +3,7 @@ package com.tecknobit.brownie.services.hosts.controller;
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
+import com.tecknobit.equinoxcore.annotations.Assembler;
 import com.tecknobit.equinoxcore.network.ResponseStatus;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
@@ -210,10 +211,25 @@ public class HostsController extends DefaultBrownieController {
      * @return the payload for a response as {@link String}
      */
     @Deprecated(since = "TO REMOVE")
+    @Assembler
     private String plainResponse(ResponseStatus status, String message) {
         return new JSONObject()
                 .put(RESPONSE_STATUS_KEY, status)
                 .put(RESPONSE_DATA_KEY, message).toString();
+    }
+
+    @DeleteMapping(
+            path = "/{" + HOST_IDENTIFIER_KEY + "}"
+    )
+    public String unregisterHost(
+            @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId
+    ) {
+        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
+        if (brownieHost == null)
+            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        hostsService.unregisterHost(hostId);
+        return successResponse();
     }
 
 }
