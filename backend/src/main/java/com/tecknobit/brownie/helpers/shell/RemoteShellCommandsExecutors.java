@@ -20,7 +20,6 @@ import java.util.Random;
 import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static com.tecknobit.browniecore.enums.HostStatus.ONLINE;
 import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
@@ -85,7 +84,7 @@ public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
     public void rebootHost(HostsService service, BrownieHost host) throws Exception {
         AtomicInteger attempts = new AtomicInteger(0);
         execBashCommand(SUDO_REBOOT, extra -> {
-            setRebootingStatus(service, host);
+            service.setRebootingStatus(host);
             waitHostRestarted(service, host, attempts);
         });
     }
@@ -100,10 +99,7 @@ public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
                     Thread.sleep(new Random().nextInt(5) * 1000);
                 } catch (InterruptedException ignored) {
                 } finally {
-                    String hostId = host.getId();
-                    service.getHostsRepository().handleHostStatus(hostId, ONLINE.name());
-                    service.getEventsService().registerHostRestartedEvent(hostId);
-                    handleServicesAfterReboot(service, host);
+                    service.restartHost(host);
                 }
             } catch (ConnectException e) {
                 attempts.incrementAndGet();
@@ -118,7 +114,7 @@ public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
 
     @Override
     public void stopHost(HostsService service, BrownieHost host) throws Exception {
-        execBashCommand(SUDO_SHUTDOWN_NOW, extra -> setOfflineStatus(service, host));
+        execBashCommand(SUDO_SHUTDOWN_NOW, extra -> service.setOfflineStatus(host));
     }
 
     @Override

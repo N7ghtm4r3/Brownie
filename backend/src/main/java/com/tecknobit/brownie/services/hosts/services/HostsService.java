@@ -13,6 +13,7 @@ import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
 import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.services.HostServicesService;
+import com.tecknobit.browniecore.enums.HostStatus;
 import com.tecknobit.equinoxbackend.configuration.IndexesCreator;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
@@ -26,7 +27,7 @@ import java.util.List;
 import java.util.Set;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
-import static com.tecknobit.browniecore.enums.HostStatus.ONLINE;
+import static com.tecknobit.browniecore.enums.HostStatus.*;
 
 @Service
 public class HostsService {
@@ -103,6 +104,46 @@ public class HostsService {
         commandsExecutor.stopHost(this, host);
     }
 
+    @Wrapper
+    public void setRebootingStatus(BrownieHost host) {
+        handleHostStatus(host.getId(), REBOOTING);
+        for (BrownieHostService service : host.getServices())
+            servicesService.setServiceInRebooting(service.getId());
+    }
+
+    public void restartHost(BrownieHost host) throws Exception {
+        String hostId = host.getId();
+        handleHostStatus(hostId, ONLINE);
+        eventsService.registerHostRestartedEvent(hostId);
+        handleServicesAfterReboot(host);
+    }
+
+    private void handleServicesAfterReboot(BrownieHost host) throws Exception {
+        for (BrownieHostService service : host.getServices()) {
+            if (service.getConfiguration().autoRunAfterHostReboot())
+                servicesService.startService(host, service);
+            else
+                servicesService.setServiceAsStopped(service.getId());
+        }
+    }
+
+    @Wrapper
+    public void setOfflineStatus(BrownieHost host) {
+        handleHostStatus(host.getId(), OFFLINE);
+        for (BrownieHostService service : host.getServices())
+            servicesService.setServiceAsStopped(service.getId());
+    }
+
+    @Wrapper
+    public void setOnlineStatus(BrownieHost host) {
+        handleHostStatus(host.getId(), ONLINE);
+    }
+
+    private void handleHostStatus(String hostId, HostStatus status) {
+        hostsRepository.handleHostStatus(hostId, status.name());
+        eventsService.registerHostStatusChangedEvent(hostId, status);
+    }
+
     public BrownieHostOverview getHostOverview(BrownieHost host) throws Exception {
         try {
             ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
@@ -148,16 +189,8 @@ public class HostsService {
         hostsRepository.unregisterHost(hostId);
     }
 
-    public HostsRepository getHostsRepository() {
-        return hostsRepository;
-    }
-
     public HostEventsService getEventsService() {
         return eventsService;
-    }
-
-    public HostServicesService getServicesService() {
-        return servicesService;
     }
 
 }

@@ -33,12 +33,12 @@ public class LocalShellCommandsExecutor extends ShellCommandsExecutor {
     public void rebootHost(HostsService service, BrownieHost host) throws Exception {
         LocalEventsHandler localEventsHandler = LocalEventsHandler.getInstance();
         try {
-            setRebootingStatus(service, host);
-            localEventsHandler.registerHostRebootedEvent();
+            service.setRebootingStatus(host);
+            localEventsHandler.registerHostRebootedEvent(host.getSession().getId(), host.getId());
             execBashCommand(SUDO_REBOOT);
         } catch (Exception e) {
             localEventsHandler.unregisterHostRebootedEvent();
-            setOnlineStatus(service, host);
+            service.setOnlineStatus(host);
             throw e;
         }
     }
@@ -47,12 +47,12 @@ public class LocalShellCommandsExecutor extends ShellCommandsExecutor {
     public void stopHost(HostsService service, BrownieHost host) throws Exception {
         LocalEventsHandler localEventsHandler = LocalEventsHandler.getInstance();
         try {
-            setOfflineStatus(service, host);
+            service.setOfflineStatus(host);
             localEventsHandler.registerHostStoppedEvent();
             execBashCommand(SUDO_SHUTDOWN_NOW);
         } catch (Exception e) {
             localEventsHandler.unregisterHostStoppedEvent();
-            setOnlineStatus(service, host);
+            service.setOnlineStatus(host);
             throw e;
         }
     }
