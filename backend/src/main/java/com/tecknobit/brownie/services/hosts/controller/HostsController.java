@@ -127,13 +127,13 @@ public class HostsController extends DefaultBrownieController {
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId
     ) {
-        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
-        if (brownieHost == null)
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        if (!brownieHost.isRemoteHost() || !brownieHost.isOffline())
+        if (!host.isRemoteHost() || !host.isOffline())
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         try {
-            hostsService.startHost(brownieHost);
+            hostsService.startHost(host);
             return successResponse();
         } catch (IOException e) {
             e.printStackTrace();
@@ -149,13 +149,13 @@ public class HostsController extends DefaultBrownieController {
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId
     ) {
-        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
-        if (brownieHost == null)
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        if (!brownieHost.isOnline())
+        if (!host.isOnline())
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         try {
-            hostsService.rebootHost(brownieHost);
+            hostsService.rebootHost(host);
             return successResponse();
         } catch (JSchException e) {
             return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
@@ -171,13 +171,13 @@ public class HostsController extends DefaultBrownieController {
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId
     ) {
-        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
-        if (brownieHost == null)
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        if (!brownieHost.isOnline())
+        if (!host.isOnline())
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         try {
-            hostsService.stopHost(brownieHost);
+            hostsService.stopHost(host);
             return successResponse();
         } catch (JSchException e) {
             return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
@@ -193,11 +193,11 @@ public class HostsController extends DefaultBrownieController {
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId
     ) {
-        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
-        if (brownieHost == null)
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        if (host == null)
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         try {
-            return (T) successResponse(hostsService.getHostOverview(brownieHost));
+            return (T) successResponse(hostsService.getHostOverview(host));
         } catch (Exception e) {
             return (T) plainResponse(FAILED, e.getMessage());
         }
@@ -225,8 +225,8 @@ public class HostsController extends DefaultBrownieController {
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId
     ) {
-        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
-        if (brownieHost == null)
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         hostsService.unregisterHost(hostId);
         return successResponse();

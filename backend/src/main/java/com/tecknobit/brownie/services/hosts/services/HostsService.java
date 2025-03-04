@@ -2,6 +2,7 @@ package com.tecknobit.brownie.services.hosts.services;
 
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.apimanager.formatters.JsonHelper;
+import com.tecknobit.brownie.helpers.RemoteShellCommandsExecutors;
 import com.tecknobit.brownie.helpers.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.commands.WakeOnLanExecutor;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostOverview;
@@ -64,7 +65,8 @@ public class HostsService {
         String macAddress = null;
         String broadcastIp = null;
         if (sshUser != null) {
-            ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(sshUser, hostAddress, sshPassword);
+            RemoteShellCommandsExecutors commandsExecutor = new RemoteShellCommandsExecutors(sshUser, hostAddress,
+                    sshPassword);
             Pair<String, String> details = commandsExecutor.getNetworkInterfaceDetails();
             macAddress = details.getFirst();
             broadcastIp = details.getSecond();
@@ -98,21 +100,17 @@ public class HostsService {
     }
 
     public void stopHost(BrownieHost host) throws Exception {
-        if (host.isRemoteHost()) {
-            ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
-            commandsExecutor.stopHost(extra -> setOfflineStatus(host));
-        }
+        ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
+        commandsExecutor.stopHost(extra -> setOfflineStatus(host));
     }
 
     public void rebootHost(BrownieHost host) throws Exception {
         AtomicInteger attempts = new AtomicInteger(0);
-        if (host.isRemoteHost()) {
-            ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
-            commandsExecutor.rebootHost(extra -> {
-                setRebootingStatus(host);
-                waitHostRestarted(host, attempts);
-            });
-        }
+        ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
+        commandsExecutor.rebootHost(extra -> {
+            setRebootingStatus(host);
+            waitHostRestarted(host, attempts);
+        });
     }
 
     private void waitHostRestarted(BrownieHost host, AtomicInteger attempts) {
@@ -174,17 +172,17 @@ public class HostsService {
         eventsService.registerHostStatusChangedEvent(hostId, status);
     }
 
-    public BrownieHostOverview getHostOverview(BrownieHost brownieHost) throws Exception {
+    public BrownieHostOverview getHostOverview(BrownieHost host) throws Exception {
         try {
-            ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(brownieHost);
+            ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
             String[] currentHostStats = commandsExecutor.getCurrentHostStats();
             CPUUsage cpuUsage = new CPUUsage(currentHostStats[0], currentHostStats[1]);
             BrownieHostStat memoryUsage = new BrownieHostStat(currentHostStats[2]);
             StorageUsage storageUsage = new StorageUsage(currentHostStats[3], currentHostStats[4]);
-            return new BrownieHostOverview(brownieHost, cpuUsage, memoryUsage, storageUsage);
+            return new BrownieHostOverview(host, cpuUsage, memoryUsage, storageUsage);
         } catch (JSchException e) {
             if (e.getLocalizedMessage().equals("timeout: socket is not established"))
-                return new BrownieHostOverview(brownieHost);
+                return new BrownieHostOverview(host);
             throw e;
         }
     }
@@ -208,7 +206,7 @@ public class HostsService {
 
     private String findServicePath(BrownieHost host, String serviceName) throws Exception {
         String servicePath;
-        ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
+        ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
         servicePath = commandsExecutor.findServicePath(serviceName);
         if (servicePath.isEmpty())
             throw new JSchException("Could not locate the " + serviceName);

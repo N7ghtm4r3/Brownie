@@ -35,17 +35,17 @@ public class HostServicesController extends DefaultBrownieController {
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
             @RequestBody Map<String, Object> payload
     ) {
-        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
-        if (brownieHost == null)
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        if (!brownieHost.isOnline())
+        if (!host.isOnline())
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         loadJsonHelper(payload);
         String serviceName = jsonHelper.getString(NAME_KEY);
         if (!INSTANCE.isItemNameValid(serviceName))
             return failedResponse(WRONG_NAME_MESSAGE);
         try {
-            hostsService.addService(brownieHost, serviceName, jsonHelper);
+            hostsService.addService(host, serviceName, jsonHelper);
             return successResponse();
         } catch (JSchException e) {
             return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
@@ -63,17 +63,17 @@ public class HostServicesController extends DefaultBrownieController {
             @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId,
             @RequestBody Map<String, Object> payload
     ) {
-        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
-        if (brownieHost == null || !brownieHost.hasService(serviceId))
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        if (host == null || !host.hasService(serviceId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        if (!brownieHost.isOnline())
+        if (!host.isOnline())
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         loadJsonHelper(payload);
         String serviceName = jsonHelper.getString(NAME_KEY);
         if (!INSTANCE.isItemNameValid(serviceName))
             return failedResponse(WRONG_NAME_MESSAGE);
         try {
-            hostsService.editService(brownieHost, serviceId, serviceName, jsonHelper);
+            hostsService.editService(host, serviceId, serviceName, jsonHelper);
             return successResponse();
         } catch (JSchException e) {
             return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
@@ -82,13 +82,10 @@ public class HostServicesController extends DefaultBrownieController {
         }
     }
 
-    @GetMapping(
-            path = "/{" + SERVICE_IDENTIFIER_KEY + "}"
-    )
+    @GetMapping
     public <T> T getServices(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
-            @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId,
             @RequestParam(name = KEYWORDS_KEY, defaultValue = "", required = false) Set<String> keywords,
             @RequestParam(
                     name = STATUSES_KEY,
@@ -98,10 +95,10 @@ public class HostServicesController extends DefaultBrownieController {
             @RequestParam(name = PAGE_KEY, defaultValue = DEFAULT_PAGE_HEADER_VALUE, required = false) int page,
             @RequestParam(name = PAGE_SIZE_KEY, defaultValue = DEFAULT_PAGE_SIZE_HEADER_VALUE, required = false) int pageSize
     ) {
-        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
-        if (brownieHost == null || !brownieHost.hasService(serviceId))
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        if (host == null)
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        if (!brownieHost.isOnline())
+        if (!host.isOnline())
             return (T) failedResponse(WRONG_PROCEDURE_MESSAGE);
         return (T) successResponse(service.getServices(hostId, keywords, statuses, page, pageSize));
     }
@@ -114,16 +111,16 @@ public class HostServicesController extends DefaultBrownieController {
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
             @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId
     ) {
-        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
-        if (brownieHost == null)
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        if (!brownieHost.isOnline())
+        if (!host.isOnline())
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
-        BrownieHostService brownieHostService = brownieHost.getService(serviceId);
+        BrownieHostService brownieHostService = host.getService(serviceId);
         if (brownieHostService == null || !brownieHostService.isStopped())
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         try {
-            service.startService(brownieHost, brownieHostService);
+            service.startService(host, brownieHostService);
         } catch (JSchException e) {
             return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
         } catch (Exception e) {
@@ -140,16 +137,16 @@ public class HostServicesController extends DefaultBrownieController {
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
             @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId
     ) {
-        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
-        if (brownieHost == null)
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        if (!brownieHost.isOnline())
+        if (!host.isOnline())
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
-        BrownieHostService brownieHostService = brownieHost.getService(serviceId);
+        BrownieHostService brownieHostService = host.getService(serviceId);
         if (brownieHostService == null || !brownieHostService.isRunning())
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         try {
-            service.rebootService(brownieHost, brownieHostService);
+            service.rebootService(host, brownieHostService);
         } catch (JSchException e) {
             return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
         } catch (Exception e) {
@@ -166,16 +163,16 @@ public class HostServicesController extends DefaultBrownieController {
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
             @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId
     ) {
-        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
-        if (brownieHost == null)
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        if (!brownieHost.isOnline())
+        if (!host.isOnline())
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
-        BrownieHostService brownieHostService = brownieHost.getService(serviceId);
+        BrownieHostService brownieHostService = host.getService(serviceId);
         if (brownieHostService == null || !brownieHostService.isRunning())
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         try {
-            service.stopService(brownieHost, brownieHostService);
+            service.stopService(host, brownieHostService);
         } catch (JSchException e) {
             return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
         } catch (Exception e) {
@@ -196,16 +193,16 @@ public class HostServicesController extends DefaultBrownieController {
                     required = false,
                     defaultValue = "false"
             ) boolean removeFromTheHost) {
-        BrownieHost brownieHost = getBrownieHostIfAllowed(sessionId, hostId);
-        if (brownieHost == null)
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        if (!brownieHost.isOnline())
+        if (!host.isOnline())
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
-        BrownieHostService brownieHostService = brownieHost.getService(serviceId);
+        BrownieHostService brownieHostService = host.getService(serviceId);
         if (brownieHostService == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         try {
-            service.removeService(brownieHost, brownieHostService, removeFromTheHost);
+            service.removeService(host, brownieHostService, removeFromTheHost);
         } catch (JSchException e) {
             return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
         } catch (Exception e) {

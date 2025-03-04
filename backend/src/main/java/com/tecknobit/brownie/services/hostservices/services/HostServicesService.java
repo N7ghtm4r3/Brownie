@@ -58,8 +58,8 @@ public class HostServicesService {
         return new PaginatedResponse<>(services, page, pageSize, totalServices);
     }
 
-    public void startService(BrownieHost brownieHost, BrownieHostService service) throws Exception {
-        ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(brownieHost);
+    public void startService(BrownieHost host, BrownieHostService service) throws Exception {
+        ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
         long pid = commandsExecutor.startService(service);
         if (pid == -1)
             throw new JSchException();
@@ -68,10 +68,10 @@ public class HostServicesService {
         serviceEvents.registerServiceStarted(serviceId, pid);
     }
 
-    public void rebootService(BrownieHost brownieHost, BrownieHostService service) throws Exception {
+    public void rebootService(BrownieHost host, BrownieHostService service) throws Exception {
         String serviceId = service.getId();
         setServiceInRebooting(serviceId);
-        ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(brownieHost);
+        ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
         commandsExecutor.rebootService(service, extra -> {
             long pid = (long) extra[0];
             servicesRepository.updateServiceStatus(serviceId, RUNNING.name(), pid);
@@ -84,8 +84,8 @@ public class HostServicesService {
         serviceEvents.registerServiceRebooted(serviceId);
     }
 
-    public void stopService(BrownieHost brownieHost, BrownieHostService service) throws Exception {
-        ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(brownieHost);
+    public void stopService(BrownieHost host, BrownieHostService service) throws Exception {
+        ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
         commandsExecutor.stopService(service);
         String serviceId = service.getId();
         setServiceAsStopped(serviceId);
@@ -99,7 +99,7 @@ public class HostServicesService {
     public void removeService(BrownieHost host, BrownieHostService service, boolean removeFromTheHost) throws Exception {
         String serviceName = service.getName();
         if (removeFromTheHost) {
-            ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
+            ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
             commandsExecutor.removeService(serviceName, true);
         }
         servicesRepository.removeService(service.getId());
