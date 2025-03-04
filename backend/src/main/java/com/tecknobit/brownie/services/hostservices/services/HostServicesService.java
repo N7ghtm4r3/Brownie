@@ -6,6 +6,7 @@ import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.services.HostEventsService;
 import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.repositories.HostServicesRepository;
+import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -58,14 +59,22 @@ public class HostServicesService {
         return new PaginatedResponse<>(services, page, pageSize, totalServices);
     }
 
+    @Wrapper
     public void startService(BrownieHost host, BrownieHostService service) throws Exception {
+        startService(host, service, false);
+    }
+
+    public void startService(BrownieHost host, BrownieHostService service, boolean hostRebooted) throws Exception {
         ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
         long pid = commandsExecutor.startService(service);
         if (pid == -1)
             throw new JSchException();
         String serviceId = service.getId();
         servicesRepository.updateServiceStatus(serviceId, RUNNING.name(), pid);
-        serviceEvents.registerServiceStarted(serviceId, pid);
+        if (hostRebooted)
+            serviceEvents.registerServiceRestarted(serviceId, pid);
+        else
+            serviceEvents.registerServiceStarted(serviceId, pid);
     }
 
     public void rebootService(BrownieHost host, BrownieHostService service) throws Exception {

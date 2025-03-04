@@ -34,10 +34,10 @@ public class LocalShellCommandsExecutor extends ShellCommandsExecutor {
         LocalEventsHandler localEventsHandler = LocalEventsHandler.getInstance();
         try {
             service.setRebootingStatus(host);
-            localEventsHandler.registerHostRebootedEvent(host.getSession().getId(), host.getId());
+            localEventsHandler.registerHostSuspendedEvent(host);
             execBashCommand(SUDO_REBOOT);
         } catch (Exception e) {
-            localEventsHandler.unregisterHostRebootedEvent();
+            localEventsHandler.unregisterHostSuspendedEvent();
             service.setOnlineStatus(host);
             throw e;
         }
@@ -48,10 +48,10 @@ public class LocalShellCommandsExecutor extends ShellCommandsExecutor {
         LocalEventsHandler localEventsHandler = LocalEventsHandler.getInstance();
         try {
             service.setOfflineStatus(host);
-            localEventsHandler.registerHostStoppedEvent();
+            localEventsHandler.registerHostSuspendedEvent(host);
             execBashCommand(SUDO_SHUTDOWN_NOW);
         } catch (Exception e) {
-            localEventsHandler.unregisterHostStoppedEvent();
+            localEventsHandler.unregisterHostSuspendedEvent();
             service.setOnlineStatus(host);
             throw e;
         }
@@ -65,7 +65,7 @@ public class LocalShellCommandsExecutor extends ShellCommandsExecutor {
         String commandResult = formatCommandResult(process.getInputStream());
         String error = new String(process.getErrorStream().readAllBytes());
         int exitStatus = process.waitFor();
-        if (exitStatus != 0)
+        if (exitStatus != 0 && exitStatus != 137 && exitStatus != 143)
             throw new RuntimeException(appendExitStatus(error, exitStatus));
         return commandResult;
     }

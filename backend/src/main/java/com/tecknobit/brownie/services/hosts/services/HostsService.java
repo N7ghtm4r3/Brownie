@@ -88,12 +88,6 @@ public class HostsService {
         // TODO: 01/03/2025 RESTART ALL THE SERVICES WHERE autoRun = true
     }
 
-    @Wrapper
-    private void setOnlineStatus(String hostId) {
-        hostsRepository.handleHostStatus(hostId, ONLINE.name());
-        eventsService.registerHostStatusChangedEvent(hostId, ONLINE);
-    }
-
     public void rebootHost(BrownieHost host) throws Exception {
         ShellCommandsExecutor shellCommandsExecutor = ShellCommandsExecutor.getInstance(host);
         shellCommandsExecutor.rebootHost(this, host);
@@ -104,16 +98,9 @@ public class HostsService {
         commandsExecutor.stopHost(this, host);
     }
 
-    @Wrapper
-    public void setRebootingStatus(BrownieHost host) {
-        handleHostStatus(host.getId(), REBOOTING);
-        for (BrownieHostService service : host.getServices())
-            servicesService.setServiceInRebooting(service.getId());
-    }
-
     public void restartHost(BrownieHost host) throws Exception {
         String hostId = host.getId();
-        handleHostStatus(hostId, ONLINE);
+        hostsRepository.handleHostStatus(hostId, ONLINE.name());
         eventsService.registerHostRestartedEvent(hostId);
         handleServicesAfterReboot(host);
     }
@@ -121,10 +108,22 @@ public class HostsService {
     private void handleServicesAfterReboot(BrownieHost host) throws Exception {
         for (BrownieHostService service : host.getServices()) {
             if (service.getConfiguration().autoRunAfterHostReboot())
-                servicesService.startService(host, service);
+                servicesService.startService(host, service, true);
             else
                 servicesService.setServiceAsStopped(service.getId());
         }
+    }
+
+    @Wrapper
+    public void setOnlineStatus(BrownieHost host) {
+        handleHostStatus(host.getId(), ONLINE);
+    }
+
+    @Wrapper
+    public void setRebootingStatus(BrownieHost host) {
+        handleHostStatus(host.getId(), REBOOTING);
+        for (BrownieHostService service : host.getServices())
+            servicesService.setServiceInRebooting(service.getId());
     }
 
     @Wrapper
@@ -132,11 +131,6 @@ public class HostsService {
         handleHostStatus(host.getId(), OFFLINE);
         for (BrownieHostService service : host.getServices())
             servicesService.setServiceAsStopped(service.getId());
-    }
-
-    @Wrapper
-    public void setOnlineStatus(BrownieHost host) {
-        handleHostStatus(host.getId(), ONLINE);
     }
 
     private void handleHostStatus(String hostId, HostStatus status) {
@@ -187,10 +181,6 @@ public class HostsService {
 
     public void unregisterHost(String hostId) {
         hostsRepository.unregisterHost(hostId);
-    }
-
-    public HostEventsService getEventsService() {
-        return eventsService;
     }
 
 }
