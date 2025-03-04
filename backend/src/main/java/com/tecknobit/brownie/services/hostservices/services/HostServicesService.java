@@ -58,10 +58,6 @@ public class HostServicesService {
         return new PaginatedResponse<>(services, page, pageSize, totalServices);
     }
 
-    public List<BrownieHostService> getAutoRunnableServices(BrownieHost host) {
-        return servicesRepository.getAutoRunnableServices(host.getId());
-    }
-
     public void startService(BrownieHost brownieHost, BrownieHostService service) throws Exception {
         ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(brownieHost);
         long pid = commandsExecutor.startService(service);
@@ -74,8 +70,7 @@ public class HostServicesService {
 
     public void rebootService(BrownieHost brownieHost, BrownieHostService service) throws Exception {
         String serviceId = service.getId();
-        servicesRepository.updateServiceStatus(serviceId, REBOOTING.name(), -1);
-        serviceEvents.registerServiceRebooted(serviceId);
+        setServiceInRebooting(serviceId);
         ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(brownieHost);
         commandsExecutor.rebootService(service, extra -> {
             long pid = (long) extra[0];
@@ -84,10 +79,19 @@ public class HostServicesService {
         });
     }
 
+    public void setServiceInRebooting(String serviceId) {
+        servicesRepository.updateServiceStatus(serviceId, REBOOTING.name(), -1);
+        serviceEvents.registerServiceRebooted(serviceId);
+    }
+
     public void stopService(BrownieHost brownieHost, BrownieHostService service) throws Exception {
         ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(brownieHost);
         commandsExecutor.stopService(service);
         String serviceId = service.getId();
+        setServiceAsStopped(serviceId);
+    }
+
+    public void setServiceAsStopped(String serviceId) {
         servicesRepository.updateServiceStatus(serviceId, STOPPED.name(), -1);
         serviceEvents.registerServiceStopped(serviceId);
     }

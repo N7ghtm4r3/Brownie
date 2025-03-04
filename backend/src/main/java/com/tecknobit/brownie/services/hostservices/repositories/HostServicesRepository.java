@@ -110,16 +110,6 @@ public interface HostServicesRepository extends JpaRepository<BrownieHostService
             @Param(PID_KEY) long pid
     );
 
-    @Query(
-            value = "SELECT s.* FROM " + SERVICES_KEY + " AS s INNER JOIN " +
-                    SERVICES_CONFIGURATIONS_KEY + " as c ON s." + IDENTIFIER_KEY + "=c." + SERVICE_IDENTIFIER_KEY +
-                    _WHERE_ + "s." + HOST_IDENTIFIER_KEY + "=:" + HOST_IDENTIFIER_KEY,
-            nativeQuery = true
-    )
-    List<BrownieHostService> getAutoRunnableServices(
-            @Param(HOST_IDENTIFIER_KEY) String hostId
-    );
-
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(

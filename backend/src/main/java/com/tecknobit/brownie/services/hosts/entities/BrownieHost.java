@@ -55,6 +55,7 @@ public class BrownieHost extends EquinoxItem {
 
     @OneToMany(
             mappedBy = HOST_KEY,
+            fetch = FetchType.EAGER,
             cascade = CascadeType.ALL
     )
     @OrderBy(INSERTION_DATE_KEY + " DESC")

@@ -22,11 +22,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
+import java.net.ConnectException;
 import java.net.InetSocketAddress;
 import java.net.Socket;
 import java.util.List;
+import java.util.Random;
 import java.util.Set;
 import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.browniecore.enums.HostStatus.*;
@@ -34,6 +37,10 @@ import static java.util.concurrent.TimeUnit.MINUTES;
 
 @Service
 public class HostsService {
+
+    private static final int MAX_RETRY_ATTEMPTS = 10;
+
+    private static final int MAX_RETRY_TIMEOUT = Math.toIntExact(MINUTES.toMillis(2));
 
     @Autowired
     private HostsRepository hostsRepository;
@@ -91,34 +98,41 @@ public class HostsService {
     }
 
     public void stopHost(BrownieHost host) throws Exception {
-        String hostId = host.getId();
         if (host.isRemoteHost()) {
             ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
-            commandsExecutor.stopHost(extra -> HostsService.this.setOfflineStatus(hostId));
+            commandsExecutor.stopHost(extra -> setOfflineStatus(host));
         }
     }
 
     public void rebootHost(BrownieHost host) throws Exception {
-        String hostId = host.getId();
+        AtomicInteger attempts = new AtomicInteger(0);
         if (host.isRemoteHost()) {
             ShellCommandsExecutor commandsExecutor = new ShellCommandsExecutor(host);
             commandsExecutor.rebootHost(extra -> {
-                HostsService.this.setRebootingStatus(hostId);
-                HostsService.this.waitHostRestarted(host);
+                setRebootingStatus(host);
+                waitHostRestarted(host, attempts);
             });
         }
     }
 
-    private void waitHostRestarted(BrownieHost host) {
-        /* TODO: 03/03/2025 TO FIX AND WHEN IS THE SAME MACHINE SAVE A PROPERTY THAT WHEN RELAUNCHED RESTART SERVICES */
+    private void waitHostRestarted(BrownieHost host, AtomicInteger attempts) {
+        if (attempts.intValue() >= MAX_RETRY_ATTEMPTS)
+            throw new IllegalStateException("Impossible reach the " + host.getHostAddress() + " address, you need to restart manually as needed");
         Executors.newCachedThreadPool().execute(() -> {
             try (Socket socket = new Socket()) {
-                int timeout = Math.toIntExact(MINUTES.toMillis(2));
-                socket.connect(new InetSocketAddress(host.getHostAddress(), 22), timeout);
-                String hostId = host.getId();
-                hostsRepository.handleHostStatus(hostId, ONLINE.name());
-                eventsService.registerHostRestartedEvent(hostId);
-                restartAutoRunnableServices(host);
+                socket.connect(new InetSocketAddress(host.getHostAddress(), 22), MAX_RETRY_TIMEOUT);
+                try {
+                    Thread.sleep(new Random().nextInt(5) * 1000);
+                } catch (InterruptedException ignored) {
+                } finally {
+                    String hostId = host.getId();
+                    hostsRepository.handleHostStatus(hostId, ONLINE.name());
+                    eventsService.registerHostRestartedEvent(hostId);
+                    handleServicesAfterReboot(host);
+                }
+            } catch (ConnectException e) {
+                attempts.incrementAndGet();
+                waitHostRestarted(host, attempts);
             } catch (IOException e) {
                 throw new IllegalStateException("Impossible reach the " + host.getHostAddress() + " address, you need to restart manually as needed");
             } catch (Exception e) {
@@ -127,10 +141,13 @@ public class HostsService {
         });
     }
 
-    private void restartAutoRunnableServices(BrownieHost host) throws Exception {
-        List<BrownieHostService> autoRunnableServices = servicesService.getAutoRunnableServices(host);
-        for (BrownieHostService service : autoRunnableServices)
-            servicesService.startService(host, service);
+    private void handleServicesAfterReboot(BrownieHost host) throws Exception {
+        for (BrownieHostService service : host.getServices()) {
+            if (service.getConfiguration().autoRunAfterHostReboot())
+                servicesService.startService(host, service);
+            else
+                servicesService.setServiceAsStopped(service.getId());
+        }
     }
 
     @Wrapper
@@ -139,13 +156,17 @@ public class HostsService {
     }
 
     @Wrapper
-    private void setOfflineStatus(String hostId) {
-        handleHostStatus(hostId, OFFLINE);
+    private void setOfflineStatus(BrownieHost host) {
+        handleHostStatus(host.getId(), OFFLINE);
+        for (BrownieHostService service : host.getServices())
+            servicesService.setServiceAsStopped(service.getId());
     }
 
     @Wrapper
-    private void setRebootingStatus(String hostId) {
-        handleHostStatus(hostId, REBOOTING);
+    private void setRebootingStatus(BrownieHost host) {
+        handleHostStatus(host.getId(), REBOOTING);
+        for (BrownieHostService service : host.getServices())
+            servicesService.setServiceInRebooting(service.getId());
     }
 
     private void handleHostStatus(String hostId, HostStatus status) {
