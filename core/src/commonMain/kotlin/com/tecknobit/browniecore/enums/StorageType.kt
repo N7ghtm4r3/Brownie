@@ -6,6 +6,10 @@ enum class StorageType {
 
     SSD,
 
+    SSD_NVMe,
+
+    VIRTUAL_DISK,
+
     SD_CARD,
 
     UKNOWN

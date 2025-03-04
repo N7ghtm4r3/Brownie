@@ -1,5 +1,8 @@
-package com.tecknobit.brownie.helpers;
+package com.tecknobit.brownie.helpers.shell;
 
+import com.tecknobit.brownie.helpers.LocalEventsHandler;
+import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.brownie.services.hosts.services.HostsService;
 import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 
 import java.io.IOException;
@@ -27,6 +30,34 @@ public class LocalShellCommandsExecutor extends ShellCommandsExecutor {
     }
 
     @Override
+    public void rebootHost(HostsService service, BrownieHost host) throws Exception {
+        LocalEventsHandler localEventsHandler = LocalEventsHandler.getInstance();
+        try {
+            setRebootingStatus(service, host);
+            localEventsHandler.registerHostRebootedEvent();
+            execBashCommand(SUDO_REBOOT);
+        } catch (Exception e) {
+            localEventsHandler.unregisterHostRebootedEvent();
+            setOnlineStatus(service, host);
+            throw e;
+        }
+    }
+
+    @Override
+    public void stopHost(HostsService service, BrownieHost host) throws Exception {
+        LocalEventsHandler localEventsHandler = LocalEventsHandler.getInstance();
+        try {
+            setOfflineStatus(service, host);
+            localEventsHandler.registerHostStoppedEvent();
+            execBashCommand(SUDO_SHUTDOWN_NOW);
+        } catch (Exception e) {
+            localEventsHandler.unregisterHostStoppedEvent();
+            setOnlineStatus(service, host);
+            throw e;
+        }
+    }
+
+    @Override
     protected String execBashCommand(String command, OnCommandExecuted onCommandExecuted, boolean closeSession) throws Exception {
         ProcessBuilder processBuilder = new ProcessBuilder();
         processBuilder.command(BASH, BASH_COMMAND_OPTION, command);
@@ -36,7 +67,6 @@ public class LocalShellCommandsExecutor extends ShellCommandsExecutor {
         int exitStatus = process.waitFor();
         if (exitStatus != 0)
             throw new RuntimeException(appendExitStatus(error, exitStatus));
-        System.out.println(commandResult);
         return commandResult;
     }
 

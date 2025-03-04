@@ -13,7 +13,7 @@ public class BrownieHostStat {
 
     private final double usageValue;
 
-    private final long totalValue;
+    private final double totalValue;
 
     private final double percentValue;
 
@@ -26,7 +26,7 @@ public class BrownieHostStat {
     public BrownieHostStat(String rawStats) {
         String[] statsSlices = rawStats.split("/");
         usageValue = Double.parseDouble(statsSlices[0]);
-        totalValue = Long.parseLong(statsSlices[1]);
+        totalValue = Double.parseDouble(statsSlices[1]);
         percentValue = TradingTools.computeProportion(totalValue, this.usageValue, 2);
     }
 
@@ -42,7 +42,7 @@ public class BrownieHostStat {
     }
 
     @JsonGetter(TOTAL_VALUE_KEY)
-    public long getTotalValue() {
+    public double getTotalValue() {
         return totalValue;
     }
 

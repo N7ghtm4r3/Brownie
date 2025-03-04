@@ -1,10 +1,11 @@
-package com.tecknobit.brownie.helpers;
+package com.tecknobit.brownie.helpers.shell;
 
 import com.jcraft.jsch.ChannelExec;
 import com.jcraft.jsch.JSch;
 import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.brownie.services.hosts.services.HostsService;
 import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 import kotlin.Pair;
 
@@ -12,8 +13,21 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.net.ConnectException;
+import java.net.InetSocketAddress;
+import java.net.Socket;
+import java.util.Random;
+import java.util.concurrent.Executors;
+import java.util.concurrent.atomic.AtomicInteger;
+
+import static com.tecknobit.browniecore.enums.HostStatus.ONLINE;
+import static java.util.concurrent.TimeUnit.MINUTES;
 
 public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
+
+    private static final int MAX_RETRY_ATTEMPTS = 10;
+
+    private static final int MAX_RETRY_TIMEOUT = Math.toIntExact(MINUTES.toMillis(2));
 
     private static final String STRICT_HOST_KEY_CHECKING_OPTION = "StrictHostKeyChecking";
 
@@ -65,6 +79,46 @@ public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
         channel.disconnect();
         session.disconnect();
         return pid;
+    }
+
+    @Override
+    public void rebootHost(HostsService service, BrownieHost host) throws Exception {
+        AtomicInteger attempts = new AtomicInteger(0);
+        execBashCommand(SUDO_REBOOT, extra -> {
+            setRebootingStatus(service, host);
+            waitHostRestarted(service, host, attempts);
+        });
+    }
+
+    private void waitHostRestarted(HostsService service, BrownieHost host, AtomicInteger attempts) {
+        if (attempts.intValue() >= MAX_RETRY_ATTEMPTS)
+            throw new IllegalStateException("Impossible reach the " + host.getHostAddress() + " address, you need to restart manually as needed");
+        Executors.newCachedThreadPool().execute(() -> {
+            try (Socket socket = new Socket()) {
+                socket.connect(new InetSocketAddress(host.getHostAddress(), 22), MAX_RETRY_TIMEOUT);
+                try {
+                    Thread.sleep(new Random().nextInt(5) * 1000);
+                } catch (InterruptedException ignored) {
+                } finally {
+                    String hostId = host.getId();
+                    service.getHostsRepository().handleHostStatus(hostId, ONLINE.name());
+                    service.getEventsService().registerHostRestartedEvent(hostId);
+                    handleServicesAfterReboot(service, host);
+                }
+            } catch (ConnectException e) {
+                attempts.incrementAndGet();
+                waitHostRestarted(service, host, attempts);
+            } catch (IOException e) {
+                throw new IllegalStateException("Impossible reach the " + host.getHostAddress() + " address, you need to restart manually as needed");
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        });
+    }
+
+    @Override
+    public void stopHost(HostsService service, BrownieHost host) throws Exception {
+        execBashCommand(SUDO_SHUTDOWN_NOW, extra -> setOfflineStatus(service, host));
     }
 
     @Override

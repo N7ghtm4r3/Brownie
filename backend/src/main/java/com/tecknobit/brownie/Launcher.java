@@ -2,6 +2,7 @@ package com.tecknobit.brownie;
 
 import com.tecknobit.apimanager.apis.ServerProtector;
 import com.tecknobit.apimanager.exceptions.SaveData;
+import com.tecknobit.brownie.helpers.LocalEventsHandler;
 import com.tecknobit.brownie.services.session.controller.BrownieSessionController;
 import com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider;
 import org.springframework.boot.SpringApplication;
@@ -74,6 +75,7 @@ public class Launcher {
         );
         brownieServerProtector.launch(args);
         SpringApplication.run(Launcher.class, args);
+        LocalEventsHandler.getInstance().executeLocalEventsScan();
     }
 
 }

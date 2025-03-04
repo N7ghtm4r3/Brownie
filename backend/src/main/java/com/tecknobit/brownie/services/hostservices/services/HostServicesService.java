@@ -1,7 +1,7 @@
 package com.tecknobit.brownie.services.hostservices.services;
 
 import com.jcraft.jsch.JSchException;
-import com.tecknobit.brownie.helpers.ShellCommandsExecutor;
+import com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.services.HostEventsService;
 import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;

@@ -2,8 +2,8 @@ package com.tecknobit.brownie.services.hosts.services;
 
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.apimanager.formatters.JsonHelper;
-import com.tecknobit.brownie.helpers.RemoteShellCommandsExecutors;
-import com.tecknobit.brownie.helpers.ShellCommandsExecutor;
+import com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors;
+import com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.commands.WakeOnLanExecutor;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostOverview;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostStat;
@@ -13,7 +13,6 @@ import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
 import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.services.HostServicesService;
-import com.tecknobit.browniecore.enums.HostStatus;
 import com.tecknobit.equinoxbackend.configuration.IndexesCreator;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
@@ -23,25 +22,14 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
 import java.io.IOException;
-import java.net.ConnectException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
 import java.util.List;
-import java.util.Random;
 import java.util.Set;
-import java.util.concurrent.Executors;
-import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
-import static com.tecknobit.browniecore.enums.HostStatus.*;
-import static java.util.concurrent.TimeUnit.MINUTES;
+import static com.tecknobit.browniecore.enums.HostStatus.ONLINE;
 
 @Service
 public class HostsService {
-
-    private static final int MAX_RETRY_ATTEMPTS = 10;
-
-    private static final int MAX_RETRY_TIMEOUT = Math.toIntExact(MINUTES.toMillis(2));
 
     @Autowired
     private HostsRepository hostsRepository;
@@ -99,77 +87,20 @@ public class HostsService {
         // TODO: 01/03/2025 RESTART ALL THE SERVICES WHERE autoRun = true
     }
 
-    public void stopHost(BrownieHost host) throws Exception {
-        ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
-        commandsExecutor.stopHost(extra -> setOfflineStatus(host));
+    @Wrapper
+    private void setOnlineStatus(String hostId) {
+        hostsRepository.handleHostStatus(hostId, ONLINE.name());
+        eventsService.registerHostStatusChangedEvent(hostId, ONLINE);
     }
 
     public void rebootHost(BrownieHost host) throws Exception {
-        AtomicInteger attempts = new AtomicInteger(0);
+        ShellCommandsExecutor shellCommandsExecutor = ShellCommandsExecutor.getInstance(host);
+        shellCommandsExecutor.rebootHost(this, host);
+    }
+
+    public void stopHost(BrownieHost host) throws Exception {
         ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
-        commandsExecutor.rebootHost(extra -> {
-            setRebootingStatus(host);
-            waitHostRestarted(host, attempts);
-        });
-    }
-
-    private void waitHostRestarted(BrownieHost host, AtomicInteger attempts) {
-        if (attempts.intValue() >= MAX_RETRY_ATTEMPTS)
-            throw new IllegalStateException("Impossible reach the " + host.getHostAddress() + " address, you need to restart manually as needed");
-        Executors.newCachedThreadPool().execute(() -> {
-            try (Socket socket = new Socket()) {
-                socket.connect(new InetSocketAddress(host.getHostAddress(), 22), MAX_RETRY_TIMEOUT);
-                try {
-                    Thread.sleep(new Random().nextInt(5) * 1000);
-                } catch (InterruptedException ignored) {
-                } finally {
-                    String hostId = host.getId();
-                    hostsRepository.handleHostStatus(hostId, ONLINE.name());
-                    eventsService.registerHostRestartedEvent(hostId);
-                    handleServicesAfterReboot(host);
-                }
-            } catch (ConnectException e) {
-                attempts.incrementAndGet();
-                waitHostRestarted(host, attempts);
-            } catch (IOException e) {
-                throw new IllegalStateException("Impossible reach the " + host.getHostAddress() + " address, you need to restart manually as needed");
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
-        });
-    }
-
-    private void handleServicesAfterReboot(BrownieHost host) throws Exception {
-        for (BrownieHostService service : host.getServices()) {
-            if (service.getConfiguration().autoRunAfterHostReboot())
-                servicesService.startService(host, service);
-            else
-                servicesService.setServiceAsStopped(service.getId());
-        }
-    }
-
-    @Wrapper
-    private void setOnlineStatus(String hostId) {
-        handleHostStatus(hostId, ONLINE);
-    }
-
-    @Wrapper
-    private void setOfflineStatus(BrownieHost host) {
-        handleHostStatus(host.getId(), OFFLINE);
-        for (BrownieHostService service : host.getServices())
-            servicesService.setServiceAsStopped(service.getId());
-    }
-
-    @Wrapper
-    private void setRebootingStatus(BrownieHost host) {
-        handleHostStatus(host.getId(), REBOOTING);
-        for (BrownieHostService service : host.getServices())
-            servicesService.setServiceInRebooting(service.getId());
-    }
-
-    private void handleHostStatus(String hostId, HostStatus status) {
-        hostsRepository.handleHostStatus(hostId, status.name());
-        eventsService.registerHostStatusChangedEvent(hostId, status);
+        commandsExecutor.stopHost(this, host);
     }
 
     public BrownieHostOverview getHostOverview(BrownieHost host) throws Exception {
@@ -215,6 +146,18 @@ public class HostsService {
 
     public void unregisterHost(String hostId) {
         hostsRepository.unregisterHost(hostId);
+    }
+
+    public HostsRepository getHostsRepository() {
+        return hostsRepository;
+    }
+
+    public HostEventsService getEventsService() {
+        return eventsService;
+    }
+
+    public HostServicesService getServicesService() {
+        return servicesService;
     }
 
 }
