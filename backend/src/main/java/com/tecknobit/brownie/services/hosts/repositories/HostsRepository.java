@@ -107,7 +107,9 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
                     HOST_ADDRESS_KEY + "=:" + HOST_ADDRESS_KEY + "," +
                     NAME_KEY + "=:" + NAME_KEY + "," +
                     SSH_USER_KEY + "=:" + SSH_USER_KEY + "," +
-                    SSH_PASSWORD_KEY + "=:" + SSH_PASSWORD_KEY +
+                    SSH_PASSWORD_KEY + "=:" + SSH_PASSWORD_KEY + "," +
+                    BROADCAST_IP_KEY + "=:" + BROADCAST_IP_KEY + "," +
+                    MAC_ADDRESS_KEY + "=:" + MAC_ADDRESS_KEY +
                     _WHERE_ + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
             nativeQuery = true
     )
@@ -116,7 +118,9 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
             @Param(NAME_KEY) String name,
             @Param(HOST_ADDRESS_KEY) String hostAddress,
             @Param(SSH_USER_KEY) String sshUser,
-            @Param(SSH_PASSWORD_KEY) String sshPassword
+            @Param(SSH_PASSWORD_KEY) String sshPassword,
+            @Param(BROADCAST_IP_KEY) String broadcastIp,
+            @Param(MAC_ADDRESS_KEY) String macAddress
     );
 
     @Query(

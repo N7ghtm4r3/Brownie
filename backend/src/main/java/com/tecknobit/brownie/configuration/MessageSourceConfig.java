@@ -6,16 +6,14 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.i18n.LocaleContextHolder;
 import org.springframework.context.support.ResourceBundleMessageSource;
 import org.springframework.web.servlet.LocaleResolver;
-import org.springframework.web.servlet.config.annotation.InterceptorRegistry;
 import org.springframework.web.servlet.config.annotation.WebMvcConfigurer;
-import org.springframework.web.servlet.i18n.LocaleChangeInterceptor;
 import org.springframework.web.servlet.i18n.SessionLocaleResolver;
 
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.LANGUAGE_KEY;
 import static java.util.Locale.ENGLISH;
 
 @Configuration
 @FutureEquinoxApi(
+        protoBehavior = "Fix the LocaleChangeInterceptor behavior ",
         releaseVersion = "1.0.9",
         additionalNotes = "This will be replace the current translating system with the Mantis library"
 )
@@ -41,7 +39,7 @@ public class MessageSourceConfig implements WebMvcConfigurer {
         return resolver;
     }
 
-    @Bean
+    /*@Bean
     public LocaleChangeInterceptor localeChangeInterceptor() {
         LocaleChangeInterceptor interceptor = new LocaleChangeInterceptor();
         interceptor.setParamName(LANGUAGE_KEY);
@@ -51,6 +49,6 @@ public class MessageSourceConfig implements WebMvcConfigurer {
     @Override
     public void addInterceptors(InterceptorRegistry registry) {
         registry.addInterceptor(localeChangeInterceptor());
-    }
+    }*/
 
 }

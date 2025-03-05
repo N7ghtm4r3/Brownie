@@ -75,6 +75,21 @@ public class HostsController extends DefaultBrownieController {
         return successResponse();
     }
 
+    @GetMapping(
+            path = "/{" + HOST_IDENTIFIER_KEY + "}"
+    )
+    public <T> T getHost(
+            @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        setSessionLocale(language);
+        BrownieHost brownieHost = hostsService.getBrownieHost(sessionId, hostId);
+        if (brownieHost == null)
+            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        return (T) successResponse(brownieHost);
+    }
+
     @PatchMapping(
             path = "/{" + HOST_IDENTIFIER_KEY + "}"
     )
@@ -98,7 +113,7 @@ public class HostsController extends DefaultBrownieController {
         if (!SSHCredentialsAreValid(sshUser, sshPassword))
             return failedResponse(WRONG_SSH_CREDENTIALS_MESSAGE);
         try {
-            hostsService.editHost(hostId, hostName, hostAddress, sshUser, sshPassword);
+            hostsService.editHost(hostId, hostAddress, hostName, sshUser, sshPassword);
         } catch (Exception e) {
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         }
@@ -191,7 +206,7 @@ public class HostsController extends DefaultBrownieController {
     }
 
     @GetMapping(
-            path = "/{" + HOST_IDENTIFIER_KEY + "}"
+            path = "/{" + HOST_IDENTIFIER_KEY + "}" + OVERVIEW_ENDPOINT
     )
     public <T> T getHostOverview(
             @PathVariable(IDENTIFIER_KEY) String sessionId,

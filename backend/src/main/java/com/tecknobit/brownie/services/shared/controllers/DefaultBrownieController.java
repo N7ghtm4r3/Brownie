@@ -27,7 +27,7 @@ import static com.tecknobit.equinoxcore.network.ResponseStatus.SUCCESSFUL;
 @RestController
 public class DefaultBrownieController extends DefaultEquinoxController {
 
-    public static final String SOMETHING_WENT_WRONG_MESSAGE = "something_went_wrong_message";
+    public static final String SOMETHING_WENT_WRONG_MESSAGE = "something_went_wrong_key";
 
     @Autowired
     protected BrownieSessionsService sessionsService;

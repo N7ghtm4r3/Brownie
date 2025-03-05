@@ -12,4 +12,6 @@ object BrownieEndpoints : EquinoxBaseEndpointsSet() {
 
     const val REBOOT_ENDPOINT = "/reboot"
 
+    const val OVERVIEW_ENDPOINT = "/overview"
+
 }

@@ -58,9 +58,7 @@ public class HostsService {
         String macAddress = null;
         String broadcastIp = null;
         if (sshUser != null) {
-            RemoteShellCommandsExecutors commandsExecutor = new RemoteShellCommandsExecutors(sshUser, hostAddress,
-                    sshPassword);
-            Pair<String, String> details = commandsExecutor.getNetworkInterfaceDetails();
+            Pair<String, String> details = getNetworkInterfaceDetails(sshUser, sshPassword, hostAddress);
             macAddress = details.getFirst();
             broadcastIp = details.getSecond();
         }
@@ -68,11 +66,21 @@ public class HostsService {
                 broadcastIp, macAddress);
     }
 
-    public void editHost(String hostId, String hostAddress, String hostName, String sshUser, String sshPassword) {
+    public void editHost(String hostId, String hostAddress, String hostName, String sshUser, String sshPassword) throws Exception {
         if (sshUser == null)
-            hostsRepository.editHost(hostId, hostAddress, hostName);
-        else
-            hostsRepository.editHost(hostId, hostAddress, hostName, sshUser, sshPassword);
+            hostsRepository.editHost(hostId, hostName, hostAddress);
+        else {
+            Pair<String, String> details = getNetworkInterfaceDetails(sshUser, sshPassword, hostAddress);
+            String macAddress = details.getFirst();
+            String broadcastIp = details.getSecond();
+            hostsRepository.editHost(hostId, hostName, hostAddress, sshUser, sshPassword, broadcastIp, macAddress);
+        }
+    }
+
+    private Pair<String, String> getNetworkInterfaceDetails(String sshUser, String sshPassword, String hostAddress) throws Exception {
+        RemoteShellCommandsExecutors commandsExecutor = new RemoteShellCommandsExecutors(sshUser, hostAddress,
+                sshPassword);
+        return commandsExecutor.getNetworkInterfaceDetails();
     }
 
     public boolean hostBelongsToSession(String sessionId, String hostId) {
