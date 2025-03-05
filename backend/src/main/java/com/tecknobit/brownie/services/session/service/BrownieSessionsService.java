@@ -16,13 +16,11 @@ public class BrownieSessionsService {
     @Autowired
     private BrownieSessionsRepository sessionsRepository;
 
-    public void createSession(String sessionId, String joinCode, String password) throws NoSuchAlgorithmException {
+    public BrownieSession createSession(String sessionId, String joinCode, String password) throws NoSuchAlgorithmException {
         password = hash(password);
-        sessionsRepository.save(new BrownieSession(
-                sessionId,
-                joinCode,
-                password
-        ));
+        BrownieSession session = new BrownieSession(sessionId, joinCode, password);
+        sessionsRepository.save(session);
+        return session;
     }
 
     public BrownieSession connectToSession(String joinCode, String password) throws NoSuchAlgorithmException {

@@ -23,17 +23,17 @@ public class BrownieSessionController extends DefaultBrownieController {
     public static ServerProtector brownieServerProtector;
 
     @PostMapping
-    public String createSession(
+    public <T> T createSession(
             @RequestBody Map<String, String> payload
     ) throws NoSuchAlgorithmException {
         loadJsonHelper(payload);
         if (!brownieServerProtector.serverSecretMatches(jsonHelper.getString(SERVER_SECRET_KEY)))
-            return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         String password = jsonHelper.getString(PASSWORD_KEY);
         if (!Companion.isPasswordValid(password))
-            return failedResponse(WRONG_PASSWORD_MESSAGE);
-        sessionsService.createSession(generateIdentifier(), generateIdentifier(), password);
-        return successResponse();
+            return (T) failedResponse(WRONG_PASSWORD_MESSAGE);
+        BrownieSession session = sessionsService.createSession(generateIdentifier(), generateIdentifier(), password);
+        return (T) successResponse(session);
     }
 
     @PutMapping(
