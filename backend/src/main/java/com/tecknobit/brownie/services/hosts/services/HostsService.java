@@ -22,10 +22,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicInteger;
 
+import static com.tecknobit.brownie.helpers.RemoteHostWaiter.waitForHostRestart;
 import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.browniecore.enums.HostStatus.*;
 
@@ -79,13 +80,13 @@ public class HostsService {
         return hostsRepository.hostBelongsToSession(hostId, sessionId);
     }
 
-    public void startHost(BrownieHost host) throws IOException {
-        // TODO: 01/03/2025 EXECUTE THE WoL
+    public void startHost(BrownieHost host) throws Exception {
         WakeOnLanExecutor wakeOnLanExecutor = new WakeOnLanExecutor();
         wakeOnLanExecutor.execWoL(host);
-        // TODO: 01/03/2025 THEN
-        // setOnlineStatus(hostId);
-        // TODO: 01/03/2025 RESTART ALL THE SERVICES WHERE autoRun = true
+        waitForHostRestart(host, new AtomicInteger(0), () -> {
+            setOnlineStatus(host);
+            handleServicesOnStart(host);
+        });
     }
 
     public void rebootHost(BrownieHost host) throws Exception {
@@ -102,10 +103,10 @@ public class HostsService {
         String hostId = host.getId();
         hostsRepository.handleHostStatus(hostId, ONLINE.name());
         eventsService.registerHostRestartedEvent(hostId);
-        handleServicesAfterReboot(host);
+        handleServicesOnStart(host);
     }
 
-    private void handleServicesAfterReboot(BrownieHost host) throws Exception {
+    private void handleServicesOnStart(BrownieHost host) throws Exception {
         for (BrownieHostService service : host.getServices()) {
             if (service.getConfiguration().autoRunAfterHostReboot())
                 servicesService.startService(host, service, true);

@@ -13,13 +13,9 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.net.ConnectException;
-import java.net.InetSocketAddress;
-import java.net.Socket;
-import java.util.concurrent.Executors;
 import java.util.concurrent.atomic.AtomicInteger;
 
-import static java.util.concurrent.TimeUnit.MINUTES;
+import static com.tecknobit.brownie.helpers.RemoteHostWaiter.waitForHostRestart;
 
 public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
 
@@ -35,12 +31,6 @@ public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
             ip -4 addr show | grep -E 'inet .*brd' | awk '{print $4}'""";
 
     private static final String EXECUTE_BASH_SCRIPT = "bash " + BASH_SCRIPT_OPTION;
-
-    private static final int MAX_RETRY_ATTEMPTS = 10;
-
-    private static final int MAX_RETRY_TIMEOUT = Math.toIntExact(MINUTES.toMillis(2));
-
-    private static final String CONNECTION_ERROR_MESSAGE = "Impossible reach the %s address, you need to restart manually as needed";
 
     private final Session session;
 
@@ -83,28 +73,9 @@ public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
 
     @Override
     public void rebootHost(HostsService service, BrownieHost host) throws Exception {
-        AtomicInteger attempts = new AtomicInteger(0);
         execBashCommand(SUDO_REBOOT, extra -> {
             service.setRebootingStatus(host);
-            waitHostRestarted(service, host, attempts);
-        });
-    }
-
-    private void waitHostRestarted(HostsService service, BrownieHost host, AtomicInteger attempts) {
-        if (attempts.intValue() >= MAX_RETRY_ATTEMPTS)
-            throw new IllegalStateException(String.format(CONNECTION_ERROR_MESSAGE, host.getHostAddress()));
-        Executors.newCachedThreadPool().execute(() -> {
-            try (Socket socket = new Socket()) {
-                socket.connect(new InetSocketAddress(host.getHostAddress(), 22), MAX_RETRY_TIMEOUT);
-                service.restartHost(host);
-            } catch (ConnectException | JSchException e) {
-                attempts.incrementAndGet();
-                waitHostRestarted(service, host, attempts);
-            } catch (IOException e) {
-                throw new IllegalStateException(String.format(CONNECTION_ERROR_MESSAGE, host.getHostAddress()));
-            } catch (Exception e) {
-                throw new RuntimeException(e);
-            }
+            waitForHostRestart(host, new AtomicInteger(0), () -> service.restartHost(host));
         });
     }
 

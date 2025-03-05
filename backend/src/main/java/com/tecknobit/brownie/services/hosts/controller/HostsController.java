@@ -8,7 +8,6 @@ import com.tecknobit.equinoxcore.network.ResponseStatus;
 import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
-import java.io.IOException;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -135,10 +134,8 @@ public class HostsController extends DefaultBrownieController {
         try {
             hostsService.startHost(host);
             return successResponse();
-        } catch (IOException e) {
-            e.printStackTrace();
-            // TODO: 01/03/2025 CUSTOMIZE THE ERROR
-            return failedResponse("gg");
+        } catch (Exception e) {
+            return failedResponse(SOMETHING_WENT_WRONG_MESSAGE);
         }
     }
 
