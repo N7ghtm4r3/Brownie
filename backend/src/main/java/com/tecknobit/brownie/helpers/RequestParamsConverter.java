@@ -11,7 +11,7 @@ import java.util.List;
         protoBehavior = """
                 Actually the api converts raw JSONArray into specific list of value to use as filters in the queries
                 """,
-        releaseVersion = "1.0.9",
+        releaseVersion = "TO BE DEFINED AND NOT GUARANTEE ITS INTEGRATION",
         additionalNotes = "Check whether to implement and if to change its name"
 )
 public class RequestParamsConverter {
