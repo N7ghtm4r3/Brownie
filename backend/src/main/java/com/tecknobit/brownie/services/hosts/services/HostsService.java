@@ -14,10 +14,10 @@ import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
 import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.services.HostServicesService;
 import com.tecknobit.browniecore.enums.HostStatus;
-import com.tecknobit.equinoxbackend.configuration.IndexesCreator;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import kotlin.Pair;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -27,8 +27,10 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.tecknobit.brownie.helpers.RemoteHostWaiter.waitForHostRestart;
+import static com.tecknobit.brownie.helpers.RequestParamsConverter.convertToFiltersList;
 import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.browniecore.enums.HostStatus.*;
+import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
 
 @Service
 public class HostsService {
@@ -42,9 +44,10 @@ public class HostsService {
     @Autowired
     private HostServicesService servicesService;
 
-    public PaginatedResponse<BrownieHost> getHosts(Set<String> keywords, List<String> statuses, int page,
+    public PaginatedResponse<BrownieHost> getHosts(Set<String> keywords, JSONArray rawStatuses, int page,
                                                    int pageSize) {
-        String fullTextKeywords = IndexesCreator.formatFullTextKeywords(keywords, "+", "*", true);
+        String fullTextKeywords = formatFullTextKeywords(keywords, "+", "*", true);
+        List<String> statuses = convertToFiltersList(rawStatuses);
         long totalHosts = hostsRepository.countHosts(fullTextKeywords, statuses);
         List<BrownieHost> hosts = hostsRepository.getHosts(fullTextKeywords, statuses, PageRequest.of(page, pageSize));
         return new PaginatedResponse<>(hosts, page, pageSize, totalHosts);

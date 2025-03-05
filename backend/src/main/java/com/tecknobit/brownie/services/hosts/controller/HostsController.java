@@ -3,9 +3,9 @@ package com.tecknobit.brownie.services.hosts.controller;
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
+import org.json.JSONArray;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -33,9 +33,9 @@ public class HostsController extends DefaultBrownieController {
             @RequestParam(name = KEYWORDS_KEY, defaultValue = "", required = false) Set<String> keywords,
             @RequestParam(
                     name = STATUSES_KEY,
-                    defaultValue = "ONLINE, OFFLINE, REBOOTING",
+                    defaultValue = "[ONLINE, OFFLINE, REBOOTING]",
                     required = false
-            ) List<String> statuses,
+            ) JSONArray statuses,
             @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language,
             @RequestParam(name = PAGE_KEY, defaultValue = DEFAULT_PAGE_HEADER_VALUE, required = false) int page,
             @RequestParam(name = PAGE_SIZE_KEY, defaultValue = DEFAULT_PAGE_SIZE_HEADER_VALUE, required = false) int pageSize
