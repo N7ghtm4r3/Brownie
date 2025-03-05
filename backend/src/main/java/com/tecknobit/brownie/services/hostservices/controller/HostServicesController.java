@@ -15,8 +15,8 @@ import java.util.Set;
 import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.browniecore.helpers.BrownieEndpoints.*;
 import static com.tecknobit.browniecore.helpers.BrownieInputsValidator.INSTANCE;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.NAME_KEY;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
+import static com.tecknobit.equinoxcore.helpers.InputsValidator.DEFAULT_LANGUAGE;
 import static com.tecknobit.equinoxcore.helpers.InputsValidator.WRONG_NAME_MESSAGE;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
 import static com.tecknobit.equinoxcore.pagination.PaginatedResponse.*;
@@ -33,8 +33,10 @@ public class HostServicesController extends DefaultBrownieController {
     public String addService(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language,
             @RequestBody Map<String, Object> payload
     ) {
+        setSessionLocale(language);
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
@@ -61,8 +63,10 @@ public class HostServicesController extends DefaultBrownieController {
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
             @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language,
             @RequestBody Map<String, Object> payload
     ) {
+        setSessionLocale(language);
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null || !host.hasService(serviceId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
@@ -92,9 +96,11 @@ public class HostServicesController extends DefaultBrownieController {
                     defaultValue = "RUNNING, STOPPED, REBOOTING",
                     required = false
             ) List<String> statuses,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language,
             @RequestParam(name = PAGE_KEY, defaultValue = DEFAULT_PAGE_HEADER_VALUE, required = false) int page,
             @RequestParam(name = PAGE_SIZE_KEY, defaultValue = DEFAULT_PAGE_SIZE_HEADER_VALUE, required = false) int pageSize
     ) {
+        setSessionLocale(language);
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
@@ -109,8 +115,10 @@ public class HostServicesController extends DefaultBrownieController {
     public String startService(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
-            @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId
+            @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language
     ) {
+        setSessionLocale(language);
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
@@ -135,8 +143,10 @@ public class HostServicesController extends DefaultBrownieController {
     public String rebootService(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
-            @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId
+            @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language
     ) {
+        setSessionLocale(language);
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
@@ -161,8 +171,10 @@ public class HostServicesController extends DefaultBrownieController {
     public String stopService(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
-            @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId
+            @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language
     ) {
+        setSessionLocale(language);
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
@@ -188,11 +200,14 @@ public class HostServicesController extends DefaultBrownieController {
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
             @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language,
             @RequestParam(
                     value = REMOVE_FROM_THE_HOST_KEY,
                     required = false,
                     defaultValue = "false"
-            ) boolean removeFromTheHost) {
+            ) boolean removeFromTheHost
+    ) {
+        setSessionLocale(language);
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);

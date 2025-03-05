@@ -12,10 +12,8 @@ import static com.tecknobit.apimanager.apis.ServerProtector.SERVER_SECRET_KEY;
 import static com.tecknobit.browniecore.ConstantsKt.JOIN_CODE_KEY;
 import static com.tecknobit.browniecore.ConstantsKt.SESSIONS_KEY;
 import static com.tecknobit.browniecore.helpers.BrownieEndpoints.CONNECT_ENDPOINT;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.PASSWORD_KEY;
-import static com.tecknobit.equinoxcore.helpers.InputsValidator.Companion;
-import static com.tecknobit.equinoxcore.helpers.InputsValidator.WRONG_PASSWORD_MESSAGE;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
+import static com.tecknobit.equinoxcore.helpers.InputsValidator.*;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
 
 @RestController
@@ -60,8 +58,10 @@ public class BrownieSessionController extends DefaultBrownieController {
     )
     public String deleteSession(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language,
             @RequestBody Map<String, String> payload
     ) throws NoSuchAlgorithmException {
+        setSessionLocale(language);
         loadJsonHelper(payload);
         String password = jsonHelper.getString(PASSWORD_KEY, "");
         BrownieSession session = sessionsService.getBrownieSession(sessionId, password);

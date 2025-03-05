@@ -3,9 +3,6 @@ package com.tecknobit.brownie.services.hosts.controller;
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
-import com.tecknobit.equinoxcore.annotations.Assembler;
-import com.tecknobit.equinoxcore.network.ResponseStatus;
-import org.json.JSONObject;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -15,12 +12,10 @@ import java.util.Set;
 import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.browniecore.helpers.BrownieEndpoints.*;
 import static com.tecknobit.browniecore.helpers.BrownieInputsValidator.INSTANCE;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.NAME_KEY;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
+import static com.tecknobit.equinoxcore.helpers.InputsValidator.DEFAULT_LANGUAGE;
 import static com.tecknobit.equinoxcore.helpers.InputsValidator.WRONG_NAME_MESSAGE;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
-import static com.tecknobit.equinoxcore.network.Requester.RESPONSE_DATA_KEY;
-import static com.tecknobit.equinoxcore.network.Requester.RESPONSE_STATUS_KEY;
 import static com.tecknobit.equinoxcore.network.ResponseStatus.FAILED;
 import static com.tecknobit.equinoxcore.pagination.PaginatedResponse.*;
 
@@ -41,9 +36,11 @@ public class HostsController extends DefaultBrownieController {
                     defaultValue = "ONLINE, OFFLINE, REBOOTING",
                     required = false
             ) List<String> statuses,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language,
             @RequestParam(name = PAGE_KEY, defaultValue = DEFAULT_PAGE_HEADER_VALUE, required = false) int page,
             @RequestParam(name = PAGE_SIZE_KEY, defaultValue = DEFAULT_PAGE_SIZE_HEADER_VALUE, required = false) int pageSize
     ) {
+        setSessionLocale(language);
         if (!sessionExists(sessionId))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         return (T) successResponse(hostsService.getHosts(keywords, statuses, page, pageSize));
@@ -52,8 +49,10 @@ public class HostsController extends DefaultBrownieController {
     @PostMapping
     public String registerHost(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language,
             @RequestBody Map<String, Object> payload
     ) {
+        setSessionLocale(language);
         if (!sessionExists(sessionId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         loadJsonHelper(payload);
@@ -82,8 +81,10 @@ public class HostsController extends DefaultBrownieController {
     public String editHost(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language,
             @RequestBody Map<String, Object> payload
     ) {
+        setSessionLocale(language);
         if (!hostsService.hostBelongsToSession(sessionId, hostId))
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
         loadJsonHelper(payload);
@@ -124,8 +125,10 @@ public class HostsController extends DefaultBrownieController {
     // TODO: 01/03/2025 ADD THE REFERENCE TO WoL documentation
     public String startHost(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
-            @PathVariable(HOST_IDENTIFIER_KEY) String hostId
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language
     ) {
+        setSessionLocale(language);
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
@@ -144,8 +147,10 @@ public class HostsController extends DefaultBrownieController {
     )
     public String rebootHost(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
-            @PathVariable(HOST_IDENTIFIER_KEY) String hostId
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language
     ) {
+        setSessionLocale(language);
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
@@ -166,8 +171,10 @@ public class HostsController extends DefaultBrownieController {
     )
     public String stopHost(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
-            @PathVariable(HOST_IDENTIFIER_KEY) String hostId
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language
     ) {
+        setSessionLocale(language);
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
@@ -188,8 +195,10 @@ public class HostsController extends DefaultBrownieController {
     )
     public <T> T getHostOverview(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
-            @PathVariable(HOST_IDENTIFIER_KEY) String hostId
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language
     ) {
+        setSessionLocale(language);
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
@@ -200,28 +209,15 @@ public class HostsController extends DefaultBrownieController {
         }
     }
 
-    /**
-     * Method to assemble the payload for a response
-     *
-     * @param status  The response code value
-     * @param message The message to send as response
-     * @return the payload for a response as {@link String}
-     */
-    @Deprecated(since = "TO REMOVE")
-    @Assembler
-    private String plainResponse(ResponseStatus status, String message) {
-        return new JSONObject()
-                .put(RESPONSE_STATUS_KEY, status)
-                .put(RESPONSE_DATA_KEY, message).toString();
-    }
-
     @DeleteMapping(
             path = "/{" + HOST_IDENTIFIER_KEY + "}"
     )
     public String unregisterHost(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
-            @PathVariable(HOST_IDENTIFIER_KEY) String hostId
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language
     ) {
+        setSessionLocale(language);
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
