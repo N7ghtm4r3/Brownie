@@ -1,6 +1,7 @@
 package com.tecknobit.brownie.services.hostservices.services;
 
 import com.jcraft.jsch.JSchException;
+import com.tecknobit.brownie.helpers.RequestParamsConverter;
 import com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.services.HostEventsService;
@@ -8,6 +9,7 @@ import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.repositories.HostServicesRepository;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -50,9 +52,10 @@ public class HostServicesService {
                 autoRunAfterHostReboot);
     }
 
-    public PaginatedResponse<BrownieHostService> getServices(String hostId, Set<String> keywords, List<String> statuses,
+    public PaginatedResponse<BrownieHostService> getServices(String hostId, Set<String> keywords, JSONArray rawStatuses,
                                                              int page, int pageSize) {
         String fullTextKeywords = formatFullTextKeywords(keywords, "+", "*", true);
+        List<String> statuses = RequestParamsConverter.convertToFiltersList(rawStatuses);
         long totalServices = servicesRepository.countServices(hostId, fullTextKeywords, statuses);
         List<BrownieHostService> services = servicesRepository.getServices(hostId, fullTextKeywords, statuses,
                 PageRequest.of(page, pageSize));
@@ -106,13 +109,12 @@ public class HostServicesService {
     }
 
     public void removeService(BrownieHost host, BrownieHostService service, boolean removeFromTheHost) throws Exception {
-        String serviceName = service.getName();
         if (removeFromTheHost) {
             ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
-            commandsExecutor.removeService(serviceName, true);
+            commandsExecutor.removeService(service.getServicePath(), true);
         }
         servicesRepository.removeService(service.getId());
-        hostEventsService.registerServiceRemovedEvent(host.getId(), serviceName, removeFromTheHost);
+        hostEventsService.registerServiceRemovedEvent(host.getId(), service.getName(), removeFromTheHost);
     }
 
 }

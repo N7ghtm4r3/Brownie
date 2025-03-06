@@ -79,6 +79,7 @@ public class BrownieHostOverview {
         return storageUsage;
     }
 
+    @JsonGetter(HOST_EVENTS_KEY)
     public List<HostHistoryEvent> getEvents() {
         return events;
     }

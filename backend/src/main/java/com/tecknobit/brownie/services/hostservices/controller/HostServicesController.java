@@ -5,10 +5,10 @@ import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.services.HostServicesService;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
+import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -56,6 +56,25 @@ public class HostServicesController extends DefaultBrownieController {
         }
     }
 
+    @GetMapping(
+            path = "/{" + SERVICE_IDENTIFIER_KEY + "}"
+    )
+    public <T> T getService(
+            @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @PathVariable(SERVICE_IDENTIFIER_KEY) String serviceId,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        setSessionLocale(language);
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        BrownieHostService hostService = null;
+        if (host != null && host.isOnline())
+            hostService = host.getService(serviceId);
+        if (hostService == null)
+            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        return (T) successResponse(hostService);
+    }
+
     @PatchMapping(
             path = "/{" + SERVICE_IDENTIFIER_KEY + "}"
     )
@@ -95,7 +114,7 @@ public class HostServicesController extends DefaultBrownieController {
                     name = STATUSES_KEY,
                     defaultValue = "RUNNING, STOPPED, REBOOTING",
                     required = false
-            ) List<String> statuses,
+            ) JSONArray statuses,
             @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language,
             @RequestParam(name = PAGE_KEY, defaultValue = DEFAULT_PAGE_HEADER_VALUE, required = false) int page,
             @RequestParam(name = PAGE_SIZE_KEY, defaultValue = DEFAULT_PAGE_SIZE_HEADER_VALUE, required = false) int pageSize
@@ -104,8 +123,6 @@ public class HostServicesController extends DefaultBrownieController {
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        if (!host.isOnline())
-            return (T) failedResponse(WRONG_PROCEDURE_MESSAGE);
         return (T) successResponse(service.getServices(hostId, keywords, statuses, page, pageSize));
     }
 

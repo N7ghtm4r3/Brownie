@@ -103,6 +103,7 @@ public class BrownieHostService extends EquinoxItem {
         return configuration;
     }
 
+    @JsonGetter(SERVICE_EVENTS_KEY)
     public List<ServiceEvent> getEvents() {
         return events;
     }
