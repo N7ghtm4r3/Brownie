@@ -19,7 +19,7 @@ import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider.CUST
 import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider.DEFAULT_CONFIGURATION_FILE_PATH;
 
 /**
- * The {@code Launcher} class is useful to launch <b>Refy's backend service</b>
+ * The {@code Launcher} class is useful to launch <b>Brownie's backend service</b>
  *
  * @author N7ghtm4r3 - Tecknobit
  */

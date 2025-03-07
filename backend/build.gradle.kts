@@ -26,6 +26,6 @@ dependencies {
     implementation("io.github.n7ghtm4r3:equinox-backend:1.0.8")
     implementation("io.github.n7ghtm4r3:equinox-core:1.0.8")
     implementation("com.github.mwiede:jsch:0.2.23")
-    implementation(project(":core"))
     implementation("io.github.n7ghtm4r3:equinox-core-jvm:1.0.8")
+    implementation(project(":core"))
 }
