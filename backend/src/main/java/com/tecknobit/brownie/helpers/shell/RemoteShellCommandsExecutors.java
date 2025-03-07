@@ -17,27 +17,69 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.tecknobit.brownie.helpers.RemoteHostWaiter.waitForHostRestart;
 
+/**
+ * The {@code RemoteShellCommandsExecutors} class is used to execute the bash commands on a remote host using the SSH
+ * as way to communicate
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see ShellCommandsExecutor
+ */
 public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
 
+    /**
+     * {@code STRICT_HOST_KEY_CHECKING_OPTION} strict host key checking option
+     */
     private static final String STRICT_HOST_KEY_CHECKING_OPTION = "StrictHostKeyChecking";
 
+    /**
+     * {@code EXEC_CHANNEL_TYPE} exec type of the channel used to execute the commands
+     */
     private static final String EXEC_CHANNEL_TYPE = "exec";
 
+    /**
+     * {@code GET_MAC_ADDRESS_COMMAND} bash command used to retrieve the mac address of the network interface used to
+     * execute the Wake-on-Lan start
+     */
     private static final String GET_MAC_ADDRESS_COMMAND = """
             ip link show | awk -F': ' '/^[0-9]+: e/{print $2}' | head -n \
             1 | xargs -I {} ip link show {} | awk '/ether/ {print $2}'""";
 
+    /**
+     * {@code GET_BROADCAST_IP_ADDRESS_COMMAND} bash command used to retrieve the broadcast ip address of the network
+     * interface used to execute the Wake-on-Lan start
+     */
     private static final String GET_BROADCAST_IP_ADDRESS_COMMAND = """
             ip -4 addr show | grep -E 'inet .*brd' | awk '{print $4}'""";
 
+    /**
+     * {@code EXECUTE_BASH_SCRIPT} bash command to execute a script
+     */
     private static final String EXECUTE_BASH_SCRIPT = "bash " + BASH_SCRIPT_OPTION;
 
+    /**
+     * {@code session} current SSH session
+     */
     private final Session session;
 
+    /**
+     * Constructor to instantiate the object
+     *
+     * @param host The host where open the remote communication and where execute the bash commands
+     * @throws JSchException when an error occurred during the creation of the SSH session
+     */
     public RemoteShellCommandsExecutors(BrownieHost host) throws JSchException {
         this(host.getSshUser(), host.getHostAddress(), host.getSshPassword());
     }
 
+    /**
+     * Constructor to instantiate the object
+     *
+     * @param sshUser The user to use for the SSH connection
+     * @param hostAddress The address of the host to reach
+     * @param sshPassword The password of the SSH user
+     *
+     * @throws JSchException when an error occurred during the creation of the SSH session
+     */
     public RemoteShellCommandsExecutors(String sshUser, String hostAddress, String sshPassword) throws JSchException {
         JSch jSch = new JSch();
         session = jSch.getSession(sshUser, hostAddress);
@@ -47,12 +89,27 @@ public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
         session.connect();
     }
 
+    /**
+     * Method to retrieve the network interface details useful to execute the Wake-on-Lan
+     *
+     * @return the network interface details as {@link Pair} of {@link String}
+     * @throws Exception when an exception occurred during the process
+     */
     public Pair<String, String> getNetworkInterfaceDetails() throws Exception {
         String macAddress = execBashCommand(GET_MAC_ADDRESS_COMMAND, false);
         String broadcastIp = execBashCommand(GET_BROADCAST_IP_ADDRESS_COMMAND, true);
         return new Pair<>(macAddress, broadcastIp);
     }
 
+    /**
+     * Method used to start a service
+     *
+     * @param service The service to start
+     *
+     * @return the pid of the started process
+     *
+     * @throws Exception when an exception occurred during the process
+     */
     @Override
     public long startService(BrownieHostService service) throws Exception {
         purgeNohupOutIfRequired(service);
@@ -71,6 +128,13 @@ public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
         return pid;
     }
 
+    /**
+     * Method used to reboot the host using the {@link #SUDO_REBOOT} command
+     *
+     * @param service The host service used to handle the host reboot procedure
+     * @param host    The host to reboot
+     * @throws Exception when an exception occurred during the process
+     */
     @Override
     public void rebootHost(HostsService service, BrownieHost host) throws Exception {
         execBashCommand(SUDO_REBOOT, extra -> {
@@ -79,11 +143,27 @@ public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
         });
     }
 
+    /**
+     * Method used to stop the host using the {@link #SUDO_SHUTDOWN_NOW} command
+     *
+     * @param service The host service used to handle the host stop procedure
+     * @param host The host to stop
+     * @throws Exception when an exception occurred during the process
+     */
     @Override
     public void stopHost(HostsService service, BrownieHost host) throws Exception {
         execBashCommand(SUDO_SHUTDOWN_NOW, extra -> service.setOfflineStatus(host));
     }
 
+    /**
+     * Method used to execute a bash command
+     * @param command The bash command to execute
+     * @param onCommandExecuted The callback to execute when the command has been executed
+     * @param closeSession Whether close the current bash session (like {@link Runtime} or SSH if remote host)
+     *
+     * @return the result of the command
+     * @throws Exception when an exception occurred during the process
+     */
     @Override
     protected String execBashCommand(String command, OnCommandExecuted onCommandExecuted, boolean closeSession) throws Exception {
         ChannelExec channel = (ChannelExec) session.openChannel(EXEC_CHANNEL_TYPE);

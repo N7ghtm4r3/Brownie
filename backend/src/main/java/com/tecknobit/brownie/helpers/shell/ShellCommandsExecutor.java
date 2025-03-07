@@ -305,20 +305,38 @@ public abstract class ShellCommandsExecutor {
     /**
      * Method used to append the exit status of the command to the error result of the same command
      *
-     * @param errorMessage
-     * @param exitStatus
-     * @return
+     * @param errorMessage The error message retrieved from the shell
+     * @param exitStatus The exit status of the command
+     *
+     * @return the error message with the exit status as {@link String}
      */
     protected String appendExitStatus(String errorMessage, int exitStatus) {
         return errorMessage + "Exit status:" + exitStatus;
     }
 
+    /**
+     * The {@code OnCommandExecuted} interface used as callback to execute extra actions after a bash command executed
+     *
+     * @author N7ghtm4r3 - Tecknobit
+     */
     public interface OnCommandExecuted {
 
+        /**
+         * Callback method invoked after a bash command executed
+         *
+         * @param extra The extra arguments can be useful for a custom implementation
+         */
         void afterExecution(Object... extra);
 
     }
 
+    /**
+     * Method used to obtain a specific instance to correctly execute bash commands on hosts shells
+     *
+     * @param host The host where execute the bash command
+     * @return the dedicated shell executor to execute the bash commands as {@link ShellCommandsExecutor}
+     * @throws JSchException when an error occurred on remote host SSH connection
+     */
     public static ShellCommandsExecutor getInstance(BrownieHost host) throws JSchException {
         if (host.isRemoteHost())
             return new RemoteShellCommandsExecutors(host);
