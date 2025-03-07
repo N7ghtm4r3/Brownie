@@ -1,5 +1,6 @@
 package com.tecknobit.brownie.services.hostservices.repositories;
 
+import com.tecknobit.brownie.services.hostservices.dtos.CurrentServiceStatus;
 import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
@@ -93,6 +94,18 @@ public interface HostServicesRepository extends JpaRepository<BrownieHostService
             @Param(KEYWORDS_KEY) String keywords,
             @Param(STATUSES_KEY) List<String> statuses,
             Pageable pageable
+    );
+
+    @Query(
+            value = "SELECT new com.tecknobit.brownie.services.hostservices.dtos.CurrentServiceStatus(" +
+                    "s." + IDENTIFIER_KEY + "," +
+                    "s." + STATUS_KEY + "," +
+                    "s." + PID_KEY +
+                    ") FROM BrownieHostService s" + _WHERE_ +
+                    "s." + IDENTIFIER_KEY + " IN (:" + SERVICES_KEY + ")"
+    )
+    List<CurrentServiceStatus> getServicesStatus(
+            @Param(SERVICES_KEY) List<String> services
     );
 
     @Transactional

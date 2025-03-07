@@ -51,13 +51,13 @@ public class HostsController extends DefaultBrownieController {
     )
     public <T> T getHostsStatus(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
-            @RequestParam(name = HOSTS_KEY, defaultValue = "[]") JSONArray currentHosts,
+            @RequestParam(name = HOSTS_KEY, defaultValue = "[]") JSONArray hosts,
             @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language
     ) {
         setSessionLocale(language);
         if (!sessionExists(sessionId))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) successResponse(hostsService.getHostsStatus(currentHosts));
+        return (T) successResponse(hostsService.getHostsStatus(hosts));
     }
 
     @PostMapping

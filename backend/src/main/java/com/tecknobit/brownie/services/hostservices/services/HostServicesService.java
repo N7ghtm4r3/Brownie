@@ -5,6 +5,7 @@ import com.tecknobit.brownie.helpers.RequestParamsConverter;
 import com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.services.HostEventsService;
+import com.tecknobit.brownie.services.hostservices.dtos.CurrentServiceStatus;
 import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.repositories.HostServicesRepository;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
@@ -14,6 +15,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
@@ -60,6 +62,13 @@ public class HostServicesService {
         List<BrownieHostService> services = servicesRepository.getServices(hostId, fullTextKeywords, statuses,
                 PageRequest.of(page, pageSize));
         return new PaginatedResponse<>(services, page, pageSize, totalServices);
+    }
+
+    public List<CurrentServiceStatus> getServicesStatus(JSONArray rawServices) {
+        List<String> services = RequestParamsConverter.convertToFiltersList(rawServices);
+        if (services.isEmpty())
+            return Collections.EMPTY_LIST;
+        return servicesRepository.getServicesStatus(services);
     }
 
     @Wrapper

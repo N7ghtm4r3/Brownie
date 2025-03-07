@@ -126,6 +126,22 @@ public class HostServicesController extends DefaultBrownieController {
         return (T) successResponse(service.getServices(hostId, keywords, statuses, page, pageSize));
     }
 
+    @GetMapping(
+            path = "/" + STATUS_KEY
+    )
+    public <T> T getServicesStatus(
+            @PathVariable(IDENTIFIER_KEY) String sessionId,
+            @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
+            @RequestParam(name = SERVICES_KEY, defaultValue = "[]") JSONArray services,
+            @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language
+    ) {
+        setSessionLocale(language);
+        BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
+        if (host == null)
+            return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
+        return (T) successResponse(service.getServicesStatus(services));
+    }
+
     @PatchMapping(
             path = "/{" + SERVICE_IDENTIFIER_KEY + "}" + START_ENDPOINT
     )
