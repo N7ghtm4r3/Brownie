@@ -62,13 +62,16 @@ public class BrownieHost extends EquinoxItem {
     @JsonIgnoreProperties(HOST_KEY)
     private final List<BrownieHostService> services;
 
+    @Column(name = INSERTION_DATE_KEY)
+    private final long insertionDate;
+
     public BrownieHost() {
-        this(null, null, null, null, null, null, null, null, null, List.of(), List.of());
+        this(null, null, null, null, null, null, null, null, null, List.of(), List.of(), 0);
     }
 
     public BrownieHost(String id, String name, String hostAddress, HostStatus status, String sshUser,
                        String sshPassword, BrownieSession session, String macAddress, String broadcastIp,
-                       List<HostHistoryEvent> events, List<BrownieHostService> services) {
+                       List<HostHistoryEvent> events, List<BrownieHostService> services, long insertionDate) {
         super(id);
         this.name = name;
         this.hostAddress = hostAddress;
@@ -80,6 +83,7 @@ public class BrownieHost extends EquinoxItem {
         this.broadcastIp = broadcastIp;
         this.events = events;
         this.services = services;
+        this.insertionDate = insertionDate;
     }
 
     public String getName() {
@@ -128,6 +132,11 @@ public class BrownieHost extends EquinoxItem {
     @JsonGetter(SERVICES_KEY)
     public List<BrownieHostService> getServices() {
         return services;
+    }
+
+    @JsonGetter(INSERTION_DATE_KEY)
+    public long getInsertionDate() {
+        return insertionDate;
     }
 
     public boolean hasService(String serviceId) {

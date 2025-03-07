@@ -41,7 +41,8 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
                     "MATCH(" + NAME_KEY + "," + HOST_ADDRESS_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
                     "OR :" + KEYWORDS_KEY + " = ''" +
                     ") " +
-                    "AND " + STATUS_KEY + " IN (:" + STATUSES_KEY + ")",
+                    "AND " + STATUS_KEY + " IN (:" + STATUSES_KEY + ") " +
+                    "ORDER BY " + INSERTION_DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<BrownieHost> getHosts(
@@ -71,6 +72,7 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
                     SSH_PASSWORD_KEY + "," +
                     STATUS_KEY + "," +
                     SESSION_IDENTIFIER_KEY + "," +
+                    INSERTION_DATE_KEY + "," +
                     BROADCAST_IP_KEY + "," +
                     MAC_ADDRESS_KEY + ") VALUES (" +
                     ":" + IDENTIFIER_KEY + "," +
@@ -80,6 +82,7 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
                     ":" + SSH_PASSWORD_KEY + "," +
                     ":" + STATUS_KEY + "," +
                     ":" + SESSION_IDENTIFIER_KEY + "," +
+                    ":" + INSERTION_DATE_KEY + "," +
                     ":" + BROADCAST_IP_KEY + "," +
                     ":" + MAC_ADDRESS_KEY + ")",
             nativeQuery = true
@@ -92,6 +95,7 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
             @Param(SSH_PASSWORD_KEY) String sshPassword,
             @Param(STATUS_KEY) String status,
             @Param(SESSION_IDENTIFIER_KEY) String sessionId,
+            @Param(INSERTION_DATE_KEY) long insertionDate,
             @Param(BROADCAST_IP_KEY) String broadcastIp,
             @Param(MAC_ADDRESS_KEY) String macAddress
     );

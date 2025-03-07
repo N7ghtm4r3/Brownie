@@ -72,7 +72,7 @@ public class HostsService {
             broadcastIp = details.getSecond();
         }
         hostsRepository.registerHost(hostId, hostName, hostAddress, sshUser, sshPassword, ONLINE.name(), sessionId,
-                broadcastIp, macAddress);
+                System.currentTimeMillis(), broadcastIp, macAddress);
     }
 
     public void editHost(String hostId, String hostAddress, String hostName, String sshUser, String sshPassword) throws Exception {

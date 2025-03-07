@@ -1,18 +1,19 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="EntryPointsManager">
-    <list size="11">
-      <item index="0" class="java.lang.String" itemvalue="com.tecknobit.equinoxcore.annotations.Wrapper" />
-      <item index="1" class="java.lang.String" itemvalue="jakarta.persistence.ManyToOne" />
-      <item index="2" class="java.lang.String" itemvalue="org.springframework.beans.factory.annotation.Autowired" />
-      <item index="3" class="java.lang.String" itemvalue="org.springframework.context.annotation.Bean" />
-      <item index="4" class="java.lang.String" itemvalue="org.springframework.context.event.EventListener" />
-      <item index="5" class="java.lang.String" itemvalue="org.springframework.stereotype.Component" />
-      <item index="6" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.DeleteMapping" />
-      <item index="7" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.GetMapping" />
-      <item index="8" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PatchMapping" />
-      <item index="9" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PostMapping" />
-      <item index="10" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PutMapping" />
+    <list size="12">
+      <item index="0" class="java.lang.String" itemvalue="com.fasterxml.jackson.annotation.JsonGetter" />
+      <item index="1" class="java.lang.String" itemvalue="com.tecknobit.equinoxcore.annotations.Wrapper" />
+      <item index="2" class="java.lang.String" itemvalue="jakarta.persistence.ManyToOne" />
+      <item index="3" class="java.lang.String" itemvalue="org.springframework.beans.factory.annotation.Autowired" />
+      <item index="4" class="java.lang.String" itemvalue="org.springframework.context.annotation.Bean" />
+      <item index="5" class="java.lang.String" itemvalue="org.springframework.context.event.EventListener" />
+      <item index="6" class="java.lang.String" itemvalue="org.springframework.stereotype.Component" />
+      <item index="7" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.DeleteMapping" />
+      <item index="8" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.GetMapping" />
+      <item index="9" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PatchMapping" />
+      <item index="10" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PostMapping" />
+      <item index="11" class="java.lang.String" itemvalue="org.springframework.web.bind.annotation.PutMapping" />
     </list>
     <writeAnnotations>
       <writeAnnotation name="org.springframework.beans.factory.annotation.Autowired" />
