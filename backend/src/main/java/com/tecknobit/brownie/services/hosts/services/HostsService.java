@@ -7,6 +7,7 @@ import com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.commands.WakeOnLanExecutor;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostOverview;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostStat;
+import com.tecknobit.brownie.services.hosts.dtos.CurrentHostStatus;
 import com.tecknobit.brownie.services.hosts.dtos.usages.CPUUsage;
 import com.tecknobit.brownie.services.hosts.dtos.usages.StorageUsage;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
@@ -22,6 +23,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
@@ -51,6 +53,13 @@ public class HostsService {
         long totalHosts = hostsRepository.countHosts(fullTextKeywords, statuses);
         List<BrownieHost> hosts = hostsRepository.getHosts(fullTextKeywords, statuses, PageRequest.of(page, pageSize));
         return new PaginatedResponse<>(hosts, page, pageSize, totalHosts);
+    }
+
+    public List<CurrentHostStatus> getHostsStatus(JSONArray rawHosts) {
+        List<String> currentHosts = convertToFiltersList(rawHosts);
+        if (currentHosts.isEmpty())
+            return Collections.EMPTY_LIST;
+        return hostsRepository.getHostsStatus(currentHosts);
     }
 
     public void registerHost(String hostId, String hostName, String hostAddress, String sshUser, String sshPassword,
