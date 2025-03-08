@@ -2,7 +2,6 @@ package com.tecknobit.brownie.services.hosts.controller;
 
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
-import com.tecknobit.brownie.services.session.entity.BrownieSession;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
 import com.tecknobit.equinoxbackend.environment.services.DefaultEquinoxController;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
@@ -25,7 +24,7 @@ import static com.tecknobit.equinoxcore.network.ResponseStatus.FAILED;
 import static com.tecknobit.equinoxcore.pagination.PaginatedResponse.*;
 
 /**
- * The {@code BrownieSessionController} class is useful to manage all the {@link BrownieSession} operations
+ * The {@code BrownieSessionController} class is useful to manage all the {@link BrownieHost} operations
  *
  * @author N7ghtm4r3 - Tecknobit
  * @see EquinoxController

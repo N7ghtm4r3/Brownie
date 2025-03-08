@@ -5,6 +5,9 @@ import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.services.HostServicesService;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
+import com.tecknobit.equinoxbackend.environment.services.DefaultEquinoxController;
+import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
+import com.tecknobit.equinoxcore.annotations.RequestPath;
 import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
@@ -19,17 +22,51 @@ import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
 import static com.tecknobit.equinoxcore.helpers.InputsValidator.DEFAULT_LANGUAGE;
 import static com.tecknobit.equinoxcore.helpers.InputsValidator.WRONG_NAME_MESSAGE;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
+import static com.tecknobit.equinoxcore.network.RequestMethod.*;
 import static com.tecknobit.equinoxcore.pagination.PaginatedResponse.*;
 
+/**
+ * The {@code HostServicesController} class is useful to manage all the {@link BrownieHostService} operations
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see EquinoxController
+ * @see DefaultEquinoxController
+ * @see DefaultBrownieController
+ */
 @RestController
 @RequestMapping(value = BASE_EQUINOX_ENDPOINT + SESSIONS_KEY + "/{" + IDENTIFIER_KEY + "}/" + HOSTS_KEY +
         "/{" + HOST_IDENTIFIER_KEY + "}/" + SERVICES_KEY)
 public class HostServicesController extends DefaultBrownieController {
 
+    /**
+     * {@code service} the support service used to manage the services data
+     */
     @Autowired
     private HostServicesService service;
 
+    /**
+     * Endpoint used to add a service to a host
+     *
+     * @param sessionId The identifier of the session
+     * @param hostId    The identifier of the host
+     * @param language  The language of the user who sent the request
+     * @param payload   The payload of the request
+     *                  <pre>
+     *                                       {@code
+     *                                               {
+     *                                                   "name" : "the name of the service" -> [String],
+     *                                                   "configuration": {
+     *                                                       "program_arguments": "The arguments of the program" -> [String],
+     *                                                       "purge_nohup_out_after_reboot": true/false -> [boolean],
+     *                                                       "auto_run_after_host_reboot": true/false -> [boolean]
+     *                                                   }
+     *                                               }
+     *                                       }
+     *                                  </pre>
+     * @return the response as {@link String}
+     */
     @PutMapping
+    @RequestPath(path = "/api/v1/sessions/{session_id}/hosts/{host_id}/services", method = PUT)
     public String addService(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
@@ -56,9 +93,22 @@ public class HostServicesController extends DefaultBrownieController {
         }
     }
 
+    /**
+     * Endpoint used to get an existing service of a host
+     *
+     * @param sessionId The identifier of the session
+     * @param hostId The identifier of the host
+     * @param serviceId The identifier of the service
+     * @param language The language of the user who sent the request
+     *
+     * @return the response as {@link T}
+     *
+     * @param <T> the type of the response
+     */
     @GetMapping(
             path = "/{" + SERVICE_IDENTIFIER_KEY + "}"
     )
+    @RequestPath(path = "/api/v1/sessions/{session_id}/hosts/{host_id}/services/{service_id}", method = GET)
     public <T> T getService(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
@@ -75,9 +125,33 @@ public class HostServicesController extends DefaultBrownieController {
         return (T) successResponse(hostService);
     }
 
+    /**
+     * Endpoint used to edit an existing service to a host
+     *
+     * @param sessionId The identifier of the session
+     * @param hostId The identifier of the host
+     * @param serviceId The identifier of the service
+     * @param language The language of the user who sent the request
+     * @param payload The payload of the request
+     *                 <pre>
+     *                      {@code
+     *                              {
+     *                                  "name" : "the name of the service" -> [String],
+     *                                  "configuration": {
+     *                                      "program_arguments": "The arguments of the program" -> [String],
+     *                                      "purge_nohup_out_after_reboot": true/false -> [boolean],
+     *                                      "auto_run_after_host_reboot": true/false -> [boolean]
+     *                                  }
+     *                              }
+     *                      }
+     *                 </pre>
+     *
+     * @return the response as {@link String}
+     */
     @PatchMapping(
             path = "/{" + SERVICE_IDENTIFIER_KEY + "}"
     )
+    @RequestPath(path = "/api/v1/sessions/{session_id}/hosts/{host_id}/services/{service_id}", method = PATCH)
     public String editService(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
@@ -105,7 +179,21 @@ public class HostServicesController extends DefaultBrownieController {
         }
     }
 
+    /**
+     * Endpoint used to retrieve the services of a host
+     *
+     * @param sessionId The identifier of the session
+     * @param hostId The identifier of the host
+     * @param keywords  The keywords used to filter the results
+     * @param statuses  The statuses used to filter the results
+     * @param language  The language of the user who sent the request
+     * @param page      The page requested
+     * @param pageSize  The size of the items to insert in the page
+     * @param <T>       the type of the response
+     * @return the response as {@link T}
+     */
     @GetMapping
+    @RequestPath(path = "/api/v1/sessions/{session_id}/hosts/{host_id}/services", method = GET)
     public <T> T getServices(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
@@ -126,9 +214,22 @@ public class HostServicesController extends DefaultBrownieController {
         return (T) successResponse(service.getServices(hostId, keywords, statuses, page, pageSize));
     }
 
+    /**
+     * Endpoint used to retrieve the current status of the specified services
+     *
+     * @param sessionId The identifier of the session
+     * @param hostId The identifier of the host
+     * @param services The services to retrieve their current status
+     * @param language The language of the user who sent the request
+     *
+     * @return the response as {@link T}
+     *
+     * @param <T> the type of the response
+     */
     @GetMapping(
             path = "/" + STATUS_KEY
     )
+    @RequestPath(path = "/api/v1/sessions/{session_id}/hosts/{host_id}/services/status", method = GET)
     public <T> T getServicesStatus(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
@@ -142,9 +243,20 @@ public class HostServicesController extends DefaultBrownieController {
         return (T) successResponse(service.getServicesStatus(services));
     }
 
+    /**
+     * Endpoint used to start a service
+     *
+     * @param sessionId The identifier of the session
+     * @param hostId The identifier of the host
+     * @param serviceId The identifier of the service
+     * @param language The language of the user who sent the request
+     *
+     * @return the response as {@link String}
+     */
     @PatchMapping(
             path = "/{" + SERVICE_IDENTIFIER_KEY + "}" + START_ENDPOINT
     )
+    @RequestPath(path = "/api/v1/sessions/{session_id}/hosts/{host_id}/services/{service_id}/start", method = PATCH)
     public String startService(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
@@ -170,9 +282,20 @@ public class HostServicesController extends DefaultBrownieController {
         return successResponse();
     }
 
+    /**
+     * Endpoint used to reboot a service
+     *
+     * @param sessionId The identifier of the session
+     * @param hostId The identifier of the host
+     * @param serviceId The identifier of the service
+     * @param language The language of the user who sent the request
+     *
+     * @return the response as {@link String}
+     */
     @PatchMapping(
             path = "/{" + SERVICE_IDENTIFIER_KEY + "}" + REBOOT_ENDPOINT
     )
+    @RequestPath(path = "/api/v1/sessions/{session_id}/hosts/{host_id}/services/{service_id}/reboot", method = PATCH)
     public String rebootService(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
@@ -198,9 +321,20 @@ public class HostServicesController extends DefaultBrownieController {
         return successResponse();
     }
 
+    /**
+     * Endpoint used to stop a service
+     *
+     * @param sessionId The identifier of the session
+     * @param hostId The identifier of the host
+     * @param serviceId The identifier of the service
+     * @param language The language of the user who sent the request
+     *
+     * @return the response as {@link String}
+     */
     @PatchMapping(
             path = "/{" + SERVICE_IDENTIFIER_KEY + "}" + STOP_ENDPOINT
     )
+    @RequestPath(path = "/api/v1/sessions/{session_id}/hosts/{host_id}/services/{service_id}/stop", method = PATCH)
     public String stopService(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
@@ -226,9 +360,21 @@ public class HostServicesController extends DefaultBrownieController {
         return successResponse();
     }
 
+    /**
+     * Endpoint used to remove a service
+     *
+     * @param sessionId The identifier of the session
+     * @param hostId The identifier of the host
+     * @param serviceId The identifier of the service
+     * @param language The language of the user who sent the request
+     * @param removeFromTheHost Whether the removing include also the removing from the filesystem of the host
+     *
+     * @return the response as {@link String}
+     */
     @DeleteMapping(
             path = "/{" + SERVICE_IDENTIFIER_KEY + "}"
     )
+    @RequestPath(path = "/api/v1/sessions/{session_id}/hosts/{host_id}/services/{service_id}", method = DELETE)
     public String removeService(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
