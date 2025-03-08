@@ -3,6 +3,9 @@ package com.tecknobit.brownie.services.session.controller;
 import com.tecknobit.apimanager.apis.ServerProtector;
 import com.tecknobit.brownie.services.session.entity.BrownieSession;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
+import com.tecknobit.equinoxbackend.environment.services.DefaultEquinoxController;
+import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
+import com.tecknobit.equinoxcore.annotations.RequestPath;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -15,14 +18,46 @@ import static com.tecknobit.browniecore.helpers.BrownieEndpoints.CONNECT_ENDPOIN
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
 import static com.tecknobit.equinoxcore.helpers.InputsValidator.*;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
+import static com.tecknobit.equinoxcore.network.RequestMethod.POST;
+import static com.tecknobit.equinoxcore.network.RequestMethod.PUT;
 
+/**
+ * The {@code BrownieSessionController} class is useful to manage all the {@link BrownieSession} operations
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see EquinoxController
+ * @see DefaultEquinoxController
+ * @see DefaultBrownieController
+ */
 @RestController
 @RequestMapping(value = BASE_EQUINOX_ENDPOINT + SESSIONS_KEY)
 public class BrownieSessionController extends DefaultBrownieController {
 
+    /**
+     * {@code brownieServerProtector} instance of the {@link ServerProtector} used to protect the accesses to a private
+     * backend instance
+     */
     public static ServerProtector brownieServerProtector;
 
+    /**
+     * Endpoint used to create a new session
+     *
+     * @param payload The payload of the request
+     *                 <pre>
+     *                      {@code
+     *                              {
+     *                                  "server_secret" : "the server secret used to protect the access to a private backend instance" -> [String],
+     *                                  "password" : "the password used to protect the session accesses" -> [String]
+     *                              }
+     *                      }
+     *                 </pre>
+     *
+     * @return the response as {@link T}
+     *
+     * @param <T> the type of the response
+     */
     @PostMapping
+    @RequestPath(path = "/api/v1/sessions", method = POST)
     public <T> T createSession(
             @RequestBody Map<String, String> payload
     ) throws NoSuchAlgorithmException {
@@ -36,9 +71,28 @@ public class BrownieSessionController extends DefaultBrownieController {
         return (T) successResponse(session);
     }
 
+    /**
+     * Endpoint used to connect to an existing session
+     *
+     * @param payload The payload of the request
+     *                 <pre>
+     *                      {@code
+     *                              {
+     *                                  "server_secret" : "the server secret used to protect the access to a private backend instance" -> [String],
+     *                                  "password" : "the password used to protect the session accesses" -> [String],
+     *                                  "join_code" : "the join code to connect to the session" -> [String]
+     *                              }
+     *                      }
+     *                 </pre>
+     *
+     * @return the response as {@link T}
+     *
+     * @param <T> the type of the response
+     */
     @PutMapping(
             path = CONNECT_ENDPOINT
     )
+    @RequestPath(path = "/api/v1/sessions/connect", method = PUT)
     public <T> T connectToSession(
             @RequestBody Map<String, String> payload
     ) throws NoSuchAlgorithmException {
@@ -53,9 +107,24 @@ public class BrownieSessionController extends DefaultBrownieController {
         return (T) successResponse(session);
     }
 
+    /**
+     * Endpoint used to delete an existing session
+     *
+     * @param payload The payload of the request
+     *                 <pre>
+     *                      {@code
+     *                              {
+     *                                  "password" : "the password used to protect the session accesses" -> [String]
+     *                              }
+     *                      }
+     *                 </pre>
+     *
+     * @return the response as {@link String}
+     */
     @DeleteMapping(
             path = "/{" + IDENTIFIER_KEY + "}"
     )
+    @RequestPath(path = "/api/v1/sessions/{session_id}", method = POST)
     public String deleteSession(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language,
