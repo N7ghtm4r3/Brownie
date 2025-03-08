@@ -1,0 +1,612 @@
+<!doctype html>
+<html class="no-js">
+<head>
+    <meta name="viewport" content="width=device-width, initial-scale=1" charset="UTF-8">
+    <title>backend</title>
+    <link href="../images/logo-icon.svg" rel="icon" type="image/svg">
+    <script>var pathToRoot = "../";</script>
+    <script>document.documentElement.classList.replace("no-js","js");</script>
+    <script>const storage = localStorage.getItem("dokka-dark-mode")
+    if (storage == null) {
+        const osDarkSchemePreferred = window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches
+        if (osDarkSchemePreferred === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    } else {
+        const savedDarkMode = JSON.parse(storage)
+        if(savedDarkMode === true) {
+            document.getElementsByTagName("html")[0].classList.add("theme-dark")
+        }
+    }
+    </script>
+    <script type="text/javascript" src="https://unpkg.com/kotlin-playground@1/dist/playground.min.js" async></script>
+    <script type="text/javascript" src="../scripts/sourceset_dependencies.js" async></script>
+    <link href="../styles/style.css" rel="Stylesheet">
+    <link href="../styles/main.css" rel="Stylesheet">
+    <link href="../styles/prism.css" rel="Stylesheet">
+    <link href="../styles/logo-styles.css" rel="Stylesheet">
+    <link href="../styles/font-jb-sans-auto.css" rel="Stylesheet">
+    <link href="../ui-kit/ui-kit.min.css" rel="Stylesheet">
+    <script type="text/javascript" src="../scripts/clipboard.js" async></script>
+    <script type="text/javascript" src="../scripts/navigation-loader.js" async></script>
+    <script type="text/javascript" src="../scripts/platform-content-handler.js" async></script>
+    <script type="text/javascript" src="../scripts/main.js" defer></script>
+    <script type="text/javascript" src="../scripts/prism.js" async></script>
+    <script type="text/javascript" src="../ui-kit/ui-kit.min.js" defer></script>
+    <script type="text/javascript" src="../scripts/symbol-parameters-wrapper_deferred.js" defer></script>
+</head>
+<body>
+<div class="root">
+    <nav class="navigation theme-dark" id="navigation-wrapper">
+        <a class="library-name--link" href="../index.html">
+            Brownie
+        </a>
+        <button class="navigation-controls--btn navigation-controls--btn_toc ui-kit_mobile-only" id="toc-toggle"
+                type="button">Toggle table of contents
+        </button>
+        <div class="navigation-controls--break ui-kit_mobile-only"></div>
+        <div class="library-version" id="library-version">
+        </div>
+        <div class="navigation-controls">
+            <div class="filter-section filter-section_loading" id="filter-section">
+                <button class="platform-tag platform-selector jvm-like" data-active=""
+                        data-filter=":backend:dokkaHtmlPartial/main">jvm
+                </button>
+                <div class="dropdown filter-section--dropdown" data-role="dropdown" id="filter-section-dropdown">
+                    <button class="button button_dropdown filter-section--dropdown-toggle" role="combobox"
+                            data-role="dropdown-toggle" aria-controls="platform-tags-listbox" aria-haspopup="listbox"
+                            aria-expanded="false" aria-label="Toggle source sets"></button>
+                    <ul role="listbox" id="platform-tags-listbox" class="dropdown--list" data-role="dropdown-listbox">
+                        <div class="dropdown--header"><span>Platform filter</span>
+                            <button class="button" data-role="dropdown-toggle" aria-label="Close platform filter">
+                                <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                            </button>
+                        </div>
+                        <li role="option" class="dropdown--option platform-selector-option jvm-like" tabindex="0">
+                            <label class="checkbox">
+                                <input type="checkbox" class="checkbox--input" id=":backend:dokkaHtmlPartial/main"
+                                       data-filter=":backend:dokkaHtmlPartial/main">
+                                <span class="checkbox--icon"></span>
+                                jvm
+                            </label>
+                        </li>
+                    </ul>
+                    <div class="dropdown--overlay"></div>
+                </div>
+            </div>
+            <button class="navigation-controls--btn navigation-controls--btn_theme" id="theme-toggle-button"
+                    type="button">Switch theme
+            </button>
+            <div class="navigation-controls--btn navigation-controls--btn_search" id="searchBar" role="button">Search in
+                API
+            </div>
+        </div>
+    </nav>
+    <div id="container">
+        <div class="sidebar" id="leftColumn">
+            <div class="dropdown theme-dark_mobile" data-role="dropdown" id="toc-dropdown">
+                <ul role="listbox" id="toc-listbox" class="dropdown--list dropdown--list_toc-list"
+                    data-role="dropdown-listbox">
+                    <div class="dropdown--header">
+                            <span>
+                                    Brownie
+                            </span>
+                        <button class="button" data-role="dropdown-toggle" aria-label="Close table of contents">
+                            <i class="ui-kit-icon ui-kit-icon_cross"></i>
+                        </button>
+                    </div>
+                    <div class="sidebar--inner" id="sideMenu"></div>
+                </ul>
+                <div class="dropdown--overlay"></div>
+            </div>
+        </div>
+        <div id="main">
+            <div class="main-content" id="content" pageids="backend::////PointingToDeclaration//-612206970">
+                <div class="breadcrumbs"></div>
+                <div class="cover ">
+                    <h1 class="cover"><span><span>backend</span></span></h1>
+                </div>
+                <h2 class="">Packages</h2>
+                <div class="table"><a data-name="-2004864052%2FPackages%2F-612206970"
+                                      anchor-label="com.tecknobit.brownie" id="-2004864052%2FPackages%2F-612206970"
+                                      data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie/index.html">com.tecknobit.brownie</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2004864052%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="-1962170412%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.configuration" id="-1962170412%2FPackages%2F-612206970"
+                       data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.configuration/index.html">com.tecknobit.brownie.configuration</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1962170412%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="1476067747%2FPackages%2F-612206970" anchor-label="com.tecknobit.brownie.helpers"
+                       id="1476067747%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.helpers/index.html">com.tecknobit.brownie.helpers</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1476067747%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="1886005541%2FPackages%2F-612206970" anchor-label="com.tecknobit.brownie.helpers.shell"
+                       id="1886005541%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.helpers.shell/index.html">com.tecknobit.brownie.helpers.shell</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1886005541%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="-2138631047%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.hosts.commands"
+                       id="-2138631047%2FPackages%2F-612206970"
+                       data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.hosts.commands/index.html">com.tecknobit.brownie.services.hosts.commands</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-2138631047%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="-1480526643%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.hosts.controller"
+                       id="-1480526643%2FPackages%2F-612206970"
+                       data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.hosts.controller/index.html">com.tecknobit.brownie.services.hosts.controller</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1480526643%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="-518926107%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.hosts.dtos" id="-518926107%2FPackages%2F-612206970"
+                       data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.hosts.dtos/index.html">com.tecknobit.brownie.services.hosts.dtos</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-518926107%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="-256164833%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.hosts.dtos.usages"
+                       id="-256164833%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.hosts.dtos.usages/index.html">com.tecknobit.brownie.services.hosts.dtos.usages</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-256164833%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="296733810%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.hosts.entities"
+                       id="296733810%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.hosts.entities/index.html">com.tecknobit.brownie.services.hosts.entities</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="296733810%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="-1546972199%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.hosts.repositories"
+                       id="-1546972199%2FPackages%2F-612206970"
+                       data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.hosts.repositories/index.html">com.tecknobit.brownie.services.hosts.repositories</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1546972199%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="-50472241%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.hosts.services"
+                       id="-50472241%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.hosts.services/index.html">com.tecknobit.brownie.services.hosts.services</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-50472241%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="-1603171366%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.hostservices.controller"
+                       id="-1603171366%2FPackages%2F-612206970"
+                       data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.hostservices.controller/index.html">com.tecknobit.brownie.services.hostservices.controller</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1603171366%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="1938814386%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.hostservices.dtos"
+                       id="1938814386%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.hostservices.dtos/index.html">com.tecknobit.brownie.services.hostservices.dtos</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1938814386%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="1002750655%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.hostservices.entities"
+                       id="1002750655%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.hostservices.entities/index.html">com.tecknobit.brownie.services.hostservices.entities</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1002750655%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="850533286%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.hostservices.repositories"
+                       id="850533286%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.hostservices.repositories/index.html">com.tecknobit.brownie.services.hostservices.repositories</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="850533286%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="655544604%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.hostservices.services"
+                       id="655544604%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.hostservices.services/index.html">com.tecknobit.brownie.services.hostservices.services</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="655544604%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="-467529246%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.session.controller"
+                       id="-467529246%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.session.controller/index.html">com.tecknobit.brownie.services.session.controller</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-467529246%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="115673449%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.session.entity"
+                       id="115673449%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.session.entity/index.html">com.tecknobit.brownie.services.session.entity</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="115673449%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="206384144%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.session.repository"
+                       id="206384144%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.session.repository/index.html">com.tecknobit.brownie.services.session.repository</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="206384144%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="-387083917%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.session.service"
+                       id="-387083917%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.session.service/index.html">com.tecknobit.brownie.services.session.service</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-387083917%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="979293116%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.shared.controllers"
+                       id="979293116%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.shared.controllers/index.html">com.tecknobit.brownie.services.shared.controllers</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="979293116%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                    <a data-name="1431668480%2FPackages%2F-612206970"
+                       anchor-label="com.tecknobit.brownie.services.shared.entities"
+                       id="1431668480%2FPackages%2F-612206970" data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                    <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                         data-filterable-set=":backend:dokkaHtmlPartial/main">
+                        <div>
+                            <div class="main-subrow ">
+                                <div class=""><span class="inline-flex">
+              <div><a href="com.tecknobit.brownie.services.shared.entities/index.html">com.tecknobit.brownie.services.shared.entities</a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="1431668480%2FPackages%2F-612206970"></span>
+                <div class="copy-popup-wrapper "><span
+                        class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+              </span></span></div>
+                                <div class="pull-right">
+                                    <div class="platform-tags no-gutters">
+                                        <div class="platform-tag jvm-like">jvm</div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="footer">
+                <a href="#content" id="go-to-top-link" class="footer--button footer--button_go-to-top"></a>
+                <span>© 2025 Copyright</span>
+                <span class="pull-right">
+            <span>Generated by </span>
+            <a class="footer--link footer--link_external" href="https://github.com/Kotlin/dokka">
+                <span>dokka</span>
+            </a>
+        </span>
+            </div>
+        </div>
+    </div>
+</div>
+</body>
+</html>
