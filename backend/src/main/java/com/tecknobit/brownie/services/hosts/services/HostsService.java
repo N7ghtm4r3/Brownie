@@ -12,7 +12,7 @@ import com.tecknobit.brownie.services.hosts.dtos.usages.CPUUsage;
 import com.tecknobit.brownie.services.hosts.dtos.usages.StorageUsage;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
-import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
+import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.services.HostServicesService;
 import com.tecknobit.browniecore.enums.HostStatus;
 import com.tecknobit.equinoxcore.annotations.Wrapper;

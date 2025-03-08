@@ -6,7 +6,7 @@ import com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.services.HostEventsService;
 import com.tecknobit.brownie.services.hostservices.dtos.CurrentServiceStatus;
-import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
+import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.repositories.HostServicesRepository;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;

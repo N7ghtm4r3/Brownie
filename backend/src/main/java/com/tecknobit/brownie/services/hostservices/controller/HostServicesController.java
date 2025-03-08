@@ -2,7 +2,7 @@ package com.tecknobit.brownie.services.hostservices.controller;
 
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
-import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
+import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.services.HostServicesService;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
 import org.json.JSONArray;

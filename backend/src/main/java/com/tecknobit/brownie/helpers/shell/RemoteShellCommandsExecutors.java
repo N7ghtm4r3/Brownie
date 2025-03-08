@@ -6,7 +6,7 @@ import com.jcraft.jsch.JSchException;
 import com.jcraft.jsch.Session;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.services.HostsService;
-import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
+import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import kotlin.Pair;
 
 import java.io.BufferedReader;

@@ -1,7 +1,7 @@
 package com.tecknobit.brownie.services.hostservices.repositories;
 
 import com.tecknobit.brownie.services.hostservices.dtos.CurrentServiceStatus;
-import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
+import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;

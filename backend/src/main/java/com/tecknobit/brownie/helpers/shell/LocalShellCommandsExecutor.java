@@ -3,7 +3,7 @@ package com.tecknobit.brownie.helpers.shell;
 import com.tecknobit.brownie.helpers.LocalEventsHandler;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.services.HostsService;
-import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
+import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 
 import java.io.IOException;
 import java.io.InputStream;

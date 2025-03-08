@@ -3,7 +3,7 @@ package com.tecknobit.brownie.helpers.shell;
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.services.HostsService;
-import com.tecknobit.brownie.services.hostservices.entity.BrownieHostService;
+import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.equinoxcore.annotations.Structure;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 
