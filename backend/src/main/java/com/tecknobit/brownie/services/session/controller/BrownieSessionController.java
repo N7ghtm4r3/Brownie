@@ -18,8 +18,7 @@ import static com.tecknobit.browniecore.helpers.BrownieEndpoints.CONNECT_ENDPOIN
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
 import static com.tecknobit.equinoxcore.helpers.InputsValidator.*;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
-import static com.tecknobit.equinoxcore.network.RequestMethod.POST;
-import static com.tecknobit.equinoxcore.network.RequestMethod.PUT;
+import static com.tecknobit.equinoxcore.network.RequestMethod.*;
 
 /**
  * The {@code BrownieSessionController} class is useful to manage all the {@link BrownieSession} operations
@@ -110,6 +109,8 @@ public class BrownieSessionController extends DefaultBrownieController {
     /**
      * Endpoint used to delete an existing session
      *
+     * @param sessionId The identifier of the session to delete
+     * @param language The language of the user who sent the request
      * @param payload The payload of the request
      *                 <pre>
      *                      {@code
@@ -124,7 +125,7 @@ public class BrownieSessionController extends DefaultBrownieController {
     @DeleteMapping(
             path = "/{" + IDENTIFIER_KEY + "}"
     )
-    @RequestPath(path = "/api/v1/sessions/{session_id}", method = POST)
+    @RequestPath(path = "/api/v1/sessions/{session_id}", method = DELETE)
     public String deleteSession(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language,
