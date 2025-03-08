@@ -11,9 +11,23 @@ import org.springframework.stereotype.Repository;
 import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 
+/**
+ * The {@code HostEventsRepository} interface is useful to manage the queries of the {@link HostHistoryEvent}
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see JpaRepository
+ */
 @Repository
 public interface HostEventsRepository extends JpaRepository<HostHistoryEvent, String> {
 
+    /**
+     * Query used to register a new event
+     *
+     * @param eventId   The identifier of the event
+     * @param type      The type of the event
+     * @param eventDate The date when the event occurred
+     * @param hostId    The identifier of the host owner of the event
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(
@@ -35,6 +49,15 @@ public interface HostEventsRepository extends JpaRepository<HostHistoryEvent, St
             @Param(HOST_IDENTIFIER_KEY) String hostId
     );
 
+    /**
+     * Query used to register a new event
+     *
+     * @param eventId The identifier of the event
+     * @param type The type of the event
+     * @param eventDate The date when the event occurred
+     * @param extra The extra information related to the event
+     * @param hostId The identifier of the host owner of the event
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(

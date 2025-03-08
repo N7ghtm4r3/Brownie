@@ -18,9 +18,22 @@ import static com.tecknobit.equinoxbackend.environment.services.builtin.service.
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.NAME_KEY;
 
+/**
+ * The {@code HostsRepository} interface is useful to manage the queries of the {@link BrownieHost}
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see JpaRepository
+ */
 @Repository
 public interface HostsRepository extends JpaRepository<BrownieHost, String> {
 
+    /**
+     * Query used to count the hosts number
+     *
+     * @param keywords The keywords used as filters
+     * @param statuses The statuses of the hosts to count
+     * @return the number of the hosts as {@code long}
+     */
     @Query(
             value = "SELECT COUNT(*) FROM " + HOSTS_KEY + _WHERE_ +
                     "( " +
@@ -35,6 +48,15 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
             @Param(STATUSES_KEY) List<String> statuses
     );
 
+    /**
+     * Query used to retrieve the hosts
+     *
+     * @param keywords The keywords used as filters
+     * @param statuses The statuses of the hosts to count
+     * @param pageable The parameters to paginate the query
+     *
+     * @return the list of the hosts as {@link List} of {@link BrownieHost}
+     */
     @Query(
             value = "SELECT * FROM " + HOSTS_KEY + _WHERE_ +
                     "( " +
@@ -51,6 +73,13 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
             Pageable pageable
     );
 
+    /**
+     * Query used to retrieve the current status of the specified hosts
+     *
+     * @param currentHosts The identifiers of the hosts to fetch their current status
+     *
+     * @return the list of the current hosts status as {@link List} of {@link CurrentHostStatus}
+     */
     @Query(
             value = "SELECT new com.tecknobit.brownie.services.hosts.dtos.CurrentHostStatus(" +
                     "h." + IDENTIFIER_KEY + ", " +
@@ -61,6 +90,20 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
             @Param(HOSTS_KEY) List<String> currentHosts
     );
 
+    /**
+     * Query used to register a new host
+     *
+     * @param hostId The identifier of the host
+     * @param name The name of the host
+     * @param hostAddress The address of the host
+     * @param sshUser The user to use for the SSH connection
+     * @param sshPassword The password to use for the SSH connection
+     * @param status The status of the host
+     * @param sessionId The identifier of the session owner of the host
+     * @param insertionDate The date when the host has been inserted
+     * @param broadcastIp The ip address of the remote host network interface
+     * @param macAddress The physical mac address of the remote host network interface
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(
@@ -100,6 +143,13 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
             @Param(MAC_ADDRESS_KEY) String macAddress
     );
 
+    /**
+     * Query used to edit an existing host
+     *
+     * @param hostId The identifier of the host
+     * @param name The name of the host
+     * @param hostAddress The address of the host
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(
@@ -115,6 +165,17 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
             @Param(HOST_ADDRESS_KEY) String hostAddress
     );
 
+    /**
+     * Query used to edit an existing host
+     *
+     * @param hostId The identifier of the host
+     * @param name The name of the host
+     * @param hostAddress The address of the host
+     * @param sshUser The user to use for the SSH connection
+     * @param sshPassword The password to use for the SSH connection
+     * @param broadcastIp The ip address of the remote host network interface
+     * @param macAddress The physical mac address of the remote host network interface
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(
@@ -138,6 +199,14 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
             @Param(MAC_ADDRESS_KEY) String macAddress
     );
 
+    /**
+     * Query used to check whether a host belongs to the specified session
+     *
+     * @param hostId The identifier of the host
+     * @param sessionId The identifier of the session
+     *
+     * @return the host as {@link BrownieHost} if belongs, null otherwise
+     */
     @Query(
             value = "SELECT * FROM " + HOSTS_KEY + _WHERE_ +
                     IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY +
@@ -149,6 +218,12 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
             @Param(SESSION_IDENTIFIER_KEY) String sessionId
     );
 
+    /**
+     * Query used to handle the current status of the host
+     *
+     * @param hostId The identifier of the host
+     * @param status The current status of the host
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(
@@ -162,6 +237,11 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
             @Param(STATUS_KEY) String status
     );
 
+    /**
+     * Query used to unregister a host from the session
+     *
+     * @param hostId The identifier of the host to unregister
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(
