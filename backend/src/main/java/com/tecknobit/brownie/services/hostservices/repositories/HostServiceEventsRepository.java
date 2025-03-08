@@ -1,6 +1,7 @@
 package com.tecknobit.brownie.services.hostservices.repositories;
 
 import com.tecknobit.brownie.services.hostservices.entities.ServiceEvent;
+import com.tecknobit.browniecore.enums.ServiceStatus;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -12,9 +13,23 @@ import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper._WHERE_;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 
+/**
+ * The {@code HostServiceEventsRepository} interface is useful to manage the queries of the {@link ServiceEvent}
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see JpaRepository
+ */
 @Repository
 public interface HostServiceEventsRepository extends JpaRepository<ServiceEvent, String> {
 
+    /**
+     * Query used to register a new event
+     *
+     * @param eventId   The identifier of the event
+     * @param type      The type of the event
+     * @param eventDate The date when the event occurred
+     * @param serviceId The identifier of the service owner of the event
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(
@@ -36,6 +51,15 @@ public interface HostServiceEventsRepository extends JpaRepository<ServiceEvent,
             @Param(SERVICE_IDENTIFIER_KEY) String serviceId
     );
 
+    /**
+     * Query used to register a new event
+     *
+     * @param eventId   The identifier of the event
+     * @param type      The type of the event
+     * @param eventDate The date when the event occurred
+     * @param extra     The extra information related to the event
+     * @param serviceId The identifier of the service owner of the event
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(
@@ -60,6 +84,12 @@ public interface HostServiceEventsRepository extends JpaRepository<ServiceEvent,
             @Param(SERVICE_IDENTIFIER_KEY) String serviceId
     );
 
+    /**
+     * Query used to get the last {@link ServiceStatus#RUNNING} event
+     *
+     * @param serviceId The identifier of the service
+     * @return the timestamp of the last {@link ServiceStatus#RUNNING} event as {@code long}
+     */
     @Query(
             value = "SELECT MAX(" + EVENT_DATE_KEY + ") FROM " + SERVICE_EVENTS_KEY +
                     _WHERE_ + TYPE_KEY + " IN ('RUNNING', 'RESTARTED') AND " +

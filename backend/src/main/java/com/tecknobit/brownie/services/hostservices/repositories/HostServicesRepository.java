@@ -18,9 +18,25 @@ import static com.tecknobit.equinoxbackend.environment.services.builtin.service.
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.NAME_KEY;
 
+/**
+ * The {@code HostServicesRepository} interface is useful to manage the queries of the {@link BrownieHostService}
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see JpaRepository
+ */
 @Repository
 public interface HostServicesRepository extends JpaRepository<BrownieHostService, String> {
 
+    /**
+     * Query used to store a new service
+     *
+     * @param serviceId     The identifier of the service
+     * @param serviceName   The name of the service
+     * @param status        The status of the service
+     * @param insertionDate The date when the service has been stored
+     * @param hostId        The identifier of the host owner of the service
+     * @param servicePath   The path of the service inside the filesystem of the host
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(
@@ -48,6 +64,13 @@ public interface HostServicesRepository extends JpaRepository<BrownieHostService
             @Param(SERVICE_PATH_KEY) String servicePath
     );
 
+    /**
+     * Query used to edit an existing service
+     *
+     * @param serviceId The identifier of the service
+     * @param serviceName The name of the service
+     * @param servicePath The path of the service inside the filesystem of the host
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(
@@ -63,6 +86,14 @@ public interface HostServicesRepository extends JpaRepository<BrownieHostService
             @Param(SERVICE_PATH_KEY) String servicePath
     );
 
+    /**
+     * Query used to count the services related to a host
+     *
+     * @param hostId The identifier of the host
+     * @param keywords The keywords used to filter the results
+     * @param statuses The statuses used to filter the results
+     * @return the count of the services related to a host as {@code long}
+     */
     @Query(
             value = "SELECT COUNT(*) FROM " + SERVICES_KEY + _WHERE_ +
                     "( " +
@@ -79,6 +110,16 @@ public interface HostServicesRepository extends JpaRepository<BrownieHostService
             @Param(STATUSES_KEY) List<String> statuses
     );
 
+    /**
+     * Query used to count the services related to a host
+     *
+     * @param hostId The identifier of the host
+     * @param keywords The keywords used to filter the results
+     * @param statuses The statuses used to filter the results
+     * @param pageable The parameters to paginate the query
+     *
+     * @return the services related to a host as {@link List} of {@link BrownieHostService}
+     */
     @Query(
             value = "SELECT * FROM " + SERVICES_KEY + _WHERE_ +
                     "( " +
@@ -96,6 +137,13 @@ public interface HostServicesRepository extends JpaRepository<BrownieHostService
             Pageable pageable
     );
 
+    /**
+     * Query used to retrieve the current status of the specified services
+     *
+     * @param services The services to retrieve their current status
+     *
+     * @return the current services status as {@link List} of {@link CurrentServiceStatus}
+     */
     @Query(
             value = "SELECT new com.tecknobit.brownie.services.hostservices.dtos.CurrentServiceStatus(" +
                     "s." + IDENTIFIER_KEY + "," +
@@ -108,6 +156,13 @@ public interface HostServicesRepository extends JpaRepository<BrownieHostService
             @Param(SERVICES_KEY) List<String> services
     );
 
+    /**
+     * Query used to update a service status and its pid
+     *
+     * @param serviceId The identifier of the service
+     * @param status The status to set
+     * @param pid The pid to set
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(
@@ -123,6 +178,11 @@ public interface HostServicesRepository extends JpaRepository<BrownieHostService
             @Param(PID_KEY) long pid
     );
 
+    /**
+     * Query used to remove a service
+     *
+     * @param serviceId The identifier of the service
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(

@@ -82,7 +82,7 @@ public class HostsService {
      * Method used to get the current status of the specified hosts
      *
      * @param rawHosts The hosts used to retrieve the current statuses
-     * @return the list of the current statues as {@link List} of {@link CurrentHostStatus}
+     * @return the list of the current statuses as {@link List} of {@link CurrentHostStatus}
      */
     public List<CurrentHostStatus> getHostsStatus(JSONArray rawHosts) {
         List<String> currentHosts = convertToFiltersList(rawHosts);

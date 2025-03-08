@@ -8,6 +8,7 @@ import com.tecknobit.brownie.services.hosts.services.HostEventsService;
 import com.tecknobit.brownie.services.hostservices.dtos.CurrentServiceStatus;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.repositories.HostServicesRepository;
+import com.tecknobit.browniecore.enums.ServiceStatus;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import org.json.JSONArray;
@@ -23,21 +24,50 @@ import static com.tecknobit.browniecore.enums.ServiceStatus.*;
 import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.generateIdentifier;
 
+/**
+ * The {@code HostServicesService} class is useful to manage all the {@link BrownieHostService} database operations
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ */
 @Service
 public class HostServicesService {
 
+    /**
+     * {@code eventsRepository} instance used to access to the {@link SERVICES_KEY} table
+     */
     @Autowired
     private HostServicesRepository servicesRepository;
 
+    /**
+     * {@code hostEventsService} the support service used to manage the host events data
+     */
     @Autowired
     private HostEventsService hostEventsService;
 
+    /**
+     * {@code configurationsService} the support service used to manage the service configurations data
+     */
     @Autowired
     private ServicesConfigurationsService configurationsService;
 
+    /**
+     * {@code serviceEvents} the support service used to manage the service events data
+     */
     @Autowired
     private HostServiceEventsService serviceEvents;
 
+    /**
+     * Method used to store a new service
+     *
+     * @param serviceName              The name of the service
+     * @param servicePath              The path of the service inside the filesystem of the host
+     * @param hostId                   The identifier of the host owner of the service
+     * @param programArguments         The program arguments
+     * @param purgeNohupOutAfterReboot Whether the {@code nohup.out} file related to the service must be deleted
+     *                                 at each service start
+     * @param autoRunAfterHostReboot   Whether the service must be automatically restarted after the host start or
+     *                                 the host restart
+     */
     public void storeService(String serviceName, String servicePath, String hostId, String programArguments,
                              boolean purgeNohupOutAfterReboot, boolean autoRunAfterHostReboot) {
         String serviceId = generateIdentifier();
@@ -47,6 +77,18 @@ public class HostServicesService {
         hostEventsService.registerServiceAddedEvent(hostId, serviceName);
     }
 
+    /**
+     * Method used to edit an existing service
+     *
+     * @param serviceId The identifier of the service
+     * @param serviceName The name of the service
+     * @param servicePath The path of the service inside the filesystem of the host
+     * @param programArguments The program arguments
+     * @param purgeNohupOutAfterReboot Whether the {@code nohup.out} file related to the service must be deleted
+     *                                 at each service start
+     * @param autoRunAfterHostReboot Whether the service must be automatically restarted after the host start or
+     *                               the host restart
+     */
     public void editService(String serviceId, String serviceName, String servicePath, String programArguments,
                             boolean purgeNohupOutAfterReboot, boolean autoRunAfterHostReboot) {
         servicesRepository.editService(serviceId, serviceName, servicePath);
@@ -54,6 +96,16 @@ public class HostServicesService {
                 autoRunAfterHostReboot);
     }
 
+    /**
+     * Method used to get the list of the services related to a host
+     *
+     * @param hostId The identifier of the host
+     * @param keywords    The keywords used to filter the results
+     * @param rawStatuses The statuses used to filter the results
+     * @param page        The page requested
+     * @param pageSize    The size of the items to insert in the page
+     * @return the list of the services as {@link PaginatedResponse} of {@link BrownieHostService}
+     */
     public PaginatedResponse<BrownieHostService> getServices(String hostId, Set<String> keywords, JSONArray rawStatuses,
                                                              int page, int pageSize) {
         String fullTextKeywords = formatFullTextKeywords(keywords, "+", "*", true);
@@ -64,6 +116,12 @@ public class HostServicesService {
         return new PaginatedResponse<>(services, page, pageSize, totalServices);
     }
 
+    /**
+     * Method used to get the current status of the specified services
+     *
+     * @param rawServices The services used to retrieve the current statuses
+     * @return the list of the current statuses as {@link List} of {@link CurrentServiceStatus}
+     */
     public List<CurrentServiceStatus> getServicesStatus(JSONArray rawServices) {
         List<String> services = RequestParamsConverter.convertToFiltersList(rawServices);
         if (services.isEmpty())
@@ -71,11 +129,28 @@ public class HostServicesService {
         return servicesRepository.getServicesStatus(services);
     }
 
+    /**
+     * Method used to start a service
+     *
+     * @param host The host owner of the service
+     * @param service The service to start
+     *
+     * @throws Exception when an exception occurred during the process
+     */
     @Wrapper
     public void startService(BrownieHost host, BrownieHostService service) throws Exception {
         startService(host, service, false);
     }
 
+    /**
+     * Method used to start a service
+     *
+     * @param host The host owner of the service
+     * @param service The service to start
+     * @param hostRebooted Whether this method has been invoked after the host rebooted
+     *
+     * @throws Exception when an exception occurred during the process
+     */
     public void startService(BrownieHost host, BrownieHostService service, boolean hostRebooted) throws Exception {
         ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
         long pid = commandsExecutor.startService(service);
@@ -89,6 +164,14 @@ public class HostServicesService {
             serviceEvents.registerServiceStarted(serviceId, pid);
     }
 
+    /**
+     * Method used to reboot a service
+     *
+     * @param host The host owner of the service
+     * @param service The service to reboot
+     *
+     * @throws Exception when an exception occurred during the process
+     */
     public void rebootService(BrownieHost host, BrownieHostService service) throws Exception {
         String serviceId = service.getId();
         setServiceInRebooting(serviceId);
@@ -100,11 +183,24 @@ public class HostServicesService {
         });
     }
 
+    /**
+     * Method used to set the {@link ServiceStatus#REBOOTING} status to the specified service
+     *
+     * @param serviceId The identifier of the service
+     */
     public void setServiceInRebooting(String serviceId) {
         servicesRepository.updateServiceStatus(serviceId, REBOOTING.name(), -1);
         serviceEvents.registerServiceRebooted(serviceId);
     }
 
+    /**
+     * Method used to stop a service
+     *
+     * @param host The host owner of the service
+     * @param service The service to stop
+     *
+     * @throws Exception when an exception occurred during the process
+     */
     public void stopService(BrownieHost host, BrownieHostService service) throws Exception {
         ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);
         commandsExecutor.stopService(service);
@@ -112,11 +208,25 @@ public class HostServicesService {
         setServiceAsStopped(serviceId);
     }
 
+    /**
+     * Method used to set the {@link ServiceStatus#STOPPED} status to the specified service
+     *
+     * @param serviceId The identifier of the service
+     */
     public void setServiceAsStopped(String serviceId) {
         servicesRepository.updateServiceStatus(serviceId, STOPPED.name(), -1);
         serviceEvents.registerServiceStopped(serviceId);
     }
 
+    /**
+     * Method used to remove a service
+     *
+     * @param host The host owner of the service
+     * @param service The service to remove
+     * @param removeFromTheHost Whether the removing include also the removing from the filesystem of the host
+     *
+     * @throws Exception when an exception occurred during the process
+     */
     public void removeService(BrownieHost host, BrownieHostService service, boolean removeFromTheHost) throws Exception {
         if (removeFromTheHost) {
             ShellCommandsExecutor commandsExecutor = ShellCommandsExecutor.getInstance(host);

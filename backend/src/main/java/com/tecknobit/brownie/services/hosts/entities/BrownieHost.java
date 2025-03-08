@@ -254,6 +254,12 @@ public class BrownieHost extends EquinoxItem {
         return insertionDate;
     }
 
+    /**
+     * Method to check whether the specified service belongs to the host
+     *
+     * @param serviceId The identifier of the service
+     * @return whether the service belongs to the host as {@code boolean}
+     */
     public boolean hasService(String serviceId) {
         for (BrownieHostService service : services)
             if (service.getId().equals(serviceId))
@@ -261,6 +267,12 @@ public class BrownieHost extends EquinoxItem {
         return false;
     }
 
+    /**
+     * Method to retrieve the specified service from to the host
+     *
+     * @param serviceId The identifier of the service
+     * @return the service if exists as {@link BrownieHostService}, null otherwise
+     */
     public BrownieHostService getService(String serviceId) {
         for (BrownieHostService service : services)
             if (service.getId().equals(serviceId))
@@ -268,16 +280,31 @@ public class BrownieHost extends EquinoxItem {
         return null;
     }
 
+    /**
+     * Method to check whether the host is currently {@link HostStatus#ONLINE}
+     *
+     * @return whether the host is currently {@link HostStatus#ONLINE} as {@code boolean}
+     */
     @JsonIgnore
     public boolean isOnline() {
         return status.isOnline();
     }
 
+    /**
+     * Method to check whether the host is currently {@link HostStatus#OFFLINE}
+     *
+     * @return whether the host is currently {@link HostStatus#OFFLINE} as {@code boolean}
+     */
     @JsonIgnore
     public boolean isOffline() {
         return status.isOffline();
     }
 
+    /**
+     * Method to check whether the host is remotely connected
+     *
+     * @return whether the host is remotely connected as {@code boolean}
+     */
     @JsonIgnore
     public boolean isRemoteHost() {
         return sshUser != null;
