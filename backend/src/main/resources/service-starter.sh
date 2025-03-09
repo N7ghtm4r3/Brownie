@@ -4,12 +4,12 @@ file="%s"
 
 dir=$(dirname "$file")
 
+cd "$dir" || exit 1
+
 shift
 
 args_string="%s"
-
 set -- $args_string
-
 args=("$@")
 
 if [[ -x "$file" && ! -d "$file" ]]; then
@@ -58,7 +58,6 @@ case "$filetype" in
         ;;
     *"text"*)
         shebang=$(head -n 1 "$file" | cut -d' ' -f1)
-
         case "$shebang" in
             "#!/usr/bin/env python"*)    nohup python3 "$file" "${args[@]}" >> "$dir/nohup.out" 2>&1 & pid=$!; echo "$pid" ;;
             "#!/usr/bin/env node"*)      nohup node "$file" "${args[@]}" >> "$dir/nohup.out" 2>&1 & pid=$!; echo "$pid" ;;
