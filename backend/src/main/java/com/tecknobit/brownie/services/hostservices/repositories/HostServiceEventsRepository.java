@@ -96,7 +96,7 @@ public interface HostServiceEventsRepository extends JpaRepository<ServiceEvent,
                     SERVICE_IDENTIFIER_KEY + "=:" + SERVICE_IDENTIFIER_KEY,
             nativeQuery = true
     )
-    long getLastRunningEvent(
+    Long getLastRunningEvent(
             @Param(SERVICE_IDENTIFIER_KEY) String serviceId
     );
 

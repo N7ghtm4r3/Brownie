@@ -56,8 +56,8 @@ public abstract class ShellCommandsExecutor {
                 freq=$(lscpu | grep 'CPU MHz' | awk '{print $3/1000}');
                 printf "%.2f" $freq;
               fi),
-            $(free -h | grep 'Mem' | awk '{print $3 "/" $2}' | sed 's/[A-Za-z]//g'),
-            $(df -h --total | grep 'total' | awk '{print $3 "/" $2}' | sed 's/[A-Za-z]//g'),
+            $(free -b | awk '/Mem:/ {printf "%.2f/%.2f\\n", $3/1073741824, $2/1073741824}'),
+            $(df --block-size=1G --total | awk '/total/ {printf "%d/%d\\n", $3, $2}'),
             $(if lsblk -d -o NAME | grep -q mmcblk; then echo "SD_CARD";
               elif lsblk -d -o NAME | grep -q nvme; then echo "SSD_NVMe";
               elif lsblk -d -o NAME | grep -q vda; then echo "VIRTUAL_DISK";
@@ -69,7 +69,7 @@ public abstract class ShellCommandsExecutor {
      * {@code FIND_SERVICE_PATH} the bash command used to find the path of a service inside the filesystem of the host
      */
     protected static final String FIND_SERVICE_PATH = """
-            find . -type f -name "%s"
+            find / -type f -name "%s" 2>/dev/null
             """;
 
     /**

@@ -63,7 +63,9 @@ public class HostServiceEventsService {
      * @return the running days since the last {@link ServiceEventType#RUNNING} event as {@code int}
      */
     private int calculateRunningDays(String serviceId) {
-        long lastRunningEvent = eventsRepository.getLastRunningEvent(serviceId);
+        Long lastRunningEvent = eventsRepository.getLastRunningEvent(serviceId);
+        if (lastRunningEvent == null)
+            lastRunningEvent = 0L;
         return TimeFormatter.INSTANCE.daysUntilNow(lastRunningEvent);
     }
 
