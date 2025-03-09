@@ -63,18 +63,20 @@ public class HostsService {
     /**
      * Method used to get the list of the hosts
      *
+     * @param sessionId The identifier of the session
      * @param keywords    The keywords used to filter the results
      * @param rawStatuses The statuses used to filter the results
      * @param page        The page requested
      * @param pageSize    The size of the items to insert in the page
      * @return the list of the hosts as {@link PaginatedResponse} of {@link BrownieHost}
      */
-    public PaginatedResponse<BrownieHost> getHosts(Set<String> keywords, JSONArray rawStatuses, int page,
-                                                   int pageSize) {
+    public PaginatedResponse<BrownieHost> getHosts(String sessionId, Set<String> keywords, JSONArray rawStatuses,
+                                                   int page, int pageSize) {
         String fullTextKeywords = formatFullTextKeywords(keywords, "+", "*", true);
         List<String> statuses = convertToFiltersList(rawStatuses);
-        long totalHosts = hostsRepository.countHosts(fullTextKeywords, statuses);
-        List<BrownieHost> hosts = hostsRepository.getHosts(fullTextKeywords, statuses, PageRequest.of(page, pageSize));
+        long totalHosts = hostsRepository.countHosts(sessionId, fullTextKeywords, statuses);
+        List<BrownieHost> hosts = hostsRepository.getHosts(sessionId, fullTextKeywords, statuses,
+                PageRequest.of(page, pageSize));
         return new PaginatedResponse<>(hosts, page, pageSize, totalHosts);
     }
 

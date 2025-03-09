@@ -40,10 +40,12 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
                     "MATCH(" + NAME_KEY + "," + HOST_ADDRESS_KEY + ") AGAINST (:" + KEYWORDS_KEY + _IN_BOOLEAN_MODE + ") " +
                     "OR :" + KEYWORDS_KEY + " = ''" +
                     ") " +
-                    "AND " + STATUS_KEY + " IN (:" + STATUSES_KEY + ")",
+                    "AND " + STATUS_KEY + " IN (:" + STATUSES_KEY + ")" +
+                    "AND " + SESSION_IDENTIFIER_KEY + "=:" + SESSION_IDENTIFIER_KEY,
             nativeQuery = true
     )
     long countHosts(
+            @Param(SESSION_IDENTIFIER_KEY) String sessionId,
             @Param(KEYWORDS_KEY) String keywords,
             @Param(STATUSES_KEY) List<String> statuses
     );
@@ -64,10 +66,12 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
                     "OR :" + KEYWORDS_KEY + " = ''" +
                     ") " +
                     "AND " + STATUS_KEY + " IN (:" + STATUSES_KEY + ") " +
+                    "AND " + SESSION_IDENTIFIER_KEY + "=:" + SESSION_IDENTIFIER_KEY +
                     "ORDER BY " + INSERTION_DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<BrownieHost> getHosts(
+            @Param(SESSION_IDENTIFIER_KEY) String sessionId,
             @Param(KEYWORDS_KEY) String keywords,
             @Param(STATUSES_KEY) List<String> statuses,
             Pageable pageable
