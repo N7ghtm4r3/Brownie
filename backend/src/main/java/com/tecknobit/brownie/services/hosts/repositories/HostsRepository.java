@@ -67,7 +67,7 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
                     ") " +
                     "AND " + STATUS_KEY + " IN (:" + STATUSES_KEY + ") " +
                     "AND " + SESSION_IDENTIFIER_KEY + "=:" + SESSION_IDENTIFIER_KEY +
-                    "ORDER BY " + INSERTION_DATE_KEY + " DESC",
+                    " ORDER BY " + INSERTION_DATE_KEY + " DESC",
             nativeQuery = true
     )
     List<BrownieHost> getHosts(

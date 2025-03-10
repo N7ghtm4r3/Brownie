@@ -76,7 +76,7 @@ public class HostsController extends DefaultBrownieController {
         setSessionLocale(language);
         if (!sessionExists(sessionId))
             return (T) failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        return (T) successResponse(hostsService.getHosts(keywords, statuses, page, pageSize));
+        return (T) successResponse(hostsService.getHosts(sessionId, keywords, statuses, page, pageSize));
     }
 
     /**
