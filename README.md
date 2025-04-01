@@ -188,6 +188,42 @@ When you have to start the service you will have different scenarios:
   java -jar Brownie.jar dssi // this will delete the current server secret and interrupts the server workflow right next
   ```
 
+## Autorun after reboot 
+
+To automatically run the **Brownie**'s backend instance after the host machine rebooted or started you can create a dedicated `crontab` to perform this action:
+
+### Open the crontab editor
+
+If you have to choose between the editor choose the suggested one 
+
+```bash
+crontab -e
+```
+
+### Create the crontab task
+
+- `jar` file **in** the home directory
+
+```bash
+@reboot /usr/bin/java -jar Brownie.jar
+
+#remove the nohup before restart the new instance
+@reboot rm -f nohup.out; sleep 2; /usr/bin/java -jar Brownie.jar
+```
+
+- `jar` file **external** from home directory
+
+```bash
+@reboot cd /path/to/brownie/ ; /usr/bin/java -jar Brownie.jar
+
+#remove the nohup before restart the new instance
+@reboot rm -f /path/to/brownie/nohup.out; sleep 2; cd /path/to/brownie/ ; /usr/bin/java -jar Brownie.jar
+```
+
+### Reboot as needed
+
+When you have to reboot the host machine the **Brownie**'s backend instance will be automatilly started by the task created 
+
 ## Support
 
 If you need help using the library or encounter any problems or bugs, please contact us via the following links:
