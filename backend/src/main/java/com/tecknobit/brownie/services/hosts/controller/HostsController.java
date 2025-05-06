@@ -38,13 +38,13 @@ public class HostsController extends DefaultBrownieController {
      * {@code WRONG_HOST_ADDRESS_MESSAGE} the key of the message sent to the clients when a host address value is not
      * valid
      */
-    public static final String WRONG_HOST_ADDRESS_MESSAGE = "wrong_host_address_key";
+    public static final String WRONG_HOST_ADDRESS_MESSAGE = "wrong_host_address";
 
     /**
      * {@code WRONG_SSH_CREDENTIALS_MESSAGE} the key of the message sent to the clients when the SSH credentials are not
      * valid
      */
-    public static final String WRONG_SSH_CREDENTIALS_MESSAGE = "ssh_credentials_are_not_valid_key";
+    public static final String WRONG_SSH_CREDENTIALS_MESSAGE = "ssh_credentials_are_not_valid";
 
     /**
      * Endpoint used to retrieve the hosts of a session
