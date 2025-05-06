@@ -11,8 +11,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
-import java.util.HashSet;
-import java.util.List;
+import java.util.*;
 
 import static com.tecknobit.apimanager.apis.ResourcesUtils.getResourceStream;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.COMMA;
@@ -104,14 +103,16 @@ public abstract class ShellCommandsExecutor {
     protected static final String PIPE_CHARACTER = "|";
 
     // TODO: 06/05/2025 TO DOCU
-    public void retrieveStoppedServices(BrownieHost host) throws Exception {
-        List<String> serviceNames = host.listServiceNames();
+    public Collection<Long> detectStoppedServices(BrownieHost host) throws Exception {
+        List<String> serviceNames = host.listRunningServiceNames();
         String command = formatServicesMonitoringCommand(serviceNames);
-        retrieveStoppedServices(command, host);
+        return retrieveStoppedServices(command, host);
     }
 
     // TODO: 06/05/2025 TO DOCU
     private String formatServicesMonitoringCommand(List<String> serviceNames) {
+        if (serviceNames.isEmpty())
+            return null;
         StringBuilder builder = new StringBuilder();
         builder.append(SINGLE_QUOTE);
         for (String serviceName : serviceNames)
@@ -121,18 +122,20 @@ public abstract class ShellCommandsExecutor {
         return String.format(GREP_RUNNING_SERVICES_COMMAND, builder);
     }
 
-    private void retrieveStoppedServices(String command, BrownieHost host) throws Exception {
-        HashSet<Long> servicePids = host.listServicePids();
+    private Collection<Long> retrieveStoppedServices(String command, BrownieHost host) throws Exception {
+        if (command == null)
+            return Collections.EMPTY_LIST;
         String result = execBashCommand(command);
+        HashSet<Long> servicePids = host.listRunningServicePids();
         if (result.isEmpty())
-            return;
-        String[] runningPids = result.split(COMMA);
-        for (String runningPid : runningPids) {
-            long pid = Long.parseLong(runningPid);
-            if (!servicePids.contains(pid)) {
-                System.out.println(pid);
-            }
-        }
+            return servicePids;
+        List<Long> stoppedPids = new ArrayList<>();
+        HashSet<String> runningPids = new HashSet<>(Arrays.stream(result.split(COMMA)).toList());
+        for (long servicePid : servicePids)
+            if (!runningPids.contains(String.valueOf(servicePid)))
+                stoppedPids.add(servicePid);
+        System.out.println(stoppedPids);
+        return stoppedPids;
     }
 
     /**

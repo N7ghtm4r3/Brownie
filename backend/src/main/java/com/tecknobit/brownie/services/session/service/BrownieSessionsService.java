@@ -1,6 +1,8 @@
 package com.tecknobit.brownie.services.session.service;
 
 import com.tecknobit.apimanager.apis.APIRequest;
+import com.tecknobit.brownie.events.BrownieApplicationEvent;
+import com.tecknobit.brownie.events.BrownieEventsEmitter;
 import com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.session.entity.BrownieSession;
@@ -12,20 +14,24 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.Collection;
 import java.util.List;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
 
 import static com.tecknobit.apimanager.apis.APIRequest.SHA256_ALGORITHM;
+import static com.tecknobit.brownie.events.BrownieApplicationEventType.SYNC_SERVICES;
 import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * The {@code BrownieSessionsService} class is useful to manage all the {@link BrownieSession} database operations
  *
  * @author N7ghtm4r3 - Tecknobit
+ *
+ * @see BrownieEventsEmitter
  */
 @Service
-public class BrownieSessionsService {
+public class BrownieSessionsService extends BrownieEventsEmitter {
 
     // TODO: 06/05/2025 TO COMMENT
     private static final Logger LOGGER = LoggerFactory.getLogger(BrownieSessionsService.class);
@@ -50,25 +56,35 @@ public class BrownieSessionsService {
 
     // TODO: 06/05/2025 TO COMMENT
     @PostConstruct
-    private void monitorServicesStatus() {
+    private void monitorAndSyncServicesStatus() {
         servicesMonitor.scheduleWithFixedDelay(() -> {
             LOGGER.info("Executing the monitor-and-sync routine for all the services");
             List<BrownieSession> sessions = sessionsRepository.findAll();
-            for (BrownieSession session : sessions) {
-                for (BrownieHost host : session.getHosts()) {
-                    try {
-                        ShellCommandsExecutor executor = ShellCommandsExecutor.getInstance(host);
-                        executor.retrieveStoppedServices(host);
-                    } catch (Exception e) {
-                        LOGGER.error(
-                                "Executing the monitor-and-sync routine for the {} host occurred an error",
-                                host.getName(),
-                                e
-                        );
-                    }
-                }
-            }
+            for (BrownieSession session : sessions)
+                for (BrownieHost host : session.getHosts())
+                    monitorServices(host);
         }, 0, MONITOR_AND_SYNC_DELAY, SECONDS);
+    }
+
+    private void monitorServices(BrownieHost host) {
+        try {
+            ShellCommandsExecutor executor = ShellCommandsExecutor.getInstance(host);
+            Collection<Long> stoppedServices = executor.detectStoppedServices(host);
+            syncServices(host, stoppedServices);
+        } catch (Exception e) {
+            LOGGER.error(
+                    "Executing the monitor-and-sync routine for the {} host occurred an error",
+                    host.getName(),
+                    e
+            );
+        }
+    }
+
+    private void syncServices(BrownieHost host, Collection<Long> stoppedServices) {
+        if (stoppedServices.isEmpty())
+            return;
+        BrownieApplicationEvent event = new BrownieApplicationEvent(this, SYNC_SERVICES, host, stoppedServices);
+        emitEvent(event);
     }
 
     /**

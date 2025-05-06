@@ -1,6 +1,8 @@
 package com.tecknobit.brownie.services.hostservices.services;
 
 import com.jcraft.jsch.JSchException;
+import com.tecknobit.brownie.events.BrownieApplicationEvent;
+import com.tecknobit.brownie.events.BrownieEventsCollector;
 import com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.services.HostEventsService;
@@ -8,16 +10,22 @@ import com.tecknobit.brownie.services.hostservices.dtos.CurrentServiceStatus;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.repositories.HostServicesRepository;
 import com.tecknobit.browniecore.enums.ServiceStatus;
+import com.tecknobit.equinoxbackend.events.EquinoxEventsCollector;
+import com.tecknobit.equinoxcore.annotations.CustomParametersOrder;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import static com.tecknobit.brownie.events.BrownieApplicationEventType.SYNC_SERVICES;
+import static com.tecknobit.browniecore.ConstantsKt.HOST_KEY;
+import static com.tecknobit.browniecore.ConstantsKt.SERVICES_KEY;
 import static com.tecknobit.browniecore.enums.ServiceStatus.*;
 import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.generateIdentifier;
@@ -26,9 +34,12 @@ import static com.tecknobit.equinoxbackend.environment.services.builtin.controll
  * The {@code HostServicesService} class is useful to manage all the {@link BrownieHostService} database operations
  *
  * @author N7ghtm4r3 - Tecknobit
+ *
+ * @see EquinoxEventsCollector
+ * @see BrownieEventsCollector
  */
 @Service
-public class HostServicesService {
+public class HostServicesService implements BrownieEventsCollector {
 
     /**
      * {@code eventsRepository} instance used to access to the {@link SERVICES_KEY} table
@@ -205,6 +216,16 @@ public class HostServicesService {
     }
 
     /**
+     * Method used to stop a service
+     *
+     * @param host       The host owner of the service
+     * @param servicePid The pid of service to mark as {@link ServiceStatus#STOPPED}
+     */
+    public void markServiceAsStopped(BrownieHost host, long servicePid) {
+
+    }
+
+    /**
      * Method used to set the {@link ServiceStatus#STOPPED} status to the specified service
      *
      * @param serviceId The identifier of the service
@@ -230,6 +251,20 @@ public class HostServicesService {
         }
         servicesRepository.removeService(service.getId());
         hostEventsService.registerServiceRemovedEvent(host.getId(), service.getName(), removeFromTheHost);
+    }
+
+    // TODO: 06/05/2025 TO DOCU
+    @Override
+    public void onEventCollected(BrownieApplicationEvent event) {
+        if (event.getEventType() == SYNC_SERVICES) {
+            @CustomParametersOrder(order = {HOST_KEY, SERVICES_KEY})
+            Object[] extra = event.getExtra();
+            BrownieHost host = (BrownieHost) extra[0];
+            Collection<Long> stoppedServices = (Collection<Long>) extra[1];
+            System.out.println(stoppedServices);
+            for (Long servicePid : stoppedServices)
+                markServiceAsStopped(host, servicePid);
+        }
     }
 
 }

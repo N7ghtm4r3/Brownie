@@ -317,19 +317,21 @@ public class BrownieHost extends EquinoxItem {
 
     // TODO: 06/05/2025 TO DOCU
     @JsonIgnore
-    public List<String> listServiceNames() {
+    public List<String> listRunningServiceNames() {
         List<String> serviceNames = new ArrayList<>();
         for (BrownieHostService service : services)
-            serviceNames.add(service.getName());
+            if (service.isRunning())
+                serviceNames.add(service.getName());
         return serviceNames;
     }
 
     // TODO: 06/05/2025 TO DOCU
     @JsonIgnore
-    public HashSet<Long> listServicePids() {
+    public HashSet<Long> listRunningServicePids() {
         HashSet<Long> servicePids = new HashSet<>();
         for (BrownieHostService service : services)
-            servicePids.add(service.getPid());
+            if (service.isRunning())
+                servicePids.add(service.getPid());
         return servicePids;
     }
 
