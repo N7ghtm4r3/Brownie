@@ -18,7 +18,6 @@ import com.tecknobit.browniecore.enums.HostStatus;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import kotlin.Pair;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -29,7 +28,6 @@ import java.util.Set;
 import java.util.concurrent.atomic.AtomicInteger;
 
 import static com.tecknobit.brownie.helpers.RemoteHostWaiter.waitForHostRestart;
-import static com.tecknobit.brownie.helpers.RequestParamsConverter.convertToFiltersList;
 import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.browniecore.enums.HostStatus.*;
 import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
@@ -65,15 +63,14 @@ public class HostsService {
      *
      * @param sessionId The identifier of the session
      * @param keywords    The keywords used to filter the results
-     * @param rawStatuses The statuses used to filter the results
+     * @param statuses The statuses used to filter the results
      * @param page        The page requested
      * @param pageSize    The size of the items to insert in the page
      * @return the list of the hosts as {@link PaginatedResponse} of {@link BrownieHost}
      */
-    public PaginatedResponse<BrownieHost> getHosts(String sessionId, Set<String> keywords, JSONArray rawStatuses,
+    public PaginatedResponse<BrownieHost> getHosts(String sessionId, Set<String> keywords, List<String> statuses,
                                                    int page, int pageSize) {
         String fullTextKeywords = formatFullTextKeywords(keywords, "+", "*", true);
-        List<String> statuses = convertToFiltersList(rawStatuses);
         long totalHosts = hostsRepository.countHosts(sessionId, fullTextKeywords, statuses);
         List<BrownieHost> hosts = hostsRepository.getHosts(sessionId, fullTextKeywords, statuses,
                 PageRequest.of(page, pageSize));
@@ -83,14 +80,13 @@ public class HostsService {
     /**
      * Method used to get the current status of the specified hosts
      *
-     * @param rawHosts The hosts used to retrieve the current statuses
+     * @param hosts The hosts used to retrieve the current statuses
      * @return the list of the current statuses as {@link List} of {@link CurrentHostStatus}
      */
-    public List<CurrentHostStatus> getHostsStatus(JSONArray rawHosts) {
-        List<String> currentHosts = convertToFiltersList(rawHosts);
-        if (currentHosts.isEmpty())
+    public List<CurrentHostStatus> getHostsStatus(List<String> hosts) {
+        if (hosts.isEmpty())
             return Collections.EMPTY_LIST;
-        return hostsRepository.getHostsStatus(currentHosts);
+        return hostsRepository.getHostsStatus(hosts);
     }
 
     /**

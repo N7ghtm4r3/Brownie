@@ -1,7 +1,6 @@
 package com.tecknobit.brownie.services.hostservices.services;
 
 import com.jcraft.jsch.JSchException;
-import com.tecknobit.brownie.helpers.RequestParamsConverter;
 import com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.services.HostEventsService;
@@ -11,7 +10,6 @@ import com.tecknobit.brownie.services.hostservices.repositories.HostServicesRepo
 import com.tecknobit.browniecore.enums.ServiceStatus;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
@@ -101,15 +99,14 @@ public class HostServicesService {
      *
      * @param hostId The identifier of the host
      * @param keywords    The keywords used to filter the results
-     * @param rawStatuses The statuses used to filter the results
+     * @param statuses The statuses used to filter the results
      * @param page        The page requested
      * @param pageSize    The size of the items to insert in the page
      * @return the list of the services as {@link PaginatedResponse} of {@link BrownieHostService}
      */
-    public PaginatedResponse<BrownieHostService> getServices(String hostId, Set<String> keywords, JSONArray rawStatuses,
+    public PaginatedResponse<BrownieHostService> getServices(String hostId, Set<String> keywords, List<String> statuses,
                                                              int page, int pageSize) {
         String fullTextKeywords = formatFullTextKeywords(keywords, "+", "*", true);
-        List<String> statuses = RequestParamsConverter.convertToFiltersList(rawStatuses);
         long totalServices = servicesRepository.countServices(hostId, fullTextKeywords, statuses);
         List<BrownieHostService> services = servicesRepository.getServices(hostId, fullTextKeywords, statuses,
                 PageRequest.of(page, pageSize));
@@ -119,11 +116,10 @@ public class HostServicesService {
     /**
      * Method used to get the current status of the specified services
      *
-     * @param rawServices The services used to retrieve the current statuses
+     * @param services The services used to retrieve the current statuses
      * @return the list of the current statuses as {@link List} of {@link CurrentServiceStatus}
      */
-    public List<CurrentServiceStatus> getServicesStatus(JSONArray rawServices) {
-        List<String> services = RequestParamsConverter.convertToFiltersList(rawServices);
+    public List<CurrentServiceStatus> getServicesStatus(List<String> services) {
         if (services.isEmpty())
             return Collections.EMPTY_LIST;
         return servicesRepository.getServicesStatus(services);
