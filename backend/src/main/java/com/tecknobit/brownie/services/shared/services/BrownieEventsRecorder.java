@@ -9,12 +9,27 @@ import org.springframework.stereotype.Service;
 
 import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.generateIdentifier;
 
+/**
+ * The {@code BrownieEventsRecorder} provides the methods to register all the {@link BrownieEvent} properly
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ * @see BrownieEventsRecorder
+ * @since 1.0.1
+ */
 @Service
 @Structure
 public abstract class BrownieEventsRecorder<T extends Enum<T>, E extends BrownieEvent> {
 
+    /**
+     * {@code repository} instance used to register the events in the dedicated tables
+     */
     private final BrownieEventsRepository<E> repository;
 
+    /**
+     * Constructor to instantiate the recorder
+     *
+     * @param repository The instance used to register the events in the dedicated tables
+     */
     protected BrownieEventsRecorder(BrownieEventsRepository<E> repository) {
         this.repository = repository;
     }
@@ -27,7 +42,6 @@ public abstract class BrownieEventsRecorder<T extends Enum<T>, E extends Brownie
      */
     protected int calculateUpDays(String eventOwnerId) {
         Long lastRunningEvent = repository.getLastUpEvent(eventOwnerId);
-        System.out.println(lastRunningEvent);
         if (lastRunningEvent == null)
             lastRunningEvent = 0L;
         return TimeFormatter.INSTANCE.daysUntilNow(lastRunningEvent);

@@ -29,7 +29,7 @@ public interface HostEventsRepository extends BrownieEventsRepository<HostHistor
      * Query used to get the last {@link HostStatus#ONLINE} event
      *
      * @param hostId The identifier of the host
-     * @return the timestamp of the last {@link HostStatus#ONLINE} event as {@code long}
+     * @return the timestamp of the last {@link HostStatus#ONLINE} event as {@link Long}
      */
     @Query(
             value = "SELECT MAX(" + EVENT_DATE_KEY + ") FROM " + HOST_EVENTS_KEY +

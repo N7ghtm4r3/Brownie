@@ -3,6 +3,7 @@ package com.tecknobit.brownie.services.hosts.services;
 import com.tecknobit.brownie.services.hosts.entities.HostHistoryEvent;
 import com.tecknobit.brownie.services.hosts.repositories.HostEventsRepository;
 import com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder;
+import com.tecknobit.browniecore.ConstantsKt;
 import com.tecknobit.browniecore.enums.HostEventType;
 import com.tecknobit.browniecore.enums.HostStatus;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
@@ -21,6 +22,11 @@ import static com.tecknobit.browniecore.enums.HostEventType.*;
 @Service
 public class HostEventsService extends BrownieEventsRecorder<HostEventType, HostHistoryEvent> {
 
+    /**
+     * Constructor to instantiate the service
+     *
+     * @param hostEventsRepository The instance used to register the events in the {@link ConstantsKt#HOST_EVENTS_KEY} table
+     */
     @Autowired
     protected HostEventsService(HostEventsRepository hostEventsRepository) {
         super(hostEventsRepository);

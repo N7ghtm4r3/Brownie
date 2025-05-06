@@ -29,7 +29,7 @@ public interface HostServiceEventsRepository extends BrownieEventsRepository<Ser
      * Query used to get the last {@link ServiceStatus#RUNNING} event
      *
      * @param serviceId The identifier of the service
-     * @return the timestamp of the last {@link ServiceStatus#RUNNING} event as {@code long}
+     * @return the timestamp of the last {@link ServiceStatus#RUNNING} event as {@link Long}
      */
     @Query(
             value = "SELECT MAX(" + EVENT_DATE_KEY + ") FROM " + SERVICE_EVENTS_KEY +
