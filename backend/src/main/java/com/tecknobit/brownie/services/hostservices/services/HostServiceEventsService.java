@@ -2,7 +2,7 @@ package com.tecknobit.brownie.services.hostservices.services;
 
 import com.tecknobit.brownie.services.hostservices.entities.ServiceEvent;
 import com.tecknobit.brownie.services.hostservices.repositories.HostServiceEventsRepository;
-import com.tecknobit.brownie.services.shared.services.EventsRecorder;
+import com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder;
 import com.tecknobit.browniecore.enums.ServiceEventType;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,10 +15,10 @@ import static com.tecknobit.browniecore.enums.ServiceEventType.*;
  *
  * @author N7ghtm4r3 - Tecknobit
  *
- * @see EventsRecorder
+ * @see BrownieEventsRecorder
  */
 @Service
-public class HostServiceEventsService extends EventsRecorder<ServiceEventType, ServiceEvent> {
+public class HostServiceEventsService extends BrownieEventsRecorder<ServiceEventType, ServiceEvent> {
 
     @Autowired
     public HostServiceEventsService(HostServiceEventsRepository eventsRepository) {
@@ -43,7 +43,7 @@ public class HostServiceEventsService extends EventsRecorder<ServiceEventType, S
      */
     @Wrapper
     public void registerServiceStopped(String serviceId) {
-        registerEvent(STOPPED, serviceId, calculateRunningDays(serviceId));
+        registerEvent(STOPPED, serviceId, calculateUpDays(serviceId));
     }
 
     /**
@@ -53,7 +53,7 @@ public class HostServiceEventsService extends EventsRecorder<ServiceEventType, S
      */
     @Wrapper
     public void registerServiceRebooted(String serviceId) {
-        registerEvent(REBOOTING, serviceId, calculateRunningDays(serviceId));
+        registerEvent(REBOOTING, serviceId, calculateUpDays(serviceId));
     }
 
     /**

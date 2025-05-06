@@ -1,7 +1,7 @@
 package com.tecknobit.brownie.services.hostservices.repositories;
 
 import com.tecknobit.brownie.services.hostservices.entities.ServiceEvent;
-import com.tecknobit.brownie.services.shared.repositories.EventsRepository;
+import com.tecknobit.brownie.services.shared.repositories.BrownieEventsRepository;
 import com.tecknobit.browniecore.enums.ServiceStatus;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -20,10 +20,27 @@ import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
  * @author N7ghtm4r3 - Tecknobit
  *
  * @see JpaRepository
- * @see EventsRepository
+ * @see BrownieEventsRepository
  */
 @Repository
-public interface HostServiceEventsRepository extends EventsRepository<ServiceEvent> {
+public interface HostServiceEventsRepository extends BrownieEventsRepository<ServiceEvent> {
+
+    /**
+     * Query used to get the last {@link ServiceStatus#RUNNING} event
+     *
+     * @param serviceId The identifier of the service
+     * @return the timestamp of the last {@link ServiceStatus#RUNNING} event as {@code long}
+     */
+    @Query(
+            value = "SELECT MAX(" + EVENT_DATE_KEY + ") FROM " + SERVICE_EVENTS_KEY +
+                    _WHERE_ + TYPE_KEY + " IN ('RUNNING', 'RESTARTED') AND " +
+                    SERVICE_IDENTIFIER_KEY + "=:" + SERVICE_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    @Override
+    Long getLastUpEvent(
+            @Param(SERVICE_IDENTIFIER_KEY) String serviceId
+    );
 
     /**
      * Query used to register a new event
@@ -86,23 +103,6 @@ public interface HostServiceEventsRepository extends EventsRepository<ServiceEve
             @Param(TYPE_KEY) String type,
             @Param(EVENT_DATE_KEY) long eventDate,
             @Param(EXTRA_KEY) String extra,
-            @Param(SERVICE_IDENTIFIER_KEY) String serviceId
-    );
-
-    /**
-     * Query used to get the last {@link ServiceStatus#RUNNING} event
-     *
-     * @param serviceId The identifier of the service
-     * @return the timestamp of the last {@link ServiceStatus#RUNNING} event as {@code long}
-     */
-    @Query(
-            value = "SELECT MAX(" + EVENT_DATE_KEY + ") FROM " + SERVICE_EVENTS_KEY +
-                    _WHERE_ + TYPE_KEY + " IN ('RUNNING', 'RESTARTED') AND " +
-                    SERVICE_IDENTIFIER_KEY + "=:" + SERVICE_IDENTIFIER_KEY,
-            nativeQuery = true
-    )
-    @Override
-    Long getLastRunningEvent(
             @Param(SERVICE_IDENTIFIER_KEY) String serviceId
     );
 

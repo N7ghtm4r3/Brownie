@@ -1,6 +1,8 @@
 package com.tecknobit.brownie.services.hosts.repositories;
 
 import com.tecknobit.brownie.services.hosts.entities.HostHistoryEvent;
+import com.tecknobit.brownie.services.shared.repositories.BrownieEventsRepository;
+import com.tecknobit.browniecore.enums.HostStatus;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -9,16 +11,36 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
+import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper._WHERE_;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
 
 /**
  * The {@code HostEventsRepository} interface is useful to manage the queries of the {@link HostHistoryEvent}
  *
  * @author N7ghtm4r3 - Tecknobit
+ *
  * @see JpaRepository
+ * @see BrownieEventsRepository
  */
 @Repository
-public interface HostEventsRepository extends JpaRepository<HostHistoryEvent, String> {
+public interface HostEventsRepository extends BrownieEventsRepository<HostHistoryEvent> {
+
+    /**
+     * Query used to get the last {@link HostStatus#ONLINE} event
+     *
+     * @param hostId The identifier of the host
+     * @return the timestamp of the last {@link HostStatus#ONLINE} event as {@code long}
+     */
+    @Query(
+            value = "SELECT MAX(" + EVENT_DATE_KEY + ") FROM " + HOST_EVENTS_KEY +
+                    _WHERE_ + TYPE_KEY + " IN ('ONLINE', 'RESTARTED') AND " +
+                    HOST_IDENTIFIER_KEY + "=:" + HOST_IDENTIFIER_KEY,
+            nativeQuery = true
+    )
+    @Override
+    Long getLastUpEvent(
+            @Param(HOST_IDENTIFIER_KEY) String hostId
+    );
 
     /**
      * Query used to register a new event
@@ -42,6 +64,7 @@ public interface HostEventsRepository extends JpaRepository<HostHistoryEvent, St
                     ":" + HOST_IDENTIFIER_KEY + ")",
             nativeQuery = true
     )
+    @Override
     void registerEvent(
             @Param(IDENTIFIER_KEY) String eventId,
             @Param(TYPE_KEY) String type,
@@ -74,6 +97,7 @@ public interface HostEventsRepository extends JpaRepository<HostHistoryEvent, St
                     ":" + HOST_IDENTIFIER_KEY + ")",
             nativeQuery = true
     )
+    @Override
     void registerEvent(
             @Param(IDENTIFIER_KEY) String eventId,
             @Param(TYPE_KEY) String type,

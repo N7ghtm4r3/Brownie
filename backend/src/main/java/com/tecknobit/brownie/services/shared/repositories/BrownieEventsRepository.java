@@ -7,9 +7,9 @@ import org.springframework.data.repository.NoRepositoryBean;
 
 @Structure
 @NoRepositoryBean
-public interface EventsRepository<E extends BrownieEvent> extends JpaRepository<E, String> {
+public interface BrownieEventsRepository<E extends BrownieEvent> extends JpaRepository<E, String> {
 
-    Long getLastRunningEvent(String eventOwnerId);
+    Long getLastUpEvent(String eventOwnerId);
 
     void registerEvent(String eventId, String type, long eventDate, String eventOwnerId);
 
