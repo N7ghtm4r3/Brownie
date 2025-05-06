@@ -177,6 +177,22 @@ public interface HostServicesRepository extends JpaRepository<BrownieHostService
             @Param(PID_KEY) long pid
     );
 
+    // TODO: 06/05/2025 TO DOCU
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(
+            value = "UPDATE " + SERVICES_KEY + " SET " +
+                    STATUS_KEY + "='STOPPED'," +
+                    PID_KEY + "='-1'" +
+                    _WHERE_ + HOST_IDENTIFIER_KEY + "=:" + HOST_IDENTIFIER_KEY +
+                    " AND " + PID_KEY + "=:" + PID_KEY,
+            nativeQuery = true
+    )
+    void markServiceAsStopped(
+            @Param(HOST_IDENTIFIER_KEY) String hostId,
+            @Param(PID_KEY) long pid
+    );
+
     /**
      * Query used to remove a service
      *

@@ -122,6 +122,7 @@ public abstract class ShellCommandsExecutor {
         return String.format(GREP_RUNNING_SERVICES_COMMAND, builder);
     }
 
+    // TODO: 06/05/2025 TO DOCU
     private Collection<Long> retrieveStoppedServices(String command, BrownieHost host) throws Exception {
         if (command == null)
             return Collections.EMPTY_LIST;
@@ -134,7 +135,6 @@ public abstract class ShellCommandsExecutor {
         for (long servicePid : servicePids)
             if (!runningPids.contains(String.valueOf(servicePid)))
                 stoppedPids.add(servicePid);
-        System.out.println(stoppedPids);
         return stoppedPids;
     }
 

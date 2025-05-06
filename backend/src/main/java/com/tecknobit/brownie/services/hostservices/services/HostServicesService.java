@@ -216,16 +216,6 @@ public class HostServicesService implements BrownieEventsCollector {
     }
 
     /**
-     * Method used to stop a service
-     *
-     * @param host       The host owner of the service
-     * @param servicePid The pid of service to mark as {@link ServiceStatus#STOPPED}
-     */
-    public void markServiceAsStopped(BrownieHost host, long servicePid) {
-
-    }
-
-    /**
      * Method used to set the {@link ServiceStatus#STOPPED} status to the specified service
      *
      * @param serviceId The identifier of the service
@@ -261,10 +251,14 @@ public class HostServicesService implements BrownieEventsCollector {
             Object[] extra = event.getExtra();
             BrownieHost host = (BrownieHost) extra[0];
             Collection<Long> stoppedServices = (Collection<Long>) extra[1];
-            System.out.println(stoppedServices);
             for (Long servicePid : stoppedServices)
                 markServiceAsStopped(host, servicePid);
         }
+    }
+
+    // TODO: 06/05/2025 TO DOCU
+    private void markServiceAsStopped(BrownieHost host, long servicePid) {
+        servicesRepository.markServiceAsStopped(host.getId(), servicePid);
     }
 
 }

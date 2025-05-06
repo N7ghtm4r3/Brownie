@@ -8,6 +8,7 @@ import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.session.entity.BrownieSession;
 import com.tecknobit.brownie.services.session.repository.BrownieSessionsRepository;
 import jakarta.annotation.PostConstruct;
+import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -56,7 +57,7 @@ public class BrownieSessionsService extends BrownieEventsEmitter {
 
     // TODO: 06/05/2025 TO COMMENT
     @PostConstruct
-    private void monitorAndSyncServicesStatus() {
+    private void monitorAndSyncServiceStatuses() {
         servicesMonitor.scheduleWithFixedDelay(() -> {
             LOGGER.info("Executing the monitor-and-sync routine for all the services");
             List<BrownieSession> sessions = sessionsRepository.findAll();
@@ -66,25 +67,30 @@ public class BrownieSessionsService extends BrownieEventsEmitter {
         }, 0, MONITOR_AND_SYNC_DELAY, SECONDS);
     }
 
+    // TODO: 06/05/2025 TO DOCU
     private void monitorServices(BrownieHost host) {
         try {
             ShellCommandsExecutor executor = ShellCommandsExecutor.getInstance(host);
             Collection<Long> stoppedServices = executor.detectStoppedServices(host);
-            syncServices(host, stoppedServices);
+            syncServiceStatuses(host, stoppedServices);
         } catch (Exception e) {
-            LOGGER.error(
-                    "Executing the monitor-and-sync routine for the {} host occurred an error",
-                    host.getName(),
-                    e
-            );
+            LOGGER.error("Executing the monitor-and-sync routine for the {} host occurred an error",
+                    host.getName(), e);
         }
     }
 
-    private void syncServices(BrownieHost host, Collection<Long> stoppedServices) {
+    // TODO: 06/05/2025 TO DOCU
+    private void syncServiceStatuses(BrownieHost host, Collection<Long> stoppedServices) {
         if (stoppedServices.isEmpty())
             return;
         BrownieApplicationEvent event = new BrownieApplicationEvent(this, SYNC_SERVICES, host, stoppedServices);
         emitEvent(event);
+    }
+
+    // TODO: 06/05/2025 TO DOCU
+    @PreDestroy
+    private void shutdownServicesMonitor() {
+        servicesMonitor.shutdownNow();
     }
 
     /**
