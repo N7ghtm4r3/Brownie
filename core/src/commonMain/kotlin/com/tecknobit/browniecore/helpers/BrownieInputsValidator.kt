@@ -33,7 +33,7 @@ object BrownieInputsValidator : InputsValidator() {
         itemName: String?,
     ): Boolean {
         return isInputValid(
-            field = itemName
+            input = itemName
         ) && itemName!!.length <= BROWNIE_ITEM_NAME_MAX_LENGTH
     }
 

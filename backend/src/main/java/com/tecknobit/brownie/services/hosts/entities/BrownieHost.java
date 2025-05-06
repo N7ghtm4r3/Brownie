@@ -14,6 +14,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.util.List;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.HOST_ADDRESS_KEY;
 
 /**
  * The {@code BrownieHost} class is useful to represent a Brownie's host

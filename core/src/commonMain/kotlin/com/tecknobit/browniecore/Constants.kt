@@ -1,12 +1,5 @@
 package com.tecknobit.browniecore
 
-import com.tecknobit.equinoxcore.annotations.FutureEquinoxApi
-
-/**
- * `HOST_ADDRESS_KEY` the key for the **"host_address"** field
- */
-const val HOST_ADDRESS_KEY = "host_address"
-
 /**
  * `CPU_USAGE_KEY` the key for the **"cpu_usage"** field
  */
@@ -116,21 +109,6 @@ const val BROADCAST_IP_KEY = "broadcast_ip"
  * `HOST_IDENTIFIER_KEY` the key for the **"host_id"** field
  */
 const val HOST_IDENTIFIER_KEY = "host_id"
-
-/**
- * `KEYWORDS_KEY` the key for the **"keywords"** field
- *
- * @FutureEquinoxApi release version 1.0.9
- */
-@FutureEquinoxApi(
-    releaseVersion = "1.0.9"
-)
-const val KEYWORDS_KEY = "keywords"
-
-/**
- * `STATUS_KEY` the key for the **"status"** field
- */
-const val STATUS_KEY = "status"
 
 /**
  * `STATUSES_KEY` the key for the **"statuses"** field

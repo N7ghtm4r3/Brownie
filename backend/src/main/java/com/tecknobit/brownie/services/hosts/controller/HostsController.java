@@ -17,7 +17,6 @@ import static com.tecknobit.browniecore.helpers.BrownieEndpoints.*;
 import static com.tecknobit.browniecore.helpers.BrownieInputsValidator.INSTANCE;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
 import static com.tecknobit.equinoxcore.helpers.InputsValidator.DEFAULT_LANGUAGE;
-import static com.tecknobit.equinoxcore.helpers.InputsValidator.WRONG_NAME_MESSAGE;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
 import static com.tecknobit.equinoxcore.network.RequestMethod.*;
 import static com.tecknobit.equinoxcore.network.ResponseStatus.FAILED;

@@ -10,9 +10,7 @@ import com.tecknobit.equinoxcore.annotations.Assembler;
 import com.tecknobit.equinoxcore.annotations.FutureEquinoxApi;
 import com.tecknobit.equinoxcore.annotations.Returner;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
-import com.tecknobit.equinoxcore.network.ResponseStatus;
 import jakarta.annotation.Nullable;
-import org.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.context.i18n.LocaleContextHolder;
@@ -20,8 +18,6 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.Locale;
 
-import static com.tecknobit.equinoxcore.network.Requester.RESPONSE_DATA_KEY;
-import static com.tecknobit.equinoxcore.network.Requester.RESPONSE_STATUS_KEY;
 import static com.tecknobit.equinoxcore.network.ResponseStatus.FAILED;
 import static com.tecknobit.equinoxcore.network.ResponseStatus.SUCCESSFUL;
 
@@ -147,21 +143,6 @@ public class DefaultBrownieController extends DefaultEquinoxController {
     @Returner
     protected String getInternationalizedMessage(String errorKey, @Nullable Object[] args) {
         return messageSource.getMessage(errorKey, args, LocaleContextHolder.getLocale());
-    }
-
-    /**
-     * Method to assemble the payload for a response
-     *
-     * @param status  The response code value
-     * @param message The message to send as response
-     * @return the payload for a response as {@link String}
-     */
-    @Deprecated(since = "TO REMOVE")
-    @Assembler
-    protected String plainResponse(ResponseStatus status, String message) {
-        return new JSONObject()
-                .put(RESPONSE_STATUS_KEY, status)
-                .put(RESPONSE_DATA_KEY, message).toString();
     }
 
 }

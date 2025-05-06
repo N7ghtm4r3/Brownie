@@ -15,8 +15,7 @@ import java.util.List;
 import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.equinoxbackend.configuration.IndexesCreator._IN_BOOLEAN_MODE;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper._WHERE_;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.NAME_KEY;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
 
 /**
  * The {@code HostServicesRepository} interface is useful to manage the queries of the {@link BrownieHostService}
