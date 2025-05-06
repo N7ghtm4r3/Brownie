@@ -1,6 +1,7 @@
 package com.tecknobit.brownie.services.hostservices.repositories;
 
 import com.tecknobit.brownie.services.hostservices.entities.ServiceEvent;
+import com.tecknobit.brownie.services.shared.repositories.EventsRepository;
 import com.tecknobit.browniecore.enums.ServiceStatus;
 import jakarta.transaction.Transactional;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -17,10 +18,12 @@ import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
  * The {@code HostServiceEventsRepository} interface is useful to manage the queries of the {@link ServiceEvent}
  *
  * @author N7ghtm4r3 - Tecknobit
+ *
  * @see JpaRepository
+ * @see EventsRepository
  */
 @Repository
-public interface HostServiceEventsRepository extends JpaRepository<ServiceEvent, String> {
+public interface HostServiceEventsRepository extends EventsRepository<ServiceEvent> {
 
     /**
      * Query used to register a new event
@@ -44,6 +47,7 @@ public interface HostServiceEventsRepository extends JpaRepository<ServiceEvent,
                     ":" + SERVICE_IDENTIFIER_KEY + ")",
             nativeQuery = true
     )
+    @Override
     void registerEvent(
             @Param(IDENTIFIER_KEY) String eventId,
             @Param(TYPE_KEY) String type,
@@ -76,6 +80,7 @@ public interface HostServiceEventsRepository extends JpaRepository<ServiceEvent,
                     ":" + SERVICE_IDENTIFIER_KEY + ")",
             nativeQuery = true
     )
+    @Override
     void registerEvent(
             @Param(IDENTIFIER_KEY) String eventId,
             @Param(TYPE_KEY) String type,
@@ -96,6 +101,7 @@ public interface HostServiceEventsRepository extends JpaRepository<ServiceEvent,
                     SERVICE_IDENTIFIER_KEY + "=:" + SERVICE_IDENTIFIER_KEY,
             nativeQuery = true
     )
+    @Override
     Long getLastRunningEvent(
             @Param(SERVICE_IDENTIFIER_KEY) String serviceId
     );
