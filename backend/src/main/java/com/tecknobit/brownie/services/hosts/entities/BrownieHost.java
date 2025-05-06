@@ -6,6 +6,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.session.entity.BrownieSession;
 import com.tecknobit.browniecore.enums.HostStatus;
+import com.tecknobit.equinoxbackend.annotations.EmptyConstructor;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -110,6 +111,7 @@ public class BrownieHost extends EquinoxItem {
      *
      * @apiNote empty constructor required
      */
+    @EmptyConstructor
     public BrownieHost() {
         this(null, null, null, null, null, null, null, null, null, List.of(), List.of(), 0);
     }

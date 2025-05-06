@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.equinoxbackend.annotations.EmptyConstructor;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import jakarta.persistence.*;
@@ -54,6 +55,7 @@ public class BrownieSession extends EquinoxItem {
      *
      * @apiNote empty constructor required
      */
+    @EmptyConstructor
     public BrownieSession() {
         this(null, null, null);
     }

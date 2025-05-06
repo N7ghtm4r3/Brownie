@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.brownie.services.hosts.services.HostsService;
 import com.tecknobit.brownie.services.shared.entities.BrownieEvent;
 import com.tecknobit.browniecore.enums.ServiceEventType;
+import com.tecknobit.equinoxbackend.annotations.EmptyConstructor;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -42,6 +43,7 @@ public class ServiceEvent extends BrownieEvent {
      *
      * @apiNote empty constructor required
      */
+    @EmptyConstructor
     public ServiceEvent() {
         this(null, 0, null, null);
     }

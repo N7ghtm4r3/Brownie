@@ -3,6 +3,7 @@ package com.tecknobit.brownie.services.hosts.entities;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.brownie.services.shared.entities.BrownieEvent;
 import com.tecknobit.browniecore.enums.HostEventType;
+import com.tecknobit.equinoxbackend.annotations.EmptyConstructor;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
@@ -40,6 +41,7 @@ public class HostHistoryEvent extends BrownieEvent {
      *
      * @apiNote empty constructor required
      */
+    @EmptyConstructor
     public HostHistoryEvent() {
         this(null, null, 0, null);
     }
