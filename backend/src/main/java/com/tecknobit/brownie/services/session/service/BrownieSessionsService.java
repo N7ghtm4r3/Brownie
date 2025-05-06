@@ -1,14 +1,23 @@
 package com.tecknobit.brownie.services.session.service;
 
 import com.tecknobit.apimanager.apis.APIRequest;
+import com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor;
+import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.session.entity.BrownieSession;
 import com.tecknobit.brownie.services.session.repository.BrownieSessionsRepository;
+import jakarta.annotation.PostConstruct;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
+import java.util.List;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ScheduledExecutorService;
 
 import static com.tecknobit.apimanager.apis.APIRequest.SHA256_ALGORITHM;
+import static java.util.concurrent.TimeUnit.SECONDS;
 
 /**
  * The {@code BrownieSessionsService} class is useful to manage all the {@link BrownieSession} database operations
@@ -18,11 +27,49 @@ import static com.tecknobit.apimanager.apis.APIRequest.SHA256_ALGORITHM;
 @Service
 public class BrownieSessionsService {
 
+    // TODO: 06/05/2025 TO COMMENT
+    private static final Logger LOGGER = LoggerFactory.getLogger(BrownieSessionsService.class);
+
+    // TODO: 06/05/2025 TO COMMENT
+    private static final int MONITOR_AND_SYNC_DELAY = 5;
+
     /**
      * {@code sessionsRepository} instance used to access to the {@link SESSIONS_KEY} table
      */
+    private final BrownieSessionsRepository sessionsRepository;
+
+    // TODO: 06/05/2025 TO COMMENT
+    private final ScheduledExecutorService servicesMonitor;
+
+    // TODO: 06/05/2025 TO COMMENT
     @Autowired
-    private BrownieSessionsRepository sessionsRepository;
+    public BrownieSessionsService(BrownieSessionsRepository sessionsRepository) {
+        this.sessionsRepository = sessionsRepository;
+        servicesMonitor = Executors.newScheduledThreadPool((int) sessionsRepository.count());
+    }
+
+    // TODO: 06/05/2025 TO COMMENT
+    @PostConstruct
+    private void monitorServicesStatus() {
+        servicesMonitor.scheduleWithFixedDelay(() -> {
+            LOGGER.info("Executing the monitor-and-sync routine for all the services");
+            List<BrownieSession> sessions = sessionsRepository.findAll();
+            for (BrownieSession session : sessions) {
+                for (BrownieHost host : session.getHosts()) {
+                    try {
+                        ShellCommandsExecutor executor = ShellCommandsExecutor.getInstance(host);
+                        executor.retrieveStoppedServices(host);
+                    } catch (Exception e) {
+                        LOGGER.error(
+                                "Executing the monitor-and-sync routine for the {} host occurred an error",
+                                host.getName(),
+                                e
+                        );
+                    }
+                }
+            }
+        }, 0, MONITOR_AND_SYNC_DELAY, SECONDS);
+    }
 
     /**
      * Method used to create a new session

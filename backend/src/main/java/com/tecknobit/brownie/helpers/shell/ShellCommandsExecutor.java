@@ -11,9 +11,12 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
+import java.util.HashSet;
+import java.util.List;
 
 import static com.tecknobit.apimanager.apis.ResourcesUtils.getResourceStream;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.COMMA;
+import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.SINGLE_QUOTE;
 
 /**
  * The {@code ShellCommandsExecutor} class is used to execute the bash commands on the shells of the hosts physical machines
@@ -87,10 +90,50 @@ public abstract class ShellCommandsExecutor {
      */
     protected static final String REMOVE_NOHUP_OUT_FILE_COMMAND = "rm -f %s";
 
+    // TODO: 06/05/2025 TO DOCU
+    protected static final String GREP_RUNNING_SERVICES_COMMAND = """
+                ps -ef | grep -E %s | grep -v grep | awk '{print $2}' | paste -sd ','
+            """;
+
     /**
      * {@code KILL_SERVICE} the bash command used to kill a service currently running on the host
      */
     protected static final String KILL_SERVICE = "kill %s";
+
+    // TODO: 06/05/2025 TO DOCU
+    protected static final String PIPE_CHARACTER = "|";
+
+    // TODO: 06/05/2025 TO DOCU
+    public void retrieveStoppedServices(BrownieHost host) throws Exception {
+        List<String> serviceNames = host.listServiceNames();
+        String command = formatServicesMonitoringCommand(serviceNames);
+        retrieveStoppedServices(command, host);
+    }
+
+    // TODO: 06/05/2025 TO DOCU
+    private String formatServicesMonitoringCommand(List<String> serviceNames) {
+        StringBuilder builder = new StringBuilder();
+        builder.append(SINGLE_QUOTE);
+        for (String serviceName : serviceNames)
+            builder.append(serviceName).append(PIPE_CHARACTER);
+        builder.deleteCharAt(builder.length() - 1);
+        builder.append(SINGLE_QUOTE);
+        return String.format(GREP_RUNNING_SERVICES_COMMAND, builder);
+    }
+
+    private void retrieveStoppedServices(String command, BrownieHost host) throws Exception {
+        HashSet<Long> servicePids = host.listServicePids();
+        String result = execBashCommand(command);
+        if (result.isEmpty())
+            return;
+        String[] runningPids = result.split(COMMA);
+        for (String runningPid : runningPids) {
+            long pid = Long.parseLong(runningPid);
+            if (!servicePids.contains(pid)) {
+                System.out.println(pid);
+            }
+        }
+    }
 
     /**
      * Method used to reboot the host using the {@link #SUDO_REBOOT} command

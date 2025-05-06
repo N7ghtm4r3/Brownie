@@ -12,6 +12,8 @@ import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
@@ -311,6 +313,24 @@ public class BrownieHost extends EquinoxItem {
     @JsonIgnore
     public boolean isRemoteHost() {
         return sshUser != null;
+    }
+
+    // TODO: 06/05/2025 TO DOCU
+    @JsonIgnore
+    public List<String> listServiceNames() {
+        List<String> serviceNames = new ArrayList<>();
+        for (BrownieHostService service : services)
+            serviceNames.add(service.getName());
+        return serviceNames;
+    }
+
+    // TODO: 06/05/2025 TO DOCU
+    @JsonIgnore
+    public HashSet<Long> listServicePids() {
+        HashSet<Long> servicePids = new HashSet<>();
+        for (BrownieHostService service : services)
+            servicePids.add(service.getPid());
+        return servicePids;
     }
 
 }
