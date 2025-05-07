@@ -222,7 +222,8 @@ crontab -e
 
 ### Reboot as needed
 
-When you have to reboot the host machine the **Brownie**'s backend instance will be automatilly started by the task created 
+When you have to reboot the host machine the **Brownie**'s backend instance will be automatically started by the task
+created
 
 ## Support
 

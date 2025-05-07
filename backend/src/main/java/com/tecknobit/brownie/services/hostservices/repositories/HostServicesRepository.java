@@ -2,6 +2,7 @@ package com.tecknobit.brownie.services.hostservices.repositories;
 
 import com.tecknobit.brownie.services.hostservices.dtos.CurrentServiceStatus;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
+import com.tecknobit.browniecore.enums.ServiceStatus;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -177,7 +178,12 @@ public interface HostServicesRepository extends JpaRepository<BrownieHostService
             @Param(PID_KEY) long pid
     );
 
-    // TODO: 06/05/2025 TO DOCU
+    /**
+     * Query used to mark a service as {@link ServiceStatus#STOPPED}
+     *
+     * @param hostId The identifier of the host owner of the service
+     * @param pid    The pid of the service to mark
+     */
     @Transactional
     @Modifying(clearAutomatically = true)
     @Query(

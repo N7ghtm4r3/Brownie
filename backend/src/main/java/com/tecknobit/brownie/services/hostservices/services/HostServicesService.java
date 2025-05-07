@@ -243,7 +243,9 @@ public class HostServicesService implements BrownieEventsCollector {
         hostEventsService.registerServiceRemovedEvent(host.getId(), service.getName(), removeFromTheHost);
     }
 
-    // TODO: 06/05/2025 TO DOCU
+    /**
+     * {@inheritDoc}
+     */
     @Override
     public void onEventCollected(BrownieApplicationEvent event) {
         if (event.getEventType() == SYNC_SERVICES) {
@@ -256,7 +258,12 @@ public class HostServicesService implements BrownieEventsCollector {
         }
     }
 
-    // TODO: 06/05/2025 TO DOCU
+    /**
+     * Method used to mark a service as {@link ServiceStatus#STOPPED}
+     *
+     * @param host       The host owner of the service
+     * @param servicePid The pid of the service to mark
+     */
     private void markServiceAsStopped(BrownieHost host, long servicePid) {
         servicesRepository.markServiceAsStopped(host.getId(), servicePid);
     }

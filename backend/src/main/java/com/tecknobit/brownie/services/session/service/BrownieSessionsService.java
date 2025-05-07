@@ -34,10 +34,14 @@ import static java.util.concurrent.TimeUnit.SECONDS;
 @Service
 public class BrownieSessionsService extends BrownieEventsEmitter {
 
-    // TODO: 06/05/2025 TO COMMENT
+    /**
+     * {@code LOGGER} is the instance used to log about the events of the monitor-and-sync routine
+     */
     private static final Logger LOGGER = LoggerFactory.getLogger(BrownieSessionsService.class);
 
-    // TODO: 06/05/2025 TO COMMENT
+    /**
+     * {@code MONITOR_AND_SYNC_DELAY} constant value for the delay between each monitor-and-sync check
+     */
     private static final int MONITOR_AND_SYNC_DELAY = 5;
 
     /**
@@ -45,17 +49,27 @@ public class BrownieSessionsService extends BrownieEventsEmitter {
      */
     private final BrownieSessionsRepository sessionsRepository;
 
-    // TODO: 06/05/2025 TO COMMENT
+    /**
+     * {@code servicesMonitor} pool used to perform the monitor-and-sync routine
+     */
     private final ScheduledExecutorService servicesMonitor;
 
-    // TODO: 06/05/2025 TO COMMENT
+    /**
+     * Constructor to instantiate the service
+     *
+     * @param sessionsRepository the dedicated repository to manage the {@link BrownieSession} entity
+     */
     @Autowired
     public BrownieSessionsService(BrownieSessionsRepository sessionsRepository) {
         this.sessionsRepository = sessionsRepository;
         servicesMonitor = Executors.newScheduledThreadPool((int) sessionsRepository.count());
     }
 
-    // TODO: 06/05/2025 TO COMMENT
+    /**
+     * Method automatically invoked after dependency injection by Spring used to perform the monitor-and-sync routine.
+     * Each {@link #MONITOR_AND_SYNC_DELAY} for all the session stored will be checked for each host the real status
+     * of its services and synced consequentially
+     */
     @PostConstruct
     private void monitorAndSyncServiceStatuses() {
         servicesMonitor.scheduleWithFixedDelay(() -> {
@@ -67,7 +81,11 @@ public class BrownieSessionsService extends BrownieEventsEmitter {
         }, 0, MONITOR_AND_SYNC_DELAY, SECONDS);
     }
 
-    // TODO: 06/05/2025 TO DOCU
+    /**
+     * Method used to perform the monitoring of the services of a host
+     *
+     * @param host The host to check its services
+     */
     private void monitorServices(BrownieHost host) {
         try {
             ShellCommandsExecutor executor = ShellCommandsExecutor.getInstance(host);
@@ -79,7 +97,12 @@ public class BrownieSessionsService extends BrownieEventsEmitter {
         }
     }
 
-    // TODO: 06/05/2025 TO DOCU
+    /**
+     * Method used to sync the services of a host
+     *
+     * @param host            The host owner of the services
+     * @param stoppedServices The stopped services to sync
+     */
     private void syncServiceStatuses(BrownieHost host, Collection<Long> stoppedServices) {
         if (stoppedServices.isEmpty())
             return;
@@ -87,7 +110,9 @@ public class BrownieSessionsService extends BrownieEventsEmitter {
         emitEvent(event);
     }
 
-    // TODO: 06/05/2025 TO DOCU
+    /**
+     * Method automatically invoked by Spring before termination used to shut down the {@link #servicesMonitor} pool
+     */
     @PreDestroy
     private void shutdownServicesMonitor() {
         servicesMonitor.shutdownNow();

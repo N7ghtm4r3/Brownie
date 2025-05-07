@@ -2,7 +2,7 @@ package com.tecknobit.brownie.services.hosts.services;
 
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.apimanager.formatters.JsonHelper;
-import com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors;
+import com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor;
 import com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.commands.WakeOnLanExecutor;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostOverview;
@@ -142,7 +142,7 @@ public class HostsService {
      * @return the network interface details as {@link Pair} of {@link String}
      */
     private Pair<String, String> getNetworkInterfaceDetails(String sshUser, String sshPassword, String hostAddress) throws Exception {
-        RemoteShellCommandsExecutors commandsExecutor = new RemoteShellCommandsExecutors(sshUser, hostAddress,
+        RemoteShellCommandsExecutor commandsExecutor = new RemoteShellCommandsExecutor(sshUser, hostAddress,
                 sshPassword);
         return commandsExecutor.getNetworkInterfaceDetails();
     }

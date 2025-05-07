@@ -4,6 +4,7 @@ import com.jcraft.jsch.JSchException;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.services.HostsService;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
+import com.tecknobit.equinoxcore.annotations.Returner;
 import com.tecknobit.equinoxcore.annotations.Structure;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 
@@ -89,7 +90,10 @@ public abstract class ShellCommandsExecutor {
      */
     protected static final String REMOVE_NOHUP_OUT_FILE_COMMAND = "rm -f %s";
 
-    // TODO: 06/05/2025 TO DOCU
+    /**
+     * {@code GREP_RUNNING_SERVICES_COMMAND} the bash command used to retrieve all the running services on a host and
+     * format their pids as list comma separated
+     */
     protected static final String GREP_RUNNING_SERVICES_COMMAND = """
                 ps -ef | grep -E %s | grep -v grep | awk '{print $2}' | paste -sd ','
             """;
@@ -99,17 +103,32 @@ public abstract class ShellCommandsExecutor {
      */
     protected static final String KILL_SERVICE = "kill %s";
 
-    // TODO: 06/05/2025 TO DOCU
+    /**
+     * {@code PIPE_CHARACTER} constant value for the pipe character
+     */
     protected static final String PIPE_CHARACTER = "|";
 
-    // TODO: 06/05/2025 TO DOCU
+    /**
+     * Method used to detect the stopped services
+     *
+     * @param host The host from detect the stopped services
+     * @return the stopped services as {@link Collection} of {@link Long}
+     * @throws Exception when an exception occurred during the process
+     */
     public Collection<Long> detectStoppedServices(BrownieHost host) throws Exception {
         List<String> serviceNames = host.listRunningServiceNames();
         String command = formatServicesMonitoringCommand(serviceNames);
         return retrieveStoppedServices(command, host);
     }
 
-    // TODO: 06/05/2025 TO DOCU
+    /**
+     * Method used to format the {@link #GREP_RUNNING_SERVICES_COMMAND} with the names of the services
+     *
+     * @param serviceNames The names of the services
+     *
+     * @return the command formatted as {@link String}
+     */
+    @Returner
     private String formatServicesMonitoringCommand(List<String> serviceNames) {
         if (serviceNames.isEmpty())
             return null;
@@ -122,7 +141,16 @@ public abstract class ShellCommandsExecutor {
         return String.format(GREP_RUNNING_SERVICES_COMMAND, builder);
     }
 
-    // TODO: 06/05/2025 TO DOCU
+    /**
+     * Method used to retrieve the pids of current stopped services comparing with the pids of the running services of
+     * the host
+     *
+     * @param command The {@link #GREP_RUNNING_SERVICES_COMMAND} formatted
+     * @param host The host currently checked
+     *
+     * @return the pids of current stopped services as {@link Collection} of {@link Long}
+     * @throws Exception when an exception occurred during the process
+     */
     private Collection<Long> retrieveStoppedServices(String command, BrownieHost host) throws Exception {
         if (command == null)
             return Collections.EMPTY_LIST;
@@ -385,7 +413,7 @@ public abstract class ShellCommandsExecutor {
      */
     public static ShellCommandsExecutor getInstance(BrownieHost host) throws JSchException {
         if (host.isRemoteHost())
-            return new RemoteShellCommandsExecutors(host);
+            return new RemoteShellCommandsExecutor(host);
         return new LocalShellCommandsExecutor();
     }
 

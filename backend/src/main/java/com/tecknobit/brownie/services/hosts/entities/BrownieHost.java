@@ -315,7 +315,11 @@ public class BrownieHost extends EquinoxItem {
         return sshUser != null;
     }
 
-    // TODO: 06/05/2025 TO DOCU
+    /**
+     * Method used to list the names of the running services of this host
+     *
+     * @return the names of the running services of this host as {@link List} of {@link String}
+     */
     @JsonIgnore
     public List<String> listRunningServiceNames() {
         List<String> serviceNames = new ArrayList<>();
@@ -325,7 +329,11 @@ public class BrownieHost extends EquinoxItem {
         return serviceNames;
     }
 
-    // TODO: 06/05/2025 TO DOCU
+    /**
+     * Method used to list the pids of the running services of this host
+     *
+     * @return the pids of the running services of this host as {@link HashSet} of {@link Long}
+     */
     @JsonIgnore
     public HashSet<Long> listRunningServicePids() {
         HashSet<Long> servicePids = new HashSet<>();

@@ -18,13 +18,13 @@ import java.util.concurrent.atomic.AtomicInteger;
 import static com.tecknobit.brownie.helpers.RemoteHostWaiter.waitForHostRestart;
 
 /**
- * The {@code RemoteShellCommandsExecutors} class is used to execute the bash commands on a remote host using the SSH
+ * The {@code RemoteShellCommandsExecutor} class is used to execute the bash commands on a remote host using the SSH
  * as way to communicate
  *
  * @author N7ghtm4r3 - Tecknobit
  * @see ShellCommandsExecutor
  */
-public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
+public class RemoteShellCommandsExecutor extends ShellCommandsExecutor {
 
     /**
      * {@code STRICT_HOST_KEY_CHECKING_OPTION} strict host key checking option
@@ -67,7 +67,7 @@ public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
      * @param host The host where open the remote communication and where execute the bash commands
      * @throws JSchException when an error occurred during the creation of the SSH session
      */
-    public RemoteShellCommandsExecutors(BrownieHost host) throws JSchException {
+    public RemoteShellCommandsExecutor(BrownieHost host) throws JSchException {
         this(host.getSshUser(), host.getHostAddress(), host.getSshPassword());
     }
 
@@ -80,7 +80,7 @@ public class RemoteShellCommandsExecutors extends ShellCommandsExecutor {
      *
      * @throws JSchException when an error occurred during the creation of the SSH session
      */
-    public RemoteShellCommandsExecutors(String sshUser, String hostAddress, String sshPassword) throws JSchException {
+    public RemoteShellCommandsExecutor(String sshUser, String hostAddress, String sshPassword) throws JSchException {
         JSch jSch = new JSch();
         session = jSch.getSession(sshUser, hostAddress);
         session.setPassword(sshPassword);
