@@ -1,6 +1,6 @@
 # Brownie
 
-**v1.0.0**
+**v1.0.1**
 
 This project is based on the **Compose Multiplatform** and **Spring Boot** technologies and is a
 self-hosted VPS manager.
@@ -45,7 +45,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.tecknobit.browniecore:browniecore:1.0.0'
+  implementation 'com.tecknobit.browniecore:browniecore:1.0.1'
 }
 ```
 
@@ -58,7 +58,7 @@ repositories {
 }
 
 dependencies {
-  implementation("com.tecknobit.browniecore:browniecore:1.0.0")
+  implementation("com.tecknobit.browniecore:browniecore:1.0.1")
 }
 ```
 
@@ -67,14 +67,14 @@ dependencies {
 ### Clients
 
 - [Android](https://play.google.com/store/apps/details?id=com.tecknobit.brownie)
-- [Brownie desktop version](https://github.com/N7ghtm4r3/Brownie-Clients/releases/tag/1.0.0)
+- [Brownie desktop version](https://github.com/N7ghtm4r3/Brownie-Clients/releases/tag/1.0.1)
 - iOS -> source code available, but cannot distribute due
   missing [Apple Developer Program license](https://developer.apple.com/programs/)
 - [Brownie webapp version](https://github.com/N7ghtm4r3/Brownie-WebApp)
 
 ### Backend
 
-- <a href="https://github.com/N7ghtm4r3/Brownie/releases/tag/1.0.0">Backend service "out-of-the-box"</a>
+- <a href="https://github.com/N7ghtm4r3/Brownie/releases/tag/1.0.1">Backend service "out-of-the-box"</a>
 
 ### Backend configuration
 
@@ -222,7 +222,8 @@ crontab -e
 
 ### Reboot as needed
 
-When you have to reboot the host machine the **Brownie**'s backend instance will be automatilly started by the task created 
+When you have to reboot the host machine the **Brownie**'s backend instance will be automatically started by the task
+created
 
 ## Support
 

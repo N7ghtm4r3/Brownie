@@ -8,10 +8,10 @@ import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieControlle
 import com.tecknobit.equinoxbackend.environment.services.DefaultEquinoxController;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
 import com.tecknobit.equinoxcore.annotations.RequestPath;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
@@ -20,7 +20,6 @@ import static com.tecknobit.browniecore.helpers.BrownieEndpoints.*;
 import static com.tecknobit.browniecore.helpers.BrownieInputsValidator.INSTANCE;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
 import static com.tecknobit.equinoxcore.helpers.InputsValidator.DEFAULT_LANGUAGE;
-import static com.tecknobit.equinoxcore.helpers.InputsValidator.WRONG_NAME_MESSAGE;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
 import static com.tecknobit.equinoxcore.network.RequestMethod.*;
 import static com.tecknobit.equinoxcore.pagination.PaginatedResponse.*;
@@ -202,7 +201,7 @@ public class HostServicesController extends DefaultBrownieController {
                     name = STATUSES_KEY,
                     defaultValue = "RUNNING, STOPPED, REBOOTING",
                     required = false
-            ) JSONArray statuses,
+            ) List<String> statuses,
             @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language,
             @RequestParam(name = PAGE_KEY, defaultValue = DEFAULT_PAGE_HEADER_VALUE, required = false) int page,
             @RequestParam(name = PAGE_SIZE_KEY, defaultValue = DEFAULT_PAGE_SIZE_HEADER_VALUE, required = false) int pageSize
@@ -233,7 +232,7 @@ public class HostServicesController extends DefaultBrownieController {
     public <T> T getServicesStatus(
             @PathVariable(IDENTIFIER_KEY) String sessionId,
             @PathVariable(HOST_IDENTIFIER_KEY) String hostId,
-            @RequestParam(name = SERVICES_KEY, defaultValue = "[]") JSONArray services,
+            @RequestParam(name = SERVICES_KEY, defaultValue = "") List<String> services,
             @RequestParam(value = LANGUAGE_KEY, required = false, defaultValue = DEFAULT_LANGUAGE) String language
     ) {
         setSessionLocale(language);

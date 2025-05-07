@@ -4,6 +4,7 @@ $dokka.linkExtension:html
 module:backend
 com.tecknobit.brownie
 com.tecknobit.brownie.configuration
+com.tecknobit.brownie.events
 com.tecknobit.brownie.helpers
 com.tecknobit.brownie.helpers.shell
 com.tecknobit.brownie.services.hosts.commands
@@ -24,6 +25,8 @@ com.tecknobit.brownie.services.session.repository
 com.tecknobit.brownie.services.session.service
 com.tecknobit.brownie.services.shared.controllers
 com.tecknobit.brownie.services.shared.entities
+com.tecknobit.brownie.services.shared.repositories
+com.tecknobit.brownie.services.shared.services
 module:core
 com.tecknobit.browniecore
 com.tecknobit.browniecore.enums

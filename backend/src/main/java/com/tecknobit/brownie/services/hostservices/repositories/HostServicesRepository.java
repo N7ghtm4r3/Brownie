@@ -2,6 +2,7 @@ package com.tecknobit.brownie.services.hostservices.repositories;
 
 import com.tecknobit.brownie.services.hostservices.dtos.CurrentServiceStatus;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
+import com.tecknobit.browniecore.enums.ServiceStatus;
 import jakarta.transaction.Transactional;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -15,8 +16,7 @@ import java.util.List;
 import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.equinoxbackend.configuration.IndexesCreator._IN_BOOLEAN_MODE;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper._WHERE_;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.IDENTIFIER_KEY;
-import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.NAME_KEY;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
 
 /**
  * The {@code HostServicesRepository} interface is useful to manage the queries of the {@link BrownieHostService}
@@ -175,6 +175,27 @@ public interface HostServicesRepository extends JpaRepository<BrownieHostService
     void updateServiceStatus(
             @Param(IDENTIFIER_KEY) String serviceId,
             @Param(STATUS_KEY) String status,
+            @Param(PID_KEY) long pid
+    );
+
+    /**
+     * Query used to mark a service as {@link ServiceStatus#STOPPED}
+     *
+     * @param hostId The identifier of the host owner of the service
+     * @param pid    The pid of the service to mark
+     */
+    @Transactional
+    @Modifying(clearAutomatically = true)
+    @Query(
+            value = "UPDATE " + SERVICES_KEY + " SET " +
+                    STATUS_KEY + "='STOPPED'," +
+                    PID_KEY + "='-1'" +
+                    _WHERE_ + HOST_IDENTIFIER_KEY + "=:" + HOST_IDENTIFIER_KEY +
+                    " AND " + PID_KEY + "=:" + PID_KEY,
+            nativeQuery = true
+    )
+    void markServiceAsStopped(
+            @Param(HOST_IDENTIFIER_KEY) String hostId,
             @Param(PID_KEY) long pid
     );
 

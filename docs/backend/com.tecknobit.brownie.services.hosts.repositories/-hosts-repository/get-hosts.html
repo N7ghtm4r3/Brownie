@@ -102,7 +102,7 @@
         </div>
         <div id="main">
             <div class="main-content" data-page-type="member" id="content"
-                 pageids="backend::com.tecknobit.brownie.services.hosts.repositories/HostsRepository/getHosts/#java.lang.String#java.util.List<java.lang.String>#org.springframework.data.domain.Pageable/PointingToDeclaration//-612206970">
+                 pageids="backend::com.tecknobit.brownie.services.hosts.repositories/HostsRepository/getHosts/#java.lang.String#java.lang.String#java.util.List<java.lang.String>#org.springframework.data.domain.Pageable/PointingToDeclaration//-612206970">
                 <div class="breadcrumbs"><a href="../../index.html">backend</a><span class="delimiter">/</span><a
                         href="../index.html">com.tecknobit.brownie.services.hosts.repositories</a><span
                         class="delimiter">/</span><a href="index.html">HostsRepository</a><span
@@ -128,7 +128,8 @@
                     "OR :" + KEYWORDS_KEY + " = ''" +
                     ") " +
                     "AND " + STATUS_KEY + " IN (:" + STATUSES_KEY + ") " +
-                    "ORDER BY " + INSERTION_DATE_KEY + " DESC"</span></span><span
+                    "AND " + SESSION_IDENTIFIER_KEY + "=:" + SESSION_IDENTIFIER_KEY +
+                    " ORDER BY " + INSERTION_DATE_KEY + " DESC"</span></span><span
                                         class="token punctuation">, </span></span>
                                     <wbr>
                                     <span>nativeQuery<span class="token operator"> = </span><span
@@ -140,6 +141,16 @@
                                 href="get-hosts.html"><span class="token function">getHosts</span></a><span
                                 class="token punctuation">(</span><span class="parameters "><span
                                 class="parameter "><span><span class="token annotation builtin">@</span><span
+                                data-unresolved-link="org.springframework.data.repository.query/Param///PointingToDeclaration/"><span
+                                class="token annotation builtin">Param</span></span><span
+                                class="token punctuation">(</span><span>value<span
+                                class="token operator"> = </span><span class="breakable-word"><span
+                                class="token string">"session_id"</span></span></span><wbr><span
+                                class="token punctuation">)</span>&nbsp;</span>sessionId<span
+                                class="token operator">: </span><a
+                                href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span
+                                class="token punctuation">, </span></span><span class="parameter "><span><span
+                                class="token annotation builtin">@</span><span
                                 data-unresolved-link="org.springframework.data.repository.query/Param///PointingToDeclaration/"><span
                                 class="token annotation builtin">Param</span></span><span
                                 class="token punctuation">(</span><span>value<span

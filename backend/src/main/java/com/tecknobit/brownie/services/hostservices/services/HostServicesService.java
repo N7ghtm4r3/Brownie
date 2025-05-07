@@ -1,7 +1,8 @@
 package com.tecknobit.brownie.services.hostservices.services;
 
 import com.jcraft.jsch.JSchException;
-import com.tecknobit.brownie.helpers.RequestParamsConverter;
+import com.tecknobit.brownie.events.BrownieApplicationEvent;
+import com.tecknobit.brownie.events.BrownieEventsCollector;
 import com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
 import com.tecknobit.brownie.services.hosts.services.HostEventsService;
@@ -9,17 +10,22 @@ import com.tecknobit.brownie.services.hostservices.dtos.CurrentServiceStatus;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.repositories.HostServicesRepository;
 import com.tecknobit.browniecore.enums.ServiceStatus;
+import com.tecknobit.equinoxbackend.events.EquinoxEventsCollector;
+import com.tecknobit.equinoxcore.annotations.CustomParametersOrder;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
-import org.json.JSONArray;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.stereotype.Service;
 
+import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
 import java.util.Set;
 
+import static com.tecknobit.brownie.events.BrownieApplicationEventType.SYNC_SERVICES;
+import static com.tecknobit.browniecore.ConstantsKt.HOST_KEY;
+import static com.tecknobit.browniecore.ConstantsKt.SERVICES_KEY;
 import static com.tecknobit.browniecore.enums.ServiceStatus.*;
 import static com.tecknobit.equinoxbackend.configuration.IndexesCreator.formatFullTextKeywords;
 import static com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController.generateIdentifier;
@@ -28,9 +34,12 @@ import static com.tecknobit.equinoxbackend.environment.services.builtin.controll
  * The {@code HostServicesService} class is useful to manage all the {@link BrownieHostService} database operations
  *
  * @author N7ghtm4r3 - Tecknobit
+ *
+ * @see EquinoxEventsCollector
+ * @see BrownieEventsCollector
  */
 @Service
-public class HostServicesService {
+public class HostServicesService implements BrownieEventsCollector {
 
     /**
      * {@code eventsRepository} instance used to access to the {@link SERVICES_KEY} table
@@ -101,15 +110,14 @@ public class HostServicesService {
      *
      * @param hostId The identifier of the host
      * @param keywords    The keywords used to filter the results
-     * @param rawStatuses The statuses used to filter the results
+     * @param statuses The statuses used to filter the results
      * @param page        The page requested
      * @param pageSize    The size of the items to insert in the page
      * @return the list of the services as {@link PaginatedResponse} of {@link BrownieHostService}
      */
-    public PaginatedResponse<BrownieHostService> getServices(String hostId, Set<String> keywords, JSONArray rawStatuses,
+    public PaginatedResponse<BrownieHostService> getServices(String hostId, Set<String> keywords, List<String> statuses,
                                                              int page, int pageSize) {
         String fullTextKeywords = formatFullTextKeywords(keywords, "+", "*", true);
-        List<String> statuses = RequestParamsConverter.convertToFiltersList(rawStatuses);
         long totalServices = servicesRepository.countServices(hostId, fullTextKeywords, statuses);
         List<BrownieHostService> services = servicesRepository.getServices(hostId, fullTextKeywords, statuses,
                 PageRequest.of(page, pageSize));
@@ -119,11 +127,10 @@ public class HostServicesService {
     /**
      * Method used to get the current status of the specified services
      *
-     * @param rawServices The services used to retrieve the current statuses
+     * @param services The services used to retrieve the current statuses
      * @return the list of the current statuses as {@link List} of {@link CurrentServiceStatus}
      */
-    public List<CurrentServiceStatus> getServicesStatus(JSONArray rawServices) {
-        List<String> services = RequestParamsConverter.convertToFiltersList(rawServices);
+    public List<CurrentServiceStatus> getServicesStatus(List<String> services) {
         if (services.isEmpty())
             return Collections.EMPTY_LIST;
         return servicesRepository.getServicesStatus(services);
@@ -234,6 +241,31 @@ public class HostServicesService {
         }
         servicesRepository.removeService(service.getId());
         hostEventsService.registerServiceRemovedEvent(host.getId(), service.getName(), removeFromTheHost);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void onEventCollected(BrownieApplicationEvent event) {
+        if (event.getEventType() == SYNC_SERVICES) {
+            @CustomParametersOrder(order = {HOST_KEY, SERVICES_KEY})
+            Object[] extra = event.getExtra();
+            BrownieHost host = (BrownieHost) extra[0];
+            Collection<Long> stoppedServices = (Collection<Long>) extra[1];
+            for (Long servicePid : stoppedServices)
+                markServiceAsStopped(host, servicePid);
+        }
+    }
+
+    /**
+     * Method used to mark a service as {@link ServiceStatus#STOPPED}
+     *
+     * @param host       The host owner of the service
+     * @param servicePid The pid of the service to mark
+     */
+    private void markServiceAsStopped(BrownieHost host, long servicePid) {
+        servicesRepository.markServiceAsStopped(host.getId(), servicePid);
     }
 
 }

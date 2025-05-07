@@ -11,6 +11,7 @@ import com.tecknobit.equinoxcore.annotations.DTO;
 import java.util.List;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.HOST_ADDRESS_KEY;
 
 /**
  * The {@code BrownieHostOverview} class is used as {@link DTO} to share the information about the current

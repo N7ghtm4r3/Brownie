@@ -308,7 +308,7 @@
                                                                 class="token operator">: </span><a
                                                                 href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span
                                                                 class="token operator"> = </span><span
-                                                                class="token string">"find . -type f -name "%s"
+                                                                class="token string">"find / -type f -name "%s" 2&gt;/dev/null
 "</span></div>
                                                         <div class="brief "><code
                                                                 class="lang-kotlin">FIND_SERVICE_PATH</code> the bash
@@ -353,8 +353,8 @@ $(if ls /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq &amp;&gt;/dev/null
     freq=$(lscpu | grep 'CPU MHz' | awk '{print $3/1000}');
     printf "%.2f" $freq;
   fi),
-$(free -h | grep 'Mem' | awk '{print $3 "/" $2}' | sed 's/[A-Za-z]//g'),
-$(df -h --total | grep 'total' | awk '{print $3 "/" $2}' | sed 's/[A-Za-z]//g'),
+$(free -b | awk '/Mem:/ {printf "%.2f/%.2f\n", $3/1073741824, $2/1073741824}'),
+$(df --block-size=1G --total | awk '/total/ {printf "%d/%d\n", $3, $2}'),
 $(if lsblk -d -o NAME | grep -q mmcblk; then echo "SD_CARD";
   elif lsblk -d -o NAME | grep -q nvme; then echo "SSD_NVMe";
   elif lsblk -d -o NAME | grep -q vda; then echo "VIRTUAL_DISK";
@@ -364,6 +364,43 @@ $(if lsblk -d -o NAME | grep -q mmcblk; then echo "SD_CARD";
                                                         <div class="brief "><code class="lang-kotlin">GET_CURRENT_HOST_STATS</code>
                                                             the bash command used to retrieve the current stats of the
                                                             physical machine of the host
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a data-name="-1660698534%2FProperties%2F-612206970"
+                                   anchor-label="GREP_RUNNING_SERVICES_COMMAND"
+                                   id="-1660698534%2FProperties%2F-612206970"
+                                   data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                                <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                                     data-filterable-set=":backend:dokkaHtmlPartial/main">
+                                    <div class="main-subrow keyValue ">
+                                        <div class=""><span class="inline-flex">
+                  <div><a href="../-shell-commands-executor/-g-r-e-p_-r-u-n-n-i-n-g_-s-e-r-v-i-c-e-s_-c-o-m-m-a-n-d.html"><span>GREP_</span><wbr><span>RUNNING_</span><wbr><span>SERVICES_</span><wbr><span>COMMAND</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1660698534%2FProperties%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span
+                            class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+                                        <div>
+                                            <div class="title">
+                                                <div class="platform-hinted "
+                                                     data-platform-hinted="data-platform-hinted">
+                                                    <div class="content sourceset-dependent-content" data-active=""
+                                                         data-togglable=":backend:dokkaHtmlPartial/main">
+                                                        <div class="symbol monospace"><span class="token keyword">protected </span><span
+                                                                class="token keyword">val </span><a
+                                                                href="../-shell-commands-executor/-g-r-e-p_-r-u-n-n-i-n-g_-s-e-r-v-i-c-e-s_-c-o-m-m-a-n-d.html">GREP_RUNNING_SERVICES_COMMAND</a><span
+                                                                class="token operator">: </span><a
+                                                                href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span
+                                                                class="token operator"> = </span><span
+                                                                class="token string">"    ps -ef | grep -E %s | grep -v grep | awk '{print $2}' | paste -sd ','
+"</span></div>
+                                                        <div class="brief "><code class="lang-kotlin">GREP_RUNNING_SERVICES_COMMAND</code>
+                                                            the bash command used to retrieve all the running services
+                                                            on a host and format their pids as list comma separated
                                                         </div>
                                                     </div>
                                                 </div>
@@ -434,6 +471,41 @@ $(if lsblk -d -o NAME | grep -q mmcblk; then echo "SD_CARD";
                                                         <div class="brief "><code
                                                                 class="lang-kotlin">NOHUP_OUT_FILE</code> the pathname
                                                             of the generated nohup.
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a data-name="613732757%2FProperties%2F-612206970" anchor-label="PIPE_CHARACTER"
+                                   id="613732757%2FProperties%2F-612206970"
+                                   data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                                <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                                     data-filterable-set=":backend:dokkaHtmlPartial/main">
+                                    <div class="main-subrow keyValue ">
+                                        <div class=""><span class="inline-flex">
+                  <div><a href="../-shell-commands-executor/-p-i-p-e_-c-h-a-r-a-c-t-e-r.html"><span>PIPE_</span><wbr><span>CHARACTER</span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="613732757%2FProperties%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span
+                            class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+                                        <div>
+                                            <div class="title">
+                                                <div class="platform-hinted "
+                                                     data-platform-hinted="data-platform-hinted">
+                                                    <div class="content sourceset-dependent-content" data-active=""
+                                                         data-togglable=":backend:dokkaHtmlPartial/main">
+                                                        <div class="symbol monospace"><span class="token keyword">protected </span><span
+                                                                class="token keyword">val </span><a
+                                                                href="../-shell-commands-executor/-p-i-p-e_-c-h-a-r-a-c-t-e-r.html">PIPE_CHARACTER</a><span
+                                                                class="token operator">: </span><a
+                                                                href="https://docs.oracle.com/javase/8/docs/api/java/lang/String.html">String</a><span
+                                                                class="token operator"> = </span><span
+                                                                class="token string">"|"</span></div>
+                                                        <div class="brief "><code
+                                                                class="lang-kotlin">PIPE_CHARACTER</code> constant value
+                                                            for the pipe character
                                                         </div>
                                                     </div>
                                                 </div>
@@ -658,6 +730,47 @@ $(if lsblk -d -o NAME | grep -q mmcblk; then echo "SD_CARD";
                                                         </div>
                                                         <div class="brief ">Method used to append the exit status of the
                                                             command to the error result of the same command
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <a data-name="-1000025855%2FFunctions%2F-612206970" anchor-label="detectStoppedServices"
+                                   id="-1000025855%2FFunctions%2F-612206970"
+                                   data-filterable-set=":backend:dokkaHtmlPartial/main"></a>
+                                <div class="table-row" data-filterable-current=":backend:dokkaHtmlPartial/main"
+                                     data-filterable-set=":backend:dokkaHtmlPartial/main">
+                                    <div class="main-subrow keyValue ">
+                                        <div class=""><span class="inline-flex">
+                  <div><a href="../-shell-commands-executor/detect-stopped-services.html"><span>detect</span><wbr><span>Stopped</span><wbr><span><span>Services</span></span></a></div>
+<span class="anchor-wrapper"><span class="anchor-icon" pointing-to="-1000025855%2FFunctions%2F-612206970"></span>
+                    <div class="copy-popup-wrapper "><span
+                            class="copy-popup-icon"></span><span>Link copied to clipboard</span></div>
+                  </span></span></div>
+                                        <div>
+                                            <div class="title">
+                                                <div class="platform-hinted "
+                                                     data-platform-hinted="data-platform-hinted">
+                                                    <div class="content sourceset-dependent-content" data-active=""
+                                                         data-togglable=":backend:dokkaHtmlPartial/main">
+                                                        <div class="symbol monospace"><span
+                                                                class="token keyword">open </span><span
+                                                                class="token keyword">fun </span><a
+                                                                href="../-shell-commands-executor/detect-stopped-services.html"><span
+                                                                class="token function">detectStoppedServices</span></a><span
+                                                                class="token punctuation">(</span><span
+                                                                class="parameters "><span class="parameter ">host<span
+                                                                class="token operator">: </span><a
+                                                                href="../../com.tecknobit.brownie.services.hosts.entities/-brownie-host/index.html">BrownieHost</a></span></span><span
+                                                                class="token punctuation">)</span><span
+                                                                class="token operator">: </span><a
+                                                                href="https://docs.oracle.com/javase/8/docs/api/java/util/Collection.html">Collection</a><span
+                                                                class="token operator">&lt;</span><a
+                                                                href="https://docs.oracle.com/javase/8/docs/api/java/lang/Long.html">Long</a><span
+                                                                class="token operator">&gt;</span></div>
+                                                        <div class="brief ">Method used to detect the stopped services
                                                         </div>
                                                     </div>
                                                 </div>

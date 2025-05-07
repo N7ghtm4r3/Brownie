@@ -310,16 +310,6 @@
     ]
   },
   {
-    "name": "const val HOST_ADDRESS_KEY: String",
-    "description": "com.tecknobit.browniecore.HOST_ADDRESS_KEY",
-    "location": "core/com.tecknobit.browniecore/-h-o-s-t_-a-d-d-r-e-s-s_-k-e-y.html",
-    "searchKeys": [
-      "HOST_ADDRESS_KEY",
-      "const val HOST_ADDRESS_KEY: String",
-      "com.tecknobit.browniecore.HOST_ADDRESS_KEY"
-    ]
-  },
-  {
     "name": "const val HOST_EVENTS_KEY: String",
     "description": "com.tecknobit.browniecore.HOST_EVENTS_KEY",
     "location": "core/com.tecknobit.browniecore/-h-o-s-t_-e-v-e-n-t-s_-k-e-y.html",
@@ -367,16 +357,6 @@
       "JOIN_CODE_KEY",
       "const val JOIN_CODE_KEY: String",
       "com.tecknobit.browniecore.JOIN_CODE_KEY"
-    ]
-  },
-  {
-    "name": "const val KEYWORDS_KEY: String",
-    "description": "com.tecknobit.browniecore.KEYWORDS_KEY",
-    "location": "core/com.tecknobit.browniecore/-k-e-y-w-o-r-d-s_-k-e-y.html",
-    "searchKeys": [
-      "KEYWORDS_KEY",
-      "const val KEYWORDS_KEY: String",
-      "com.tecknobit.browniecore.KEYWORDS_KEY"
     ]
   },
   {
@@ -597,16 +577,6 @@
       "STATUSES_KEY",
       "const val STATUSES_KEY: String",
       "com.tecknobit.browniecore.STATUSES_KEY"
-    ]
-  },
-  {
-    "name": "const val STATUS_KEY: String",
-    "description": "com.tecknobit.browniecore.STATUS_KEY",
-    "location": "core/com.tecknobit.browniecore/-s-t-a-t-u-s_-k-e-y.html",
-    "searchKeys": [
-      "STATUS_KEY",
-      "const val STATUS_KEY: String",
-      "com.tecknobit.browniecore.STATUS_KEY"
     ]
   },
   {
@@ -1050,6 +1020,16 @@
     ]
   },
   {
+    "name": "SYNC_SERVICES",
+    "description": "com.tecknobit.brownie.events.BrownieApplicationEventType.SYNC_SERVICES",
+    "location": "backend/com.tecknobit.brownie.events/-brownie-application-event-type/-s-y-n-c_-s-e-r-v-i-c-e-s/index.html",
+    "searchKeys": [
+      "SYNC_SERVICES",
+      "SYNC_SERVICES",
+      "com.tecknobit.brownie.events.BrownieApplicationEventType.SYNC_SERVICES"
+    ]
+  },
+  {
     "name": "abstract class BrownieEvent : EquinoxItem",
     "description": "com.tecknobit.brownie.services.shared.entities.BrownieEvent",
     "location": "backend/com.tecknobit.brownie.services.shared.entities/-brownie-event/index.html",
@@ -1057,6 +1037,26 @@
       "BrownieEvent",
       "abstract class BrownieEvent : EquinoxItem",
       "com.tecknobit.brownie.services.shared.entities.BrownieEvent"
+    ]
+  },
+  {
+    "name": "abstract class BrownieEventsEmitter : EquinoxEventsEmitter<T> ",
+    "description": "com.tecknobit.brownie.events.BrownieEventsEmitter",
+    "location": "backend/com.tecknobit.brownie.events/-brownie-events-emitter/index.html",
+    "searchKeys": [
+      "BrownieEventsEmitter",
+      "abstract class BrownieEventsEmitter : EquinoxEventsEmitter<T> ",
+      "com.tecknobit.brownie.events.BrownieEventsEmitter"
+    ]
+  },
+  {
+    "name": "abstract class BrownieEventsRecorder<T : Enum<T>?, E : BrownieEvent?>",
+    "description": "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder",
+    "location": "backend/com.tecknobit.brownie.services.shared.services/-brownie-events-recorder/index.html",
+    "searchKeys": [
+      "BrownieEventsRecorder",
+      "abstract class BrownieEventsRecorder<T : Enum<T>?, E : BrownieEvent?>",
+      "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder"
     ]
   },
   {
@@ -1080,12 +1080,12 @@
     ]
   },
   {
-    "name": "abstract fun countHosts(keywords: String, statuses: List<String>): Long",
+    "name": "abstract fun countHosts(sessionId: String, keywords: String, statuses: List<String>): Long",
     "description": "com.tecknobit.brownie.services.hosts.repositories.HostsRepository.countHosts",
     "location": "backend/com.tecknobit.brownie.services.hosts.repositories/-hosts-repository/count-hosts.html",
     "searchKeys": [
       "countHosts",
-      "abstract fun countHosts(keywords: String, statuses: List<String>): Long",
+      "abstract fun countHosts(sessionId: String, keywords: String, statuses: List<String>): Long",
       "com.tecknobit.brownie.services.hosts.repositories.HostsRepository.countHosts"
     ]
   },
@@ -1140,12 +1140,12 @@
     ]
   },
   {
-    "name": "abstract fun getHosts(keywords: String, statuses: List<String>, pageable: Pageable): List<BrownieHost>",
+    "name": "abstract fun getHosts(sessionId: String, keywords: String, statuses: List<String>, pageable: Pageable): List<BrownieHost>",
     "description": "com.tecknobit.brownie.services.hosts.repositories.HostsRepository.getHosts",
     "location": "backend/com.tecknobit.brownie.services.hosts.repositories/-hosts-repository/get-hosts.html",
     "searchKeys": [
       "getHosts",
-      "abstract fun getHosts(keywords: String, statuses: List<String>, pageable: Pageable): List<BrownieHost>",
+      "abstract fun getHosts(sessionId: String, keywords: String, statuses: List<String>, pageable: Pageable): List<BrownieHost>",
       "com.tecknobit.brownie.services.hosts.repositories.HostsRepository.getHosts"
     ]
   },
@@ -1160,13 +1160,33 @@
     ]
   },
   {
-    "name": "abstract fun getLastRunningEvent(serviceId: String): Long",
-    "description": "com.tecknobit.brownie.services.hostservices.repositories.HostServiceEventsRepository.getLastRunningEvent",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.repositories/-host-service-events-repository/get-last-running-event.html",
+    "name": "abstract fun getLastUpEvent(eventOwnerId: String): Long",
+    "description": "com.tecknobit.brownie.services.shared.repositories.BrownieEventsRepository.getLastUpEvent",
+    "location": "backend/com.tecknobit.brownie.services.shared.repositories/-brownie-events-repository/get-last-up-event.html",
     "searchKeys": [
-      "getLastRunningEvent",
-      "abstract fun getLastRunningEvent(serviceId: String): Long",
-      "com.tecknobit.brownie.services.hostservices.repositories.HostServiceEventsRepository.getLastRunningEvent"
+      "getLastUpEvent",
+      "abstract fun getLastUpEvent(eventOwnerId: String): Long",
+      "com.tecknobit.brownie.services.shared.repositories.BrownieEventsRepository.getLastUpEvent"
+    ]
+  },
+  {
+    "name": "abstract fun getLastUpEvent(hostId: String): Long",
+    "description": "com.tecknobit.brownie.services.hosts.repositories.HostEventsRepository.getLastUpEvent",
+    "location": "backend/com.tecknobit.brownie.services.hosts.repositories/-host-events-repository/get-last-up-event.html",
+    "searchKeys": [
+      "getLastUpEvent",
+      "abstract fun getLastUpEvent(hostId: String): Long",
+      "com.tecknobit.brownie.services.hosts.repositories.HostEventsRepository.getLastUpEvent"
+    ]
+  },
+  {
+    "name": "abstract fun getLastUpEvent(serviceId: String): Long",
+    "description": "com.tecknobit.brownie.services.hostservices.repositories.HostServiceEventsRepository.getLastUpEvent",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.repositories/-host-service-events-repository/get-last-up-event.html",
+    "searchKeys": [
+      "getLastUpEvent",
+      "abstract fun getLastUpEvent(serviceId: String): Long",
+      "com.tecknobit.brownie.services.hostservices.repositories.HostServiceEventsRepository.getLastUpEvent"
     ]
   },
   {
@@ -1210,6 +1230,16 @@
     ]
   },
   {
+    "name": "abstract fun markServiceAsStopped(hostId: String, pid: Long)",
+    "description": "com.tecknobit.brownie.services.hostservices.repositories.HostServicesRepository.markServiceAsStopped",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.repositories/-host-services-repository/mark-service-as-stopped.html",
+    "searchKeys": [
+      "markServiceAsStopped",
+      "abstract fun markServiceAsStopped(hostId: String, pid: Long)",
+      "com.tecknobit.brownie.services.hostservices.repositories.HostServicesRepository.markServiceAsStopped"
+    ]
+  },
+  {
     "name": "abstract fun onRestart()",
     "description": "com.tecknobit.brownie.helpers.RemoteHostWaiter.OnHostRestart.onRestart",
     "location": "backend/com.tecknobit.brownie.helpers/-remote-host-waiter/-on-host-restart/on-restart.html",
@@ -1227,6 +1257,26 @@
       "rebootHost",
       "abstract fun rebootHost(service: HostsService, host: BrownieHost)",
       "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.rebootHost"
+    ]
+  },
+  {
+    "name": "abstract fun registerEvent(eventId: String, type: String, eventDate: Long, eventOwnerId: String)",
+    "description": "com.tecknobit.brownie.services.shared.repositories.BrownieEventsRepository.registerEvent",
+    "location": "backend/com.tecknobit.brownie.services.shared.repositories/-brownie-events-repository/register-event.html",
+    "searchKeys": [
+      "registerEvent",
+      "abstract fun registerEvent(eventId: String, type: String, eventDate: Long, eventOwnerId: String)",
+      "com.tecknobit.brownie.services.shared.repositories.BrownieEventsRepository.registerEvent"
+    ]
+  },
+  {
+    "name": "abstract fun registerEvent(eventId: String, type: String, eventDate: Long, extra: String, eventOwnerId: String)",
+    "description": "com.tecknobit.brownie.services.shared.repositories.BrownieEventsRepository.registerEvent",
+    "location": "backend/com.tecknobit.brownie.services.shared.repositories/-brownie-events-repository/register-event.html",
+    "searchKeys": [
+      "registerEvent",
+      "abstract fun registerEvent(eventId: String, type: String, eventDate: Long, extra: String, eventOwnerId: String)",
+      "com.tecknobit.brownie.services.shared.repositories.BrownieEventsRepository.registerEvent"
     ]
   },
   {
@@ -1411,12 +1461,12 @@
   },
   {
     "name": "constructor()",
-    "description": "com.tecknobit.brownie.configuration.MessageSourceConfig.MessageSourceConfig",
-    "location": "backend/com.tecknobit.brownie.configuration/-message-source-config/-message-source-config.html",
+    "description": "com.tecknobit.brownie.events.BrownieEventsEmitter.BrownieEventsEmitter",
+    "location": "backend/com.tecknobit.brownie.events/-brownie-events-emitter/-brownie-events-emitter.html",
     "searchKeys": [
-      "MessageSourceConfig",
+      "BrownieEventsEmitter",
       "constructor()",
-      "com.tecknobit.brownie.configuration.MessageSourceConfig.MessageSourceConfig"
+      "com.tecknobit.brownie.events.BrownieEventsEmitter.BrownieEventsEmitter"
     ]
   },
   {
@@ -1437,16 +1487,6 @@
       "RemoteHostWaiter",
       "constructor()",
       "com.tecknobit.brownie.helpers.RemoteHostWaiter.RemoteHostWaiter"
-    ]
-  },
-  {
-    "name": "constructor()",
-    "description": "com.tecknobit.brownie.helpers.RequestParamsConverter.RequestParamsConverter",
-    "location": "backend/com.tecknobit.brownie.helpers/-request-params-converter/-request-params-converter.html",
-    "searchKeys": [
-      "RequestParamsConverter",
-      "constructor()",
-      "com.tecknobit.brownie.helpers.RequestParamsConverter.RequestParamsConverter"
     ]
   },
   {
@@ -1551,16 +1591,6 @@
   },
   {
     "name": "constructor()",
-    "description": "com.tecknobit.brownie.services.hosts.services.HostEventsService.HostEventsService",
-    "location": "backend/com.tecknobit.brownie.services.hosts.services/-host-events-service/-host-events-service.html",
-    "searchKeys": [
-      "HostEventsService",
-      "constructor()",
-      "com.tecknobit.brownie.services.hosts.services.HostEventsService.HostEventsService"
-    ]
-  },
-  {
-    "name": "constructor()",
     "description": "com.tecknobit.brownie.services.hosts.services.HostsService.HostsService",
     "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/-hosts-service.html",
     "searchKeys": [
@@ -1621,16 +1651,6 @@
   },
   {
     "name": "constructor()",
-    "description": "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService.HostServiceEventsService",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-service-events-service/-host-service-events-service.html",
-    "searchKeys": [
-      "HostServiceEventsService",
-      "constructor()",
-      "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService.HostServiceEventsService"
-    ]
-  },
-  {
-    "name": "constructor()",
     "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.HostServicesService",
     "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/-host-services-service.html",
     "searchKeys": [
@@ -1671,16 +1691,6 @@
   },
   {
     "name": "constructor()",
-    "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.BrownieSessionsService",
-    "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/-brownie-sessions-service.html",
-    "searchKeys": [
-      "BrownieSessionsService",
-      "constructor()",
-      "com.tecknobit.brownie.services.session.service.BrownieSessionsService.BrownieSessionsService"
-    ]
-  },
-  {
-    "name": "constructor()",
     "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.DefaultBrownieController",
     "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/-default-brownie-controller.html",
     "searchKeys": [
@@ -1700,13 +1710,23 @@
     ]
   },
   {
-    "name": "constructor(host: BrownieHost)",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.RemoteShellCommandsExecutors",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/-remote-shell-commands-executors.html",
+    "name": "constructor(eventsRepository: HostServiceEventsRepository)",
+    "description": "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService.HostServiceEventsService",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-service-events-service/-host-service-events-service.html",
     "searchKeys": [
-      "RemoteShellCommandsExecutors",
+      "HostServiceEventsService",
+      "constructor(eventsRepository: HostServiceEventsRepository)",
+      "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService.HostServiceEventsService"
+    ]
+  },
+  {
+    "name": "constructor(host: BrownieHost)",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.RemoteShellCommandsExecutor",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/-remote-shell-commands-executor.html",
+    "searchKeys": [
+      "RemoteShellCommandsExecutor",
       "constructor(host: BrownieHost)",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.RemoteShellCommandsExecutors"
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.RemoteShellCommandsExecutor"
     ]
   },
   {
@@ -1830,13 +1850,33 @@
     ]
   },
   {
-    "name": "constructor(sshUser: String, hostAddress: String, sshPassword: String)",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.RemoteShellCommandsExecutors",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/-remote-shell-commands-executors.html",
+    "name": "constructor(sessionsRepository: BrownieSessionsRepository)",
+    "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.BrownieSessionsService",
+    "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/-brownie-sessions-service.html",
     "searchKeys": [
-      "RemoteShellCommandsExecutors",
+      "BrownieSessionsService",
+      "constructor(sessionsRepository: BrownieSessionsRepository)",
+      "com.tecknobit.brownie.services.session.service.BrownieSessionsService.BrownieSessionsService"
+    ]
+  },
+  {
+    "name": "constructor(source: Any, eventType: BrownieApplicationEventType, extra: Array<Any>)",
+    "description": "com.tecknobit.brownie.events.BrownieApplicationEvent.BrownieApplicationEvent",
+    "location": "backend/com.tecknobit.brownie.events/-brownie-application-event/-brownie-application-event.html",
+    "searchKeys": [
+      "BrownieApplicationEvent",
+      "constructor(source: Any, eventType: BrownieApplicationEventType, extra: Array<Any>)",
+      "com.tecknobit.brownie.events.BrownieApplicationEvent.BrownieApplicationEvent"
+    ]
+  },
+  {
+    "name": "constructor(sshUser: String, hostAddress: String, sshPassword: String)",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.RemoteShellCommandsExecutor",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/-remote-shell-commands-executor.html",
+    "searchKeys": [
+      "RemoteShellCommandsExecutor",
       "constructor(sshUser: String, hostAddress: String, sshPassword: String)",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.RemoteShellCommandsExecutors"
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.RemoteShellCommandsExecutor"
     ]
   },
   {
@@ -1860,6 +1900,16 @@
     ]
   },
   {
+    "name": "enum BrownieApplicationEventType",
+    "description": "com.tecknobit.brownie.events.BrownieApplicationEventType",
+    "location": "backend/com.tecknobit.brownie.events/-brownie-application-event-type/index.html",
+    "searchKeys": [
+      "BrownieApplicationEventType",
+      "enum BrownieApplicationEventType",
+      "com.tecknobit.brownie.events.BrownieApplicationEventType"
+    ]
+  },
+  {
     "name": "enum LocalEvent",
     "description": "com.tecknobit.brownie.helpers.LocalEventsHandler.LocalEvent",
     "location": "backend/com.tecknobit.brownie.helpers/-local-events-handler/-local-event/index.html",
@@ -1867,6 +1917,26 @@
       "LocalEvent",
       "enum LocalEvent",
       "com.tecknobit.brownie.helpers.LocalEventsHandler.LocalEvent"
+    ]
+  },
+  {
+    "name": "interface BrownieEventsCollector : EquinoxEventsCollector<T, E> ",
+    "description": "com.tecknobit.brownie.events.BrownieEventsCollector",
+    "location": "backend/com.tecknobit.brownie.events/-brownie-events-collector/index.html",
+    "searchKeys": [
+      "BrownieEventsCollector",
+      "interface BrownieEventsCollector : EquinoxEventsCollector<T, E> ",
+      "com.tecknobit.brownie.events.BrownieEventsCollector"
+    ]
+  },
+  {
+    "name": "interface BrownieEventsRepository<E : BrownieEvent?> : JpaRepository<T, ID> ",
+    "description": "com.tecknobit.brownie.services.shared.repositories.BrownieEventsRepository",
+    "location": "backend/com.tecknobit.brownie.services.shared.repositories/-brownie-events-repository/index.html",
+    "searchKeys": [
+      "BrownieEventsRepository",
+      "interface BrownieEventsRepository<E : BrownieEvent?> : JpaRepository<T, ID> ",
+      "com.tecknobit.brownie.services.shared.repositories.BrownieEventsRepository"
     ]
   },
   {
@@ -1880,22 +1950,22 @@
     ]
   },
   {
-    "name": "interface HostEventsRepository : JpaRepository<T, ID> ",
+    "name": "interface HostEventsRepository : BrownieEventsRepository<E> ",
     "description": "com.tecknobit.brownie.services.hosts.repositories.HostEventsRepository",
     "location": "backend/com.tecknobit.brownie.services.hosts.repositories/-host-events-repository/index.html",
     "searchKeys": [
       "HostEventsRepository",
-      "interface HostEventsRepository : JpaRepository<T, ID> ",
+      "interface HostEventsRepository : BrownieEventsRepository<E> ",
       "com.tecknobit.brownie.services.hosts.repositories.HostEventsRepository"
     ]
   },
   {
-    "name": "interface HostServiceEventsRepository : JpaRepository<T, ID> ",
+    "name": "interface HostServiceEventsRepository : BrownieEventsRepository<E> ",
     "description": "com.tecknobit.brownie.services.hostservices.repositories.HostServiceEventsRepository",
     "location": "backend/com.tecknobit.brownie.services.hostservices.repositories/-host-service-events-repository/index.html",
     "searchKeys": [
       "HostServiceEventsRepository",
-      "interface HostServiceEventsRepository : JpaRepository<T, ID> ",
+      "interface HostServiceEventsRepository : BrownieEventsRepository<E> ",
       "com.tecknobit.brownie.services.hostservices.repositories.HostServiceEventsRepository"
     ]
   },
@@ -1947,6 +2017,16 @@
       "ServicesConfigurationsRepository",
       "interface ServicesConfigurationsRepository : JpaRepository<T, ID> ",
       "com.tecknobit.brownie.services.hostservices.repositories.ServicesConfigurationsRepository"
+    ]
+  },
+  {
+    "name": "open class BrownieApplicationEvent : EquinoxApplicationEvent<T> ",
+    "description": "com.tecknobit.brownie.events.BrownieApplicationEvent",
+    "location": "backend/com.tecknobit.brownie.events/-brownie-application-event/index.html",
+    "searchKeys": [
+      "BrownieApplicationEvent",
+      "open class BrownieApplicationEvent : EquinoxApplicationEvent<T> ",
+      "com.tecknobit.brownie.events.BrownieApplicationEvent"
     ]
   },
   {
@@ -2020,12 +2100,12 @@
     ]
   },
   {
-    "name": "open class BrownieSessionsService",
+    "name": "open class BrownieSessionsService : BrownieEventsEmitter",
     "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService",
     "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/index.html",
     "searchKeys": [
       "BrownieSessionsService",
-      "open class BrownieSessionsService",
+      "open class BrownieSessionsService : BrownieEventsEmitter",
       "com.tecknobit.brownie.services.session.service.BrownieSessionsService"
     ]
   },
@@ -2060,12 +2140,12 @@
     ]
   },
   {
-    "name": "open class HostEventsService",
+    "name": "open class HostEventsService : BrownieEventsRecorder<T, E> ",
     "description": "com.tecknobit.brownie.services.hosts.services.HostEventsService",
     "location": "backend/com.tecknobit.brownie.services.hosts.services/-host-events-service/index.html",
     "searchKeys": [
       "HostEventsService",
-      "open class HostEventsService",
+      "open class HostEventsService : BrownieEventsRecorder<T, E> ",
       "com.tecknobit.brownie.services.hosts.services.HostEventsService"
     ]
   },
@@ -2080,12 +2160,12 @@
     ]
   },
   {
-    "name": "open class HostServiceEventsService",
+    "name": "open class HostServiceEventsService : BrownieEventsRecorder<T, E> ",
     "description": "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService",
     "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-service-events-service/index.html",
     "searchKeys": [
       "HostServiceEventsService",
-      "open class HostServiceEventsService",
+      "open class HostServiceEventsService : BrownieEventsRecorder<T, E> ",
       "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService"
     ]
   },
@@ -2100,12 +2180,12 @@
     ]
   },
   {
-    "name": "open class HostServicesService",
+    "name": "open class HostServicesService : BrownieEventsCollector",
     "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService",
     "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/index.html",
     "searchKeys": [
       "HostServicesService",
-      "open class HostServicesService",
+      "open class HostServicesService : BrownieEventsCollector",
       "com.tecknobit.brownie.services.hostservices.services.HostServicesService"
     ]
   },
@@ -2160,16 +2240,6 @@
     ]
   },
   {
-    "name": "open class MessageSourceConfig : WebMvcConfigurer",
-    "description": "com.tecknobit.brownie.configuration.MessageSourceConfig",
-    "location": "backend/com.tecknobit.brownie.configuration/-message-source-config/index.html",
-    "searchKeys": [
-      "MessageSourceConfig",
-      "open class MessageSourceConfig : WebMvcConfigurer",
-      "com.tecknobit.brownie.configuration.MessageSourceConfig"
-    ]
-  },
-  {
     "name": "open class RemoteHostWaiter",
     "description": "com.tecknobit.brownie.helpers.RemoteHostWaiter",
     "location": "backend/com.tecknobit.brownie.helpers/-remote-host-waiter/index.html",
@@ -2180,23 +2250,13 @@
     ]
   },
   {
-    "name": "open class RemoteShellCommandsExecutors : ShellCommandsExecutor",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/index.html",
+    "name": "open class RemoteShellCommandsExecutor : ShellCommandsExecutor",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/index.html",
     "searchKeys": [
-      "RemoteShellCommandsExecutors",
-      "open class RemoteShellCommandsExecutors : ShellCommandsExecutor",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors"
-    ]
-  },
-  {
-    "name": "open class RequestParamsConverter",
-    "description": "com.tecknobit.brownie.helpers.RequestParamsConverter",
-    "location": "backend/com.tecknobit.brownie.helpers/-request-params-converter/index.html",
-    "searchKeys": [
-      "RequestParamsConverter",
-      "open class RequestParamsConverter",
-      "com.tecknobit.brownie.helpers.RequestParamsConverter"
+      "RemoteShellCommandsExecutor",
+      "open class RemoteShellCommandsExecutor : ShellCommandsExecutor",
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor"
     ]
   },
   {
@@ -2260,16 +2320,6 @@
     ]
   },
   {
-    "name": "open fun <T> convertToFiltersList(rawFilters: JSONArray): List<T>",
-    "description": "com.tecknobit.brownie.helpers.RequestParamsConverter.convertToFiltersList",
-    "location": "backend/com.tecknobit.brownie.helpers/-request-params-converter/convert-to-filters-list.html",
-    "searchKeys": [
-      "convertToFiltersList",
-      "open fun <T> convertToFiltersList(rawFilters: JSONArray): List<T>",
-      "com.tecknobit.brownie.helpers.RequestParamsConverter.convertToFiltersList"
-    ]
-  },
-  {
     "name": "open fun <T> createSession(payload: Map<String, String>): T",
     "description": "com.tecknobit.brownie.services.session.controller.BrownieSessionController.createSession",
     "location": "backend/com.tecknobit.brownie.services.session.controller/-brownie-session-controller/create-session.html",
@@ -2300,22 +2350,22 @@
     ]
   },
   {
-    "name": "open fun <T> getHosts(sessionId: String, keywords: Set<String>, statuses: JSONArray, language: String, page: Int, pageSize: Int): T",
+    "name": "open fun <T> getHosts(sessionId: String, keywords: Set<String>, statuses: List<String>, language: String, page: Int, pageSize: Int): T",
     "description": "com.tecknobit.brownie.services.hosts.controller.HostsController.getHosts",
     "location": "backend/com.tecknobit.brownie.services.hosts.controller/-hosts-controller/get-hosts.html",
     "searchKeys": [
       "getHosts",
-      "open fun <T> getHosts(sessionId: String, keywords: Set<String>, statuses: JSONArray, language: String, page: Int, pageSize: Int): T",
+      "open fun <T> getHosts(sessionId: String, keywords: Set<String>, statuses: List<String>, language: String, page: Int, pageSize: Int): T",
       "com.tecknobit.brownie.services.hosts.controller.HostsController.getHosts"
     ]
   },
   {
-    "name": "open fun <T> getHostsStatus(sessionId: String, hosts: JSONArray, language: String): T",
+    "name": "open fun <T> getHostsStatus(sessionId: String, hosts: List<String>, language: String): T",
     "description": "com.tecknobit.brownie.services.hosts.controller.HostsController.getHostsStatus",
     "location": "backend/com.tecknobit.brownie.services.hosts.controller/-hosts-controller/get-hosts-status.html",
     "searchKeys": [
       "getHostsStatus",
-      "open fun <T> getHostsStatus(sessionId: String, hosts: JSONArray, language: String): T",
+      "open fun <T> getHostsStatus(sessionId: String, hosts: List<String>, language: String): T",
       "com.tecknobit.brownie.services.hosts.controller.HostsController.getHostsStatus"
     ]
   },
@@ -2330,22 +2380,22 @@
     ]
   },
   {
-    "name": "open fun <T> getServices(sessionId: String, hostId: String, keywords: Set<String>, statuses: JSONArray, language: String, page: Int, pageSize: Int): T",
+    "name": "open fun <T> getServices(sessionId: String, hostId: String, keywords: Set<String>, statuses: List<String>, language: String, page: Int, pageSize: Int): T",
     "description": "com.tecknobit.brownie.services.hostservices.controller.HostServicesController.getServices",
     "location": "backend/com.tecknobit.brownie.services.hostservices.controller/-host-services-controller/get-services.html",
     "searchKeys": [
       "getServices",
-      "open fun <T> getServices(sessionId: String, hostId: String, keywords: Set<String>, statuses: JSONArray, language: String, page: Int, pageSize: Int): T",
+      "open fun <T> getServices(sessionId: String, hostId: String, keywords: Set<String>, statuses: List<String>, language: String, page: Int, pageSize: Int): T",
       "com.tecknobit.brownie.services.hostservices.controller.HostServicesController.getServices"
     ]
   },
   {
-    "name": "open fun <T> getServicesStatus(sessionId: String, hostId: String, services: JSONArray, language: String): T",
+    "name": "open fun <T> getServicesStatus(sessionId: String, hostId: String, services: List<String>, language: String): T",
     "description": "com.tecknobit.brownie.services.hostservices.controller.HostServicesController.getServicesStatus",
     "location": "backend/com.tecknobit.brownie.services.hostservices.controller/-host-services-controller/get-services-status.html",
     "searchKeys": [
       "getServicesStatus",
-      "open fun <T> getServicesStatus(sessionId: String, hostId: String, services: JSONArray, language: String): T",
+      "open fun <T> getServicesStatus(sessionId: String, hostId: String, services: List<String>, language: String): T",
       "com.tecknobit.brownie.services.hostservices.controller.HostServicesController.getServicesStatus"
     ]
   },
@@ -2437,6 +2487,16 @@
       "deleteSession",
       "open fun deleteSession(sessionId: String, language: String, payload: Map<String, String>): String",
       "com.tecknobit.brownie.services.session.controller.BrownieSessionController.deleteSession"
+    ]
+  },
+  {
+    "name": "open fun detectStoppedServices(host: BrownieHost): Collection<Long>",
+    "description": "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.detectStoppedServices",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-shell-commands-executor/detect-stopped-services.html",
+    "searchKeys": [
+      "detectStoppedServices",
+      "open fun detectStoppedServices(host: BrownieHost): Collection<Long>",
+      "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.detectStoppedServices"
     ]
   },
   {
@@ -2600,22 +2660,22 @@
     ]
   },
   {
-    "name": "open fun getHosts(keywords: Set<String>, rawStatuses: JSONArray, page: Int, pageSize: Int): PaginatedResponse<BrownieHost>",
+    "name": "open fun getHosts(sessionId: String, keywords: Set<String>, statuses: List<String>, page: Int, pageSize: Int): PaginatedResponse<BrownieHost>",
     "description": "com.tecknobit.brownie.services.hosts.services.HostsService.getHosts",
     "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/get-hosts.html",
     "searchKeys": [
       "getHosts",
-      "open fun getHosts(keywords: Set<String>, rawStatuses: JSONArray, page: Int, pageSize: Int): PaginatedResponse<BrownieHost>",
+      "open fun getHosts(sessionId: String, keywords: Set<String>, statuses: List<String>, page: Int, pageSize: Int): PaginatedResponse<BrownieHost>",
       "com.tecknobit.brownie.services.hosts.services.HostsService.getHosts"
     ]
   },
   {
-    "name": "open fun getHostsStatus(rawHosts: JSONArray): List<CurrentHostStatus>",
+    "name": "open fun getHostsStatus(hosts: List<String>): List<CurrentHostStatus>",
     "description": "com.tecknobit.brownie.services.hosts.services.HostsService.getHostsStatus",
     "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/get-hosts-status.html",
     "searchKeys": [
       "getHostsStatus",
-      "open fun getHostsStatus(rawHosts: JSONArray): List<CurrentHostStatus>",
+      "open fun getHostsStatus(hosts: List<String>): List<CurrentHostStatus>",
       "com.tecknobit.brownie.services.hosts.services.HostsService.getHostsStatus"
     ]
   },
@@ -2641,12 +2701,12 @@
   },
   {
     "name": "open fun getNetworkInterfaceDetails(): Pair<String, String>",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.getNetworkInterfaceDetails",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/get-network-interface-details.html",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.getNetworkInterfaceDetails",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/get-network-interface-details.html",
     "searchKeys": [
       "getNetworkInterfaceDetails",
       "open fun getNetworkInterfaceDetails(): Pair<String, String>",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.getNetworkInterfaceDetails"
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.getNetworkInterfaceDetails"
     ]
   },
   {
@@ -2660,22 +2720,22 @@
     ]
   },
   {
-    "name": "open fun getServices(hostId: String, keywords: Set<String>, rawStatuses: JSONArray, page: Int, pageSize: Int): PaginatedResponse<BrownieHostService>",
+    "name": "open fun getServices(hostId: String, keywords: Set<String>, statuses: List<String>, page: Int, pageSize: Int): PaginatedResponse<BrownieHostService>",
     "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.getServices",
     "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/get-services.html",
     "searchKeys": [
       "getServices",
-      "open fun getServices(hostId: String, keywords: Set<String>, rawStatuses: JSONArray, page: Int, pageSize: Int): PaginatedResponse<BrownieHostService>",
+      "open fun getServices(hostId: String, keywords: Set<String>, statuses: List<String>, page: Int, pageSize: Int): PaginatedResponse<BrownieHostService>",
       "com.tecknobit.brownie.services.hostservices.services.HostServicesService.getServices"
     ]
   },
   {
-    "name": "open fun getServicesStatus(rawServices: JSONArray): List<CurrentServiceStatus>",
+    "name": "open fun getServicesStatus(services: List<String>): List<CurrentServiceStatus>",
     "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.getServicesStatus",
     "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/get-services-status.html",
     "searchKeys": [
       "getServicesStatus",
-      "open fun getServicesStatus(rawServices: JSONArray): List<CurrentServiceStatus>",
+      "open fun getServicesStatus(services: List<String>): List<CurrentServiceStatus>",
       "com.tecknobit.brownie.services.hostservices.services.HostServicesService.getServicesStatus"
     ]
   },
@@ -2760,13 +2820,23 @@
     ]
   },
   {
-    "name": "open fun localeResolver(): LocaleResolver",
-    "description": "com.tecknobit.brownie.configuration.MessageSourceConfig.localeResolver",
-    "location": "backend/com.tecknobit.brownie.configuration/-message-source-config/locale-resolver.html",
+    "name": "open fun listRunningServiceNames(): List<String>",
+    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.listRunningServiceNames",
+    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/list-running-service-names.html",
     "searchKeys": [
-      "localeResolver",
-      "open fun localeResolver(): LocaleResolver",
-      "com.tecknobit.brownie.configuration.MessageSourceConfig.localeResolver"
+      "listRunningServiceNames",
+      "open fun listRunningServiceNames(): List<String>",
+      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.listRunningServiceNames"
+    ]
+  },
+  {
+    "name": "open fun listRunningServicePids(): HashSet<Long>",
+    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.listRunningServicePids",
+    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/list-running-service-pids.html",
+    "searchKeys": [
+      "listRunningServicePids",
+      "open fun listRunningServicePids(): HashSet<Long>",
+      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.listRunningServicePids"
     ]
   },
   {
@@ -2780,13 +2850,13 @@
     ]
   },
   {
-    "name": "open fun messageSource(): ResourceBundleMessageSource",
-    "description": "com.tecknobit.brownie.configuration.MessageSourceConfig.messageSource",
-    "location": "backend/com.tecknobit.brownie.configuration/-message-source-config/message-source.html",
+    "name": "open fun onEventCollected(event: BrownieApplicationEvent)",
+    "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.onEventCollected",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/on-event-collected.html",
     "searchKeys": [
-      "messageSource",
-      "open fun messageSource(): ResourceBundleMessageSource",
-      "com.tecknobit.brownie.configuration.MessageSourceConfig.messageSource"
+      "onEventCollected",
+      "open fun onEventCollected(event: BrownieApplicationEvent)",
+      "com.tecknobit.brownie.services.hostservices.services.HostServicesService.onEventCollected"
     ]
   },
   {
@@ -2821,12 +2891,12 @@
   },
   {
     "name": "open fun rebootHost(service: HostsService, host: BrownieHost)",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.rebootHost",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/reboot-host.html",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.rebootHost",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/reboot-host.html",
     "searchKeys": [
       "rebootHost",
       "open fun rebootHost(service: HostsService, host: BrownieHost)",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.rebootHost"
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.rebootHost"
     ]
   },
   {
@@ -3121,12 +3191,12 @@
   },
   {
     "name": "open fun startService(service: BrownieHostService): Long",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.startService",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/start-service.html",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.startService",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/start-service.html",
     "searchKeys": [
       "startService",
       "open fun startService(service: BrownieHostService): Long",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.startService"
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.startService"
     ]
   },
   {
@@ -3161,12 +3231,12 @@
   },
   {
     "name": "open fun stopHost(service: HostsService, host: BrownieHost)",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.stopHost",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/stop-host.html",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.stopHost",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/stop-host.html",
     "searchKeys": [
       "stopHost",
       "open fun stopHost(service: HostsService, host: BrownieHost)",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.stopHost"
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.stopHost"
     ]
   },
   {
@@ -3270,6 +3340,16 @@
     ]
   },
   {
+    "name": "open fun valueOf(name: String): BrownieApplicationEventType",
+    "description": "com.tecknobit.brownie.events.BrownieApplicationEventType.valueOf",
+    "location": "backend/com.tecknobit.brownie.events/-brownie-application-event-type/value-of.html",
+    "searchKeys": [
+      "valueOf",
+      "open fun valueOf(name: String): BrownieApplicationEventType",
+      "com.tecknobit.brownie.events.BrownieApplicationEventType.valueOf"
+    ]
+  },
+  {
     "name": "open fun valueOf(name: String): LocalEventsHandler.LocalEvent",
     "description": "com.tecknobit.brownie.helpers.LocalEventsHandler.LocalEvent.valueOf",
     "location": "backend/com.tecknobit.brownie.helpers/-local-events-handler/-local-event/value-of.html",
@@ -3277,6 +3357,16 @@
       "valueOf",
       "open fun valueOf(name: String): LocalEventsHandler.LocalEvent",
       "com.tecknobit.brownie.helpers.LocalEventsHandler.LocalEvent.valueOf"
+    ]
+  },
+  {
+    "name": "open fun values(): Array<BrownieApplicationEventType>",
+    "description": "com.tecknobit.brownie.events.BrownieApplicationEventType.values",
+    "location": "backend/com.tecknobit.brownie.events/-brownie-application-event-type/values.html",
+    "searchKeys": [
+      "values",
+      "open fun values(): Array<BrownieApplicationEventType>",
+      "com.tecknobit.brownie.events.BrownieApplicationEventType.values"
     ]
   },
   {
@@ -3330,16 +3420,6 @@
     ]
   },
   {
-    "name": "private open fun calculateRunningDays(serviceId: String): Int",
-    "description": "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService.calculateRunningDays",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-service-events-service/calculate-running-days.html",
-    "searchKeys": [
-      "calculateRunningDays",
-      "private open fun calculateRunningDays(serviceId: String): Int",
-      "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService.calculateRunningDays"
-    ]
-  },
-  {
     "name": "private open fun findServicePath(host: BrownieHost, serviceName: String): String",
     "description": "com.tecknobit.brownie.services.hosts.services.HostsService.findServicePath",
     "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/find-service-path.html",
@@ -3357,6 +3437,16 @@
       "formatCommandResult",
       "private open fun formatCommandResult(rawResult: InputStream): String",
       "com.tecknobit.brownie.helpers.shell.LocalShellCommandsExecutor.formatCommandResult"
+    ]
+  },
+  {
+    "name": "private open fun formatServicesMonitoringCommand(serviceNames: List<String>): String",
+    "description": "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.formatServicesMonitoringCommand",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-shell-commands-executor/format-services-monitoring-command.html",
+    "searchKeys": [
+      "formatServicesMonitoringCommand",
+      "private open fun formatServicesMonitoringCommand(serviceNames: List<String>): String",
+      "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.formatServicesMonitoringCommand"
     ]
   },
   {
@@ -3410,43 +3500,33 @@
     ]
   },
   {
-    "name": "private open fun registerEvent(type: HostEventType, hostId: String)",
-    "description": "com.tecknobit.brownie.services.hosts.services.HostEventsService.registerEvent",
-    "location": "backend/com.tecknobit.brownie.services.hosts.services/-host-events-service/register-event.html",
+    "name": "private open fun markServiceAsStopped(host: BrownieHost, servicePid: Long)",
+    "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.markServiceAsStopped",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/mark-service-as-stopped.html",
     "searchKeys": [
-      "registerEvent",
-      "private open fun registerEvent(type: HostEventType, hostId: String)",
-      "com.tecknobit.brownie.services.hosts.services.HostEventsService.registerEvent"
+      "markServiceAsStopped",
+      "private open fun markServiceAsStopped(host: BrownieHost, servicePid: Long)",
+      "com.tecknobit.brownie.services.hostservices.services.HostServicesService.markServiceAsStopped"
     ]
   },
   {
-    "name": "private open fun registerEvent(type: HostEventType, hostId: String, extra: Any)",
-    "description": "com.tecknobit.brownie.services.hosts.services.HostEventsService.registerEvent",
-    "location": "backend/com.tecknobit.brownie.services.hosts.services/-host-events-service/register-event.html",
+    "name": "private open fun monitorAndSyncServiceStatuses()",
+    "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.monitorAndSyncServiceStatuses",
+    "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/monitor-and-sync-service-statuses.html",
     "searchKeys": [
-      "registerEvent",
-      "private open fun registerEvent(type: HostEventType, hostId: String, extra: Any)",
-      "com.tecknobit.brownie.services.hosts.services.HostEventsService.registerEvent"
+      "monitorAndSyncServiceStatuses",
+      "private open fun monitorAndSyncServiceStatuses()",
+      "com.tecknobit.brownie.services.session.service.BrownieSessionsService.monitorAndSyncServiceStatuses"
     ]
   },
   {
-    "name": "private open fun registerEvent(type: ServiceEventType, serviceId: String)",
-    "description": "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService.registerEvent",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-service-events-service/register-event.html",
+    "name": "private open fun monitorServices(host: BrownieHost)",
+    "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.monitorServices",
+    "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/monitor-services.html",
     "searchKeys": [
-      "registerEvent",
-      "private open fun registerEvent(type: ServiceEventType, serviceId: String)",
-      "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService.registerEvent"
-    ]
-  },
-  {
-    "name": "private open fun registerEvent(type: ServiceEventType, serviceId: String, extra: Any)",
-    "description": "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService.registerEvent",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-service-events-service/register-event.html",
-    "searchKeys": [
-      "registerEvent",
-      "private open fun registerEvent(type: ServiceEventType, serviceId: String, extra: Any)",
-      "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService.registerEvent"
+      "monitorServices",
+      "private open fun monitorServices(host: BrownieHost)",
+      "com.tecknobit.brownie.services.session.service.BrownieSessionsService.monitorServices"
     ]
   },
   {
@@ -3467,6 +3547,36 @@
       "removeNohupOut",
       "private open fun removeNohupOut(serviceName: String, servicePath: String)",
       "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.removeNohupOut"
+    ]
+  },
+  {
+    "name": "private open fun retrieveStoppedServices(command: String, host: BrownieHost): Collection<Long>",
+    "description": "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.retrieveStoppedServices",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-shell-commands-executor/retrieve-stopped-services.html",
+    "searchKeys": [
+      "retrieveStoppedServices",
+      "private open fun retrieveStoppedServices(command: String, host: BrownieHost): Collection<Long>",
+      "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.retrieveStoppedServices"
+    ]
+  },
+  {
+    "name": "private open fun shutdownServicesMonitor()",
+    "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.shutdownServicesMonitor",
+    "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/shutdown-services-monitor.html",
+    "searchKeys": [
+      "shutdownServicesMonitor",
+      "private open fun shutdownServicesMonitor()",
+      "com.tecknobit.brownie.services.session.service.BrownieSessionsService.shutdownServicesMonitor"
+    ]
+  },
+  {
+    "name": "private open fun syncServiceStatuses(host: BrownieHost, stoppedServices: Collection<Long>)",
+    "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.syncServiceStatuses",
+    "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/sync-service-statuses.html",
+    "searchKeys": [
+      "syncServiceStatuses",
+      "private open fun syncServiceStatuses(host: BrownieHost, stoppedServices: Collection<Long>)",
+      "com.tecknobit.brownie.services.session.service.BrownieSessionsService.syncServiceStatuses"
     ]
   },
   {
@@ -3500,16 +3610,6 @@
     ]
   },
   {
-    "name": "private open var eventsRepository: HostServiceEventsRepository",
-    "description": "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService.eventsRepository",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-service-events-service/events-repository.html",
-    "searchKeys": [
-      "eventsRepository",
-      "private open var eventsRepository: HostServiceEventsRepository",
-      "com.tecknobit.brownie.services.hostservices.services.HostServiceEventsService.eventsRepository"
-    ]
-  },
-  {
     "name": "private open var eventsService: HostEventsService",
     "description": "com.tecknobit.brownie.services.hosts.services.HostsService.eventsService",
     "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/events-service.html",
@@ -3537,16 +3637,6 @@
       "host",
       "private open var host: BrownieHost",
       "com.tecknobit.brownie.services.hostservices.entities.BrownieHostService.host"
-    ]
-  },
-  {
-    "name": "private open var hostEventsRepository: HostEventsRepository",
-    "description": "com.tecknobit.brownie.services.hosts.services.HostEventsService.hostEventsRepository",
-    "location": "backend/com.tecknobit.brownie.services.hosts.services/-host-events-service/host-events-repository.html",
-    "searchKeys": [
-      "hostEventsRepository",
-      "private open var hostEventsRepository: HostEventsRepository",
-      "com.tecknobit.brownie.services.hosts.services.HostEventsService.hostEventsRepository"
     ]
   },
   {
@@ -3650,16 +3740,6 @@
     ]
   },
   {
-    "name": "private open var sessionsRepository: BrownieSessionsRepository",
-    "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.sessionsRepository",
-    "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/sessions-repository.html",
-    "searchKeys": [
-      "sessionsRepository",
-      "private open var sessionsRepository: BrownieSessionsRepository",
-      "com.tecknobit.brownie.services.session.service.BrownieSessionsService.sessionsRepository"
-    ]
-  },
-  {
     "name": "private val BASH: String = \"bash\"",
     "description": "com.tecknobit.brownie.helpers.shell.LocalShellCommandsExecutor.BASH",
     "location": "backend/com.tecknobit.brownie.helpers.shell/-local-shell-commands-executor/-b-a-s-h.html",
@@ -3691,42 +3771,42 @@
   },
   {
     "name": "private val EXECUTE_BASH_SCRIPT: String = \"bash -s\"",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.EXECUTE_BASH_SCRIPT",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/-e-x-e-c-u-t-e_-b-a-s-h_-s-c-r-i-p-t.html",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.EXECUTE_BASH_SCRIPT",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/-e-x-e-c-u-t-e_-b-a-s-h_-s-c-r-i-p-t.html",
     "searchKeys": [
       "EXECUTE_BASH_SCRIPT",
       "private val EXECUTE_BASH_SCRIPT: String = \"bash -s\"",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.EXECUTE_BASH_SCRIPT"
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.EXECUTE_BASH_SCRIPT"
     ]
   },
   {
     "name": "private val EXEC_CHANNEL_TYPE: String = \"exec\"",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.EXEC_CHANNEL_TYPE",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/-e-x-e-c_-c-h-a-n-n-e-l_-t-y-p-e.html",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.EXEC_CHANNEL_TYPE",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/-e-x-e-c_-c-h-a-n-n-e-l_-t-y-p-e.html",
     "searchKeys": [
       "EXEC_CHANNEL_TYPE",
       "private val EXEC_CHANNEL_TYPE: String = \"exec\"",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.EXEC_CHANNEL_TYPE"
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.EXEC_CHANNEL_TYPE"
     ]
   },
   {
     "name": "private val GET_BROADCAST_IP_ADDRESS_COMMAND: String = \"ip -4 addr show | grep -E 'inet .*brd' | awk '{print $4}'\"",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.GET_BROADCAST_IP_ADDRESS_COMMAND",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/-g-e-t_-b-r-o-a-d-c-a-s-t_-i-p_-a-d-d-r-e-s-s_-c-o-m-m-a-n-d.html",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.GET_BROADCAST_IP_ADDRESS_COMMAND",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/-g-e-t_-b-r-o-a-d-c-a-s-t_-i-p_-a-d-d-r-e-s-s_-c-o-m-m-a-n-d.html",
     "searchKeys": [
       "GET_BROADCAST_IP_ADDRESS_COMMAND",
       "private val GET_BROADCAST_IP_ADDRESS_COMMAND: String = \"ip -4 addr show | grep -E 'inet .*brd' | awk '{print $4}'\"",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.GET_BROADCAST_IP_ADDRESS_COMMAND"
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.GET_BROADCAST_IP_ADDRESS_COMMAND"
     ]
   },
   {
     "name": "private val GET_MAC_ADDRESS_COMMAND: String = \"ip link show | awk -F': ' '/^[0-9]+: e/{print $2}' | head -n 1 | xargs -I {} ip link show {} | awk '/ether/ {print $2}'\"",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.GET_MAC_ADDRESS_COMMAND",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/-g-e-t_-m-a-c_-a-d-d-r-e-s-s_-c-o-m-m-a-n-d.html",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.GET_MAC_ADDRESS_COMMAND",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/-g-e-t_-m-a-c_-a-d-d-r-e-s-s_-c-o-m-m-a-n-d.html",
     "searchKeys": [
       "GET_MAC_ADDRESS_COMMAND",
       "private val GET_MAC_ADDRESS_COMMAND: String = \"ip link show | awk -F': ' '/^[0-9]+: e/{print $2}' | head -n 1 | xargs -I {} ip link show {} | awk '/ether/ {print $2}'\"",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.GET_MAC_ADDRESS_COMMAND"
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.GET_MAC_ADDRESS_COMMAND"
     ]
   },
   {
@@ -3737,6 +3817,16 @@
       "LOCAL_EVENTS_HANDLER",
       "private val LOCAL_EVENTS_HANDLER: LocalEventsHandler",
       "com.tecknobit.brownie.helpers.LocalEventsHandler.LOCAL_EVENTS_HANDLER"
+    ]
+  },
+  {
+    "name": "private val LOGGER: Logger",
+    "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.LOGGER",
+    "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/-l-o-g-g-e-r.html",
+    "searchKeys": [
+      "LOGGER",
+      "private val LOGGER: Logger",
+      "com.tecknobit.brownie.services.session.service.BrownieSessionsService.LOGGER"
     ]
   },
   {
@@ -3760,13 +3850,13 @@
     ]
   },
   {
-    "name": "private val MESSAGES_KEY: String = \"lang/messages\"",
-    "description": "com.tecknobit.brownie.configuration.MessageSourceConfig.MESSAGES_KEY",
-    "location": "backend/com.tecknobit.brownie.configuration/-message-source-config/-m-e-s-s-a-g-e-s_-k-e-y.html",
+    "name": "private val MONITOR_AND_SYNC_DELAY: Int = 5",
+    "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.MONITOR_AND_SYNC_DELAY",
+    "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/-m-o-n-i-t-o-r_-a-n-d_-s-y-n-c_-d-e-l-a-y.html",
     "searchKeys": [
-      "MESSAGES_KEY",
-      "private val MESSAGES_KEY: String = \"lang/messages\"",
-      "com.tecknobit.brownie.configuration.MessageSourceConfig.MESSAGES_KEY"
+      "MONITOR_AND_SYNC_DELAY",
+      "private val MONITOR_AND_SYNC_DELAY: Int = 5",
+      "com.tecknobit.brownie.services.session.service.BrownieSessionsService.MONITOR_AND_SYNC_DELAY"
     ]
   },
   {
@@ -3781,12 +3871,12 @@
   },
   {
     "name": "private val STRICT_HOST_KEY_CHECKING_OPTION: String = \"StrictHostKeyChecking\"",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.STRICT_HOST_KEY_CHECKING_OPTION",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/-s-t-r-i-c-t_-h-o-s-t_-k-e-y_-c-h-e-c-k-i-n-g_-o-p-t-i-o-n.html",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.STRICT_HOST_KEY_CHECKING_OPTION",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/-s-t-r-i-c-t_-h-o-s-t_-k-e-y_-c-h-e-c-k-i-n-g_-o-p-t-i-o-n.html",
     "searchKeys": [
       "STRICT_HOST_KEY_CHECKING_OPTION",
       "private val STRICT_HOST_KEY_CHECKING_OPTION: String = \"StrictHostKeyChecking\"",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.STRICT_HOST_KEY_CHECKING_OPTION"
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.STRICT_HOST_KEY_CHECKING_OPTION"
     ]
   },
   {
@@ -3810,13 +3900,43 @@
     ]
   },
   {
+    "name": "private val repository: BrownieEventsRepository<E>",
+    "description": "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder.repository",
+    "location": "backend/com.tecknobit.brownie.services.shared.services/-brownie-events-recorder/repository.html",
+    "searchKeys": [
+      "repository",
+      "private val repository: BrownieEventsRepository<E>",
+      "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder.repository"
+    ]
+  },
+  {
+    "name": "private val servicesMonitor: ScheduledExecutorService",
+    "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.servicesMonitor",
+    "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/services-monitor.html",
+    "searchKeys": [
+      "servicesMonitor",
+      "private val servicesMonitor: ScheduledExecutorService",
+      "com.tecknobit.brownie.services.session.service.BrownieSessionsService.servicesMonitor"
+    ]
+  },
+  {
     "name": "private val session: Session",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.session",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/session.html",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.session",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/session.html",
     "searchKeys": [
       "session",
       "private val session: Session",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.session"
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.session"
+    ]
+  },
+  {
+    "name": "private val sessionsRepository: BrownieSessionsRepository",
+    "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.sessionsRepository",
+    "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/sessions-repository.html",
+    "searchKeys": [
+      "sessionsRepository",
+      "private val sessionsRepository: BrownieSessionsRepository",
+      "com.tecknobit.brownie.services.session.service.BrownieSessionsService.sessionsRepository"
     ]
   },
   {
@@ -3830,6 +3950,26 @@
     ]
   },
   {
+    "name": "protected constructor(hostEventsRepository: HostEventsRepository)",
+    "description": "com.tecknobit.brownie.services.hosts.services.HostEventsService.HostEventsService",
+    "location": "backend/com.tecknobit.brownie.services.hosts.services/-host-events-service/-host-events-service.html",
+    "searchKeys": [
+      "HostEventsService",
+      "protected constructor(hostEventsRepository: HostEventsRepository)",
+      "com.tecknobit.brownie.services.hosts.services.HostEventsService.HostEventsService"
+    ]
+  },
+  {
+    "name": "protected constructor(repository: BrownieEventsRepository<E>)",
+    "description": "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder.BrownieEventsRecorder",
+    "location": "backend/com.tecknobit.brownie.services.shared.services/-brownie-events-recorder/-brownie-events-recorder.html",
+    "searchKeys": [
+      "BrownieEventsRecorder",
+      "protected constructor(repository: BrownieEventsRepository<E>)",
+      "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder.BrownieEventsRecorder"
+    ]
+  },
+  {
     "name": "protected open fun appendExitStatus(errorMessage: String, exitStatus: Int): String",
     "description": "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.appendExitStatus",
     "location": "backend/com.tecknobit.brownie.helpers.shell/-shell-commands-executor/append-exit-status.html",
@@ -3837,6 +3977,16 @@
       "appendExitStatus",
       "protected open fun appendExitStatus(errorMessage: String, exitStatus: Int): String",
       "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.appendExitStatus"
+    ]
+  },
+  {
+    "name": "protected open fun calculateUpDays(eventOwnerId: String): Int",
+    "description": "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder.calculateUpDays",
+    "location": "backend/com.tecknobit.brownie.services.shared.services/-brownie-events-recorder/calculate-up-days.html",
+    "searchKeys": [
+      "calculateUpDays",
+      "protected open fun calculateUpDays(eventOwnerId: String): Int",
+      "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder.calculateUpDays"
     ]
   },
   {
@@ -3881,12 +4031,12 @@
   },
   {
     "name": "protected open fun execBashCommand(command: String, onCommandExecuted: ShellCommandsExecutor.OnCommandExecuted, closeSession: Boolean): String",
-    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.execBashCommand",
-    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executors/exec-bash-command.html",
+    "description": "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.execBashCommand",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-remote-shell-commands-executor/exec-bash-command.html",
     "searchKeys": [
       "execBashCommand",
       "protected open fun execBashCommand(command: String, onCommandExecuted: ShellCommandsExecutor.OnCommandExecuted, closeSession: Boolean): String",
-      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutors.execBashCommand"
+      "com.tecknobit.brownie.helpers.shell.RemoteShellCommandsExecutor.execBashCommand"
     ]
   },
   {
@@ -3910,26 +4060,6 @@
     ]
   },
   {
-    "name": "protected open fun failedResponse(errorKey: String): String",
-    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.failedResponse",
-    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/failed-response.html",
-    "searchKeys": [
-      "failedResponse",
-      "protected open fun failedResponse(errorKey: String): String",
-      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.failedResponse"
-    ]
-  },
-  {
-    "name": "protected open fun failedResponse(errorKey: String, args: Array<Any>): String",
-    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.failedResponse",
-    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/failed-response.html",
-    "searchKeys": [
-      "failedResponse",
-      "protected open fun failedResponse(errorKey: String, args: Array<Any>): String",
-      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.failedResponse"
-    ]
-  },
-  {
     "name": "protected open fun getBrownieHostIfAllowed(sessionId: String, hostId: String): BrownieHost",
     "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.getBrownieHostIfAllowed",
     "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/get-brownie-host-if-allowed.html",
@@ -3937,26 +4067,6 @@
       "getBrownieHostIfAllowed",
       "protected open fun getBrownieHostIfAllowed(sessionId: String, hostId: String): BrownieHost",
       "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.getBrownieHostIfAllowed"
-    ]
-  },
-  {
-    "name": "protected open fun getInternationalizedMessage(errorKey: String): String",
-    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.getInternationalizedMessage",
-    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/get-internationalized-message.html",
-    "searchKeys": [
-      "getInternationalizedMessage",
-      "protected open fun getInternationalizedMessage(errorKey: String): String",
-      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.getInternationalizedMessage"
-    ]
-  },
-  {
-    "name": "protected open fun getInternationalizedMessage(errorKey: String, args: Array<Any>): String",
-    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.getInternationalizedMessage",
-    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/get-internationalized-message.html",
-    "searchKeys": [
-      "getInternationalizedMessage",
-      "protected open fun getInternationalizedMessage(errorKey: String, args: Array<Any>): String",
-      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.getInternationalizedMessage"
     ]
   },
   {
@@ -3970,16 +4080,6 @@
     ]
   },
   {
-    "name": "protected open fun plainResponse(status: ResponseStatus, message: String): String",
-    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.plainResponse",
-    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/plain-response.html",
-    "searchKeys": [
-      "plainResponse",
-      "protected open fun plainResponse(status: ResponseStatus, message: String): String",
-      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.plainResponse"
-    ]
-  },
-  {
     "name": "protected open fun purgeNohupOutIfRequired(service: BrownieHostService)",
     "description": "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.purgeNohupOutIfRequired",
     "location": "backend/com.tecknobit.brownie.helpers.shell/-shell-commands-executor/purge-nohup-out-if-required.html",
@@ -3990,6 +4090,26 @@
     ]
   },
   {
+    "name": "protected open fun registerEvent(type: T, eventOwnerId: String)",
+    "description": "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder.registerEvent",
+    "location": "backend/com.tecknobit.brownie.services.shared.services/-brownie-events-recorder/register-event.html",
+    "searchKeys": [
+      "registerEvent",
+      "protected open fun registerEvent(type: T, eventOwnerId: String)",
+      "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder.registerEvent"
+    ]
+  },
+  {
+    "name": "protected open fun registerEvent(type: T, eventOwnerId: String, extra: Any)",
+    "description": "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder.registerEvent",
+    "location": "backend/com.tecknobit.brownie.services.shared.services/-brownie-events-recorder/register-event.html",
+    "searchKeys": [
+      "registerEvent",
+      "protected open fun registerEvent(type: T, eventOwnerId: String, extra: Any)",
+      "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder.registerEvent"
+    ]
+  },
+  {
     "name": "protected open fun sessionExists(sessionId: String): Boolean",
     "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.sessionExists",
     "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/session-exists.html",
@@ -3997,36 +4117,6 @@
       "sessionExists",
       "protected open fun sessionExists(sessionId: String): Boolean",
       "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.sessionExists"
-    ]
-  },
-  {
-    "name": "protected open fun setSessionLocale(locale: Locale)",
-    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.setSessionLocale",
-    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/set-session-locale.html",
-    "searchKeys": [
-      "setSessionLocale",
-      "protected open fun setSessionLocale(locale: Locale)",
-      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.setSessionLocale"
-    ]
-  },
-  {
-    "name": "protected open fun setSessionLocale(locale: String)",
-    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.setSessionLocale",
-    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/set-session-locale.html",
-    "searchKeys": [
-      "setSessionLocale",
-      "protected open fun setSessionLocale(locale: String)",
-      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.setSessionLocale"
-    ]
-  },
-  {
-    "name": "protected open fun successResponse(): String",
-    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.successResponse",
-    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/success-response.html",
-    "searchKeys": [
-      "successResponse",
-      "protected open fun successResponse(): String",
-      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.successResponse"
     ]
   },
   {
@@ -4050,16 +4140,6 @@
     ]
   },
   {
-    "name": "protected open var messageSource: MessageSource",
-    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.messageSource",
-    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/message-source.html",
-    "searchKeys": [
-      "messageSource",
-      "protected open var messageSource: MessageSource",
-      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.messageSource"
-    ]
-  },
-  {
     "name": "protected open var sessionsService: BrownieSessionsService",
     "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.sessionsService",
     "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/sessions-service.html",
@@ -4080,23 +4160,33 @@
     ]
   },
   {
-    "name": "protected val FIND_SERVICE_PATH: String = \"find . -type f -name \"%s\"\n\"",
+    "name": "protected val FIND_SERVICE_PATH: String = \"find / -type f -name \"%s\" 2>/dev/null\n\"",
     "description": "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.FIND_SERVICE_PATH",
     "location": "backend/com.tecknobit.brownie.helpers.shell/-shell-commands-executor/-f-i-n-d_-s-e-r-v-i-c-e_-p-a-t-h.html",
     "searchKeys": [
       "FIND_SERVICE_PATH",
-      "protected val FIND_SERVICE_PATH: String = \"find . -type f -name \"%s\"\n\"",
+      "protected val FIND_SERVICE_PATH: String = \"find / -type f -name \"%s\" 2>/dev/null\n\"",
       "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.FIND_SERVICE_PATH"
     ]
   },
   {
-    "name": "protected val GET_CURRENT_HOST_STATS: String = \"echo -e \"$(top -bn1 | grep 'Cpu(s)' | awk '{print 100 - $8}'),\n$(if ls /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq &>/dev/null; then\n    freq=$(awk '{s+=$1} END {print s/NR/1000000}' /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq);\n    printf \"%.2f\" $freq;\n  else\n    freq=$(lscpu | grep 'CPU MHz' | awk '{print $3/1000}');\n    printf \"%.2f\" $freq;\n  fi),\n$(free -h | grep 'Mem' | awk '{print $3 \"/\" $2}' | sed 's/[A-Za-z]//g'),\n$(df -h --total | grep 'total' | awk '{print $3 \"/\" $2}' | sed 's/[A-Za-z]//g'),\n$(if lsblk -d -o NAME | grep -q mmcblk; then echo \"SD_CARD\";\n  elif lsblk -d -o NAME | grep -q nvme; then echo \"SSD_NVMe\";\n  elif lsblk -d -o NAME | grep -q vda; then echo \"VIRTUAL_DISK\";\n  elif lsblk -d -o ROTA | awk 'NR>1' | grep -q 0; then echo \"SSD\";\n  else echo \"HARD_DISK\"; fi)\"\n \"",
+    "name": "protected val GET_CURRENT_HOST_STATS: String = \"echo -e \"$(top -bn1 | grep 'Cpu(s)' | awk '{print 100 - $8}'),\n$(if ls /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq &>/dev/null; then\n    freq=$(awk '{s+=$1} END {print s/NR/1000000}' /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq);\n    printf \"%.2f\" $freq;\n  else\n    freq=$(lscpu | grep 'CPU MHz' | awk '{print $3/1000}');\n    printf \"%.2f\" $freq;\n  fi),\n$(free -b | awk '/Mem:/ {printf \"%.2f/%.2f\\n\", $3/1073741824, $2/1073741824}'),\n$(df --block-size=1G --total | awk '/total/ {printf \"%d/%d\\n\", $3, $2}'),\n$(if lsblk -d -o NAME | grep -q mmcblk; then echo \"SD_CARD\";\n  elif lsblk -d -o NAME | grep -q nvme; then echo \"SSD_NVMe\";\n  elif lsblk -d -o NAME | grep -q vda; then echo \"VIRTUAL_DISK\";\n  elif lsblk -d -o ROTA | awk 'NR>1' | grep -q 0; then echo \"SSD\";\n  else echo \"HARD_DISK\"; fi)\"\n \"",
     "description": "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.GET_CURRENT_HOST_STATS",
     "location": "backend/com.tecknobit.brownie.helpers.shell/-shell-commands-executor/-g-e-t_-c-u-r-r-e-n-t_-h-o-s-t_-s-t-a-t-s.html",
     "searchKeys": [
       "GET_CURRENT_HOST_STATS",
-      "protected val GET_CURRENT_HOST_STATS: String = \"echo -e \"$(top -bn1 | grep 'Cpu(s)' | awk '{print 100 - $8}'),\n$(if ls /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq &>/dev/null; then\n    freq=$(awk '{s+=$1} END {print s/NR/1000000}' /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq);\n    printf \"%.2f\" $freq;\n  else\n    freq=$(lscpu | grep 'CPU MHz' | awk '{print $3/1000}');\n    printf \"%.2f\" $freq;\n  fi),\n$(free -h | grep 'Mem' | awk '{print $3 \"/\" $2}' | sed 's/[A-Za-z]//g'),\n$(df -h --total | grep 'total' | awk '{print $3 \"/\" $2}' | sed 's/[A-Za-z]//g'),\n$(if lsblk -d -o NAME | grep -q mmcblk; then echo \"SD_CARD\";\n  elif lsblk -d -o NAME | grep -q nvme; then echo \"SSD_NVMe\";\n  elif lsblk -d -o NAME | grep -q vda; then echo \"VIRTUAL_DISK\";\n  elif lsblk -d -o ROTA | awk 'NR>1' | grep -q 0; then echo \"SSD\";\n  else echo \"HARD_DISK\"; fi)\"\n \"",
+      "protected val GET_CURRENT_HOST_STATS: String = \"echo -e \"$(top -bn1 | grep 'Cpu(s)' | awk '{print 100 - $8}'),\n$(if ls /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq &>/dev/null; then\n    freq=$(awk '{s+=$1} END {print s/NR/1000000}' /sys/devices/system/cpu/cpu*/cpufreq/scaling_cur_freq);\n    printf \"%.2f\" $freq;\n  else\n    freq=$(lscpu | grep 'CPU MHz' | awk '{print $3/1000}');\n    printf \"%.2f\" $freq;\n  fi),\n$(free -b | awk '/Mem:/ {printf \"%.2f/%.2f\\n\", $3/1073741824, $2/1073741824}'),\n$(df --block-size=1G --total | awk '/total/ {printf \"%d/%d\\n\", $3, $2}'),\n$(if lsblk -d -o NAME | grep -q mmcblk; then echo \"SD_CARD\";\n  elif lsblk -d -o NAME | grep -q nvme; then echo \"SSD_NVMe\";\n  elif lsblk -d -o NAME | grep -q vda; then echo \"VIRTUAL_DISK\";\n  elif lsblk -d -o ROTA | awk 'NR>1' | grep -q 0; then echo \"SSD\";\n  else echo \"HARD_DISK\"; fi)\"\n \"",
       "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.GET_CURRENT_HOST_STATS"
+    ]
+  },
+  {
+    "name": "protected val GREP_RUNNING_SERVICES_COMMAND: String = \"    ps -ef | grep -E %s | grep -v grep | awk '{print $2}' | paste -sd ','\n\"",
+    "description": "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.GREP_RUNNING_SERVICES_COMMAND",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-shell-commands-executor/-g-r-e-p_-r-u-n-n-i-n-g_-s-e-r-v-i-c-e-s_-c-o-m-m-a-n-d.html",
+    "searchKeys": [
+      "GREP_RUNNING_SERVICES_COMMAND",
+      "protected val GREP_RUNNING_SERVICES_COMMAND: String = \"    ps -ef | grep -E %s | grep -v grep | awk '{print $2}' | paste -sd ','\n\"",
+      "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.GREP_RUNNING_SERVICES_COMMAND"
     ]
   },
   {
@@ -4117,6 +4207,16 @@
       "NOHUP_OUT_FILE",
       "protected val NOHUP_OUT_FILE: String = \"nohup.out\"",
       "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.NOHUP_OUT_FILE"
+    ]
+  },
+  {
+    "name": "protected val PIPE_CHARACTER: String = \"|\"",
+    "description": "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.PIPE_CHARACTER",
+    "location": "backend/com.tecknobit.brownie.helpers.shell/-shell-commands-executor/-p-i-p-e_-c-h-a-r-a-c-t-e-r.html",
+    "searchKeys": [
+      "PIPE_CHARACTER",
+      "protected val PIPE_CHARACTER: String = \"|\"",
+      "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.PIPE_CHARACTER"
     ]
   },
   {
@@ -4180,32 +4280,32 @@
     ]
   },
   {
-    "name": "val SOMETHING_WENT_WRONG_MESSAGE: String = \"something_went_wrong_key\"",
+    "name": "val SOMETHING_WENT_WRONG_MESSAGE: String = \"something_went_wrong\"",
     "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.SOMETHING_WENT_WRONG_MESSAGE",
     "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/-s-o-m-e-t-h-i-n-g_-w-e-n-t_-w-r-o-n-g_-m-e-s-s-a-g-e.html",
     "searchKeys": [
       "SOMETHING_WENT_WRONG_MESSAGE",
-      "val SOMETHING_WENT_WRONG_MESSAGE: String = \"something_went_wrong_key\"",
+      "val SOMETHING_WENT_WRONG_MESSAGE: String = \"something_went_wrong\"",
       "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.SOMETHING_WENT_WRONG_MESSAGE"
     ]
   },
   {
-    "name": "val WRONG_HOST_ADDRESS_MESSAGE: String = \"wrong_host_address_key\"",
+    "name": "val WRONG_HOST_ADDRESS_MESSAGE: String = \"wrong_host_address\"",
     "description": "com.tecknobit.brownie.services.hosts.controller.HostsController.WRONG_HOST_ADDRESS_MESSAGE",
     "location": "backend/com.tecknobit.brownie.services.hosts.controller/-hosts-controller/-w-r-o-n-g_-h-o-s-t_-a-d-d-r-e-s-s_-m-e-s-s-a-g-e.html",
     "searchKeys": [
       "WRONG_HOST_ADDRESS_MESSAGE",
-      "val WRONG_HOST_ADDRESS_MESSAGE: String = \"wrong_host_address_key\"",
+      "val WRONG_HOST_ADDRESS_MESSAGE: String = \"wrong_host_address\"",
       "com.tecknobit.brownie.services.hosts.controller.HostsController.WRONG_HOST_ADDRESS_MESSAGE"
     ]
   },
   {
-    "name": "val WRONG_SSH_CREDENTIALS_MESSAGE: String = \"ssh_credentials_are_not_valid_key\"",
+    "name": "val WRONG_SSH_CREDENTIALS_MESSAGE: String = \"ssh_credentials_are_not_valid\"",
     "description": "com.tecknobit.brownie.services.hosts.controller.HostsController.WRONG_SSH_CREDENTIALS_MESSAGE",
     "location": "backend/com.tecknobit.brownie.services.hosts.controller/-hosts-controller/-w-r-o-n-g_-s-s-h_-c-r-e-d-e-n-t-i-a-l-s_-m-e-s-s-a-g-e.html",
     "searchKeys": [
       "WRONG_SSH_CREDENTIALS_MESSAGE",
-      "val WRONG_SSH_CREDENTIALS_MESSAGE: String = \"ssh_credentials_are_not_valid_key\"",
+      "val WRONG_SSH_CREDENTIALS_MESSAGE: String = \"ssh_credentials_are_not_valid\"",
       "com.tecknobit.brownie.services.hosts.controller.HostsController.WRONG_SSH_CREDENTIALS_MESSAGE"
     ]
   },

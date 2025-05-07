@@ -6,14 +6,18 @@ import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.session.entity.BrownieSession;
 import com.tecknobit.browniecore.enums.HostStatus;
+import com.tecknobit.equinoxbackend.annotations.EmptyConstructor;
 import com.tecknobit.equinoxbackend.environment.services.builtin.entity.EquinoxItem;
 import jakarta.persistence.*;
 import org.hibernate.annotations.OnDelete;
 import org.hibernate.annotations.OnDeleteAction;
 
+import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.List;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.HOST_ADDRESS_KEY;
 
 /**
  * The {@code BrownieHost} class is useful to represent a Brownie's host
@@ -109,6 +113,7 @@ public class BrownieHost extends EquinoxItem {
      *
      * @apiNote empty constructor required
      */
+    @EmptyConstructor
     public BrownieHost() {
         this(null, null, null, null, null, null, null, null, null, List.of(), List.of(), 0);
     }
@@ -308,6 +313,34 @@ public class BrownieHost extends EquinoxItem {
     @JsonIgnore
     public boolean isRemoteHost() {
         return sshUser != null;
+    }
+
+    /**
+     * Method used to list the names of the running services of this host
+     *
+     * @return the names of the running services of this host as {@link List} of {@link String}
+     */
+    @JsonIgnore
+    public List<String> listRunningServiceNames() {
+        List<String> serviceNames = new ArrayList<>();
+        for (BrownieHostService service : services)
+            if (service.isRunning())
+                serviceNames.add(service.getName());
+        return serviceNames;
+    }
+
+    /**
+     * Method used to list the pids of the running services of this host
+     *
+     * @return the pids of the running services of this host as {@link HashSet} of {@link Long}
+     */
+    @JsonIgnore
+    public HashSet<Long> listRunningServicePids() {
+        HashSet<Long> servicePids = new HashSet<>();
+        for (BrownieHostService service : services)
+            if (service.isRunning())
+                servicePids.add(service.getPid());
+        return servicePids;
     }
 
 }

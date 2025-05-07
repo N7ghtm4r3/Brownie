@@ -8,6 +8,7 @@ import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
+import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.PropertySource;
 import org.springframework.context.annotation.PropertySources;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -28,12 +29,9 @@ import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider.DEFA
         @PropertySource(value = "classpath:" + DEFAULT_CONFIGURATION_FILE_PATH),
         @PropertySource(value = "file:" + CUSTOM_CONFIGURATION_FILE_PATH, ignoreResourceNotFound = true)
 })
-@EnableJpaRepositories(
-        value = {"com.tecknobit.brownie.*"}
-)
-@EntityScan(
-        value = {"com.tecknobit.brownie.*"}
-)
+@EnableJpaRepositories(value = {"com.tecknobit.brownie.*"})
+@EntityScan(value = {"com.tecknobit.brownie.*"})
+@ComponentScan(value = {"com.tecknobit.brownie.*", "com.tecknobit.equinoxbackend.environment.configuration"})
 @SpringBootApplication
 public class Launcher {
 

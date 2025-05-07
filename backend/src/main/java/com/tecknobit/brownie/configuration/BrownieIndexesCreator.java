@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import java.util.List;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
+import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.HOST_ADDRESS_KEY;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.NAME_KEY;
 
 /**
@@ -14,6 +15,8 @@ import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.NAME_KEY;
  * {@link HOSTS_KEY} and the {@link SERVICES_KEY} tables
  *
  * @author N7ghtm4r3 - Tecknobit
+ *
+ * @see IndexesCreator
  */
 @Component
 public class BrownieIndexesCreator extends IndexesCreator {
