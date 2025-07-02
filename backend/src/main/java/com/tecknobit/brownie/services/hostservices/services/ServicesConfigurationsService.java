@@ -19,8 +19,17 @@ public class ServicesConfigurationsService {
     /**
      * {@code servicesConfigurationsRepository} instance used to access to the {@link SERVICES_CONFIGURATIONS_KEY} table
      */
+    private final ServicesConfigurationsRepository servicesConfigurationsRepository;
+
+    /**
+     * Constructor used to init the service
+     *
+     * @param servicesConfigurationsRepository The instance used to access to the {@link SERVICES_CONFIGURATIONS_KEY} table
+     */
     @Autowired
-    private ServicesConfigurationsRepository servicesConfigurationsRepository;
+    public ServicesConfigurationsService(ServicesConfigurationsRepository servicesConfigurationsRepository) {
+        this.servicesConfigurationsRepository = servicesConfigurationsRepository;
+    }
 
     /**
      * Method used to store a new configuration of a {@link BrownieHostService}

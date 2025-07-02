@@ -2,10 +2,13 @@ package com.tecknobit.brownie.services.hosts.controller;
 
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.brownie.services.hosts.services.HostsService;
+import com.tecknobit.brownie.services.session.service.BrownieSessionsService;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
 import com.tecknobit.equinoxbackend.environment.services.DefaultEquinoxController;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
 import com.tecknobit.equinoxcore.annotations.RequestPath;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -45,6 +48,17 @@ public class HostsController extends DefaultBrownieController {
      * valid
      */
     public static final String WRONG_SSH_CREDENTIALS_MESSAGE = "ssh_credentials_are_not_valid";
+
+    /**
+     * Constructor used to init the controller
+     *
+     * @param sessionsService The support service used to manage the sessions data
+     * @param hostsService    The support service used to manage the hosts data
+     */
+    @Autowired
+    public HostsController(BrownieSessionsService sessionsService, HostsService hostsService) {
+        super(sessionsService, hostsService);
+    }
 
     /**
      * Endpoint used to retrieve the hosts of a session

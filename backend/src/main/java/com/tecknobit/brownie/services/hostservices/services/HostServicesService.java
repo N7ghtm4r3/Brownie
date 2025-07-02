@@ -44,26 +44,39 @@ public class HostServicesService implements BrownieEventsCollector {
     /**
      * {@code eventsRepository} instance used to access to the {@link SERVICES_KEY} table
      */
-    @Autowired
-    private HostServicesRepository servicesRepository;
+    private final HostServicesRepository servicesRepository;
 
     /**
      * {@code hostEventsService} the support service used to manage the host events data
      */
-    @Autowired
-    private HostEventsService hostEventsService;
+    private final HostEventsService hostEventsService;
 
     /**
      * {@code configurationsService} the support service used to manage the service configurations data
      */
-    @Autowired
-    private ServicesConfigurationsService configurationsService;
+    private final ServicesConfigurationsService configurationsService;
 
     /**
      * {@code serviceEvents} the support service used to manage the service events data
      */
+    private final HostServiceEventsService serviceEvents;
+
+    /**
+     * Constructor used to init the service
+     *
+     * @param servicesRepository    The instance used to access to the {@link SERVICES_KEY} table
+     * @param hostEventsService     The support service used to manage the host events data
+     * @param configurationsService The support service used to manage the service configurations data
+     * @param serviceEvents         The support service used to manage the service events data
+     */
     @Autowired
-    private HostServiceEventsService serviceEvents;
+    public HostServicesService(HostServicesRepository servicesRepository, HostEventsService hostEventsService,
+                               ServicesConfigurationsService configurationsService, HostServiceEventsService serviceEvents) {
+        this.servicesRepository = servicesRepository;
+        this.hostEventsService = hostEventsService;
+        this.configurationsService = configurationsService;
+        this.serviceEvents = serviceEvents;
+    }
 
     /**
      * Method used to store a new service
