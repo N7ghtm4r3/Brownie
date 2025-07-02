@@ -1,6 +1,6 @@
 # Brownie
 
-**v1.0.1**
+**v1.0.2**
 
 This project is based on the **Compose Multiplatform** and **Spring Boot** technologies and is a
 self-hosted VPS manager.
@@ -45,7 +45,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.tecknobit.browniecore:browniecore:1.0.1'
+  implementation 'com.tecknobit.browniecore:browniecore:1.0.2'
 }
 ```
 
@@ -58,7 +58,7 @@ repositories {
 }
 
 dependencies {
-  implementation("com.tecknobit.browniecore:browniecore:1.0.1")
+  implementation("com.tecknobit.browniecore:browniecore:1.0.2")
 }
 ```
 
@@ -67,14 +67,14 @@ dependencies {
 ### Clients
 
 - [Android](https://play.google.com/store/apps/details?id=com.tecknobit.brownie)
-- [Brownie desktop version](https://github.com/N7ghtm4r3/Brownie-Clients/releases/tag/1.0.1)
+- [Brownie desktop version](https://github.com/N7ghtm4r3/Brownie-Clients/releases/tag/1.0.2)
 - iOS -> source code available, but cannot distribute due
   missing [Apple Developer Program license](https://developer.apple.com/programs/)
 - [Brownie webapp version](https://github.com/N7ghtm4r3/Brownie-WebApp)
 
 ### Backend
 
-- <a href="https://github.com/N7ghtm4r3/Brownie/releases/tag/1.0.1">Backend service "out-of-the-box"</a>
+- <a href="https://github.com/N7ghtm4r3/Brownie/releases/tag/1.0.2">Backend service "out-of-the-box"</a>
 
 ### Backend configuration
 
@@ -124,10 +124,10 @@ To customize the properties to launch the backend service you must create a file
 the server file (.jar)** and call it `custom.properties` as below:
 
 ``` bash
-  folderOfWhereYouPlacedTheServerFile
-   |-- custom.properties
-   |-- brownie.jar
-  ```
+folderOfWhereYouPlacedTheServerFile
+├── custom.properties
+└── brownie.jar
+```
 
 If your custom properties do not contain the properties of the default configuration will be used these default
 properties instead,
@@ -150,10 +150,10 @@ To start the **Brownie** service on your own infrastructure you have to follow t
   the server)** the default profile pic as below:
   ``` bash
   folderOfWhereYouPlacedTheServerFile
-   |-- resources
-   |   |-- profiles
-   |       |-- defProfilePic.png
-   |-- brownie.jar
+  ├── resources
+  │   └── profiles
+  │       └── defProfilePic.png
+  └── brownie.jar
   ```
   This action is required to provide the **defProfilePic** as logo or profile for the users.
   You can take a look directly <a href="https://github.com/N7ghtm4r3/Brownie/tree/main/images">here</a>

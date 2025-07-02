@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.tecknobit.browniecore"
-version = "1.0.1"
+version = "1.0.2"
 
 repositories {
     google()
@@ -82,7 +82,7 @@ afterEvaluate {
             create<MavenPublication>("maven") {
                 groupId = "com.tecknobit.browniecore"
                 artifactId = "browniecore"
-                version = "1.0.1"
+                version = "1.0.2"
                 from(components["kotlin"])
             }
         }
