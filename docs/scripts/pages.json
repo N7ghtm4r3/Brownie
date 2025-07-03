@@ -1461,16 +1461,6 @@
   },
   {
     "name": "constructor()",
-    "description": "com.tecknobit.brownie.events.BrownieEventsEmitter.BrownieEventsEmitter",
-    "location": "backend/com.tecknobit.brownie.events/-brownie-events-emitter/-brownie-events-emitter.html",
-    "searchKeys": [
-      "BrownieEventsEmitter",
-      "constructor()",
-      "com.tecknobit.brownie.events.BrownieEventsEmitter.BrownieEventsEmitter"
-    ]
-  },
-  {
-    "name": "constructor()",
     "description": "com.tecknobit.brownie.helpers.LocalEventsHandler.LocalEventsHandler",
     "location": "backend/com.tecknobit.brownie.helpers/-local-events-handler/-local-events-handler.html",
     "searchKeys": [
@@ -1517,16 +1507,6 @@
       "WakeOnLanExecutor",
       "constructor()",
       "com.tecknobit.brownie.services.hosts.commands.WakeOnLanExecutor.WakeOnLanExecutor"
-    ]
-  },
-  {
-    "name": "constructor()",
-    "description": "com.tecknobit.brownie.services.hosts.controller.HostsController.HostsController",
-    "location": "backend/com.tecknobit.brownie.services.hosts.controller/-hosts-controller/-hosts-controller.html",
-    "searchKeys": [
-      "HostsController",
-      "constructor()",
-      "com.tecknobit.brownie.services.hosts.controller.HostsController.HostsController"
     ]
   },
   {
@@ -1591,26 +1571,6 @@
   },
   {
     "name": "constructor()",
-    "description": "com.tecknobit.brownie.services.hosts.services.HostsService.HostsService",
-    "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/-hosts-service.html",
-    "searchKeys": [
-      "HostsService",
-      "constructor()",
-      "com.tecknobit.brownie.services.hosts.services.HostsService.HostsService"
-    ]
-  },
-  {
-    "name": "constructor()",
-    "description": "com.tecknobit.brownie.services.hostservices.controller.HostServicesController.HostServicesController",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.controller/-host-services-controller/-host-services-controller.html",
-    "searchKeys": [
-      "HostServicesController",
-      "constructor()",
-      "com.tecknobit.brownie.services.hostservices.controller.HostServicesController.HostServicesController"
-    ]
-  },
-  {
-    "name": "constructor()",
     "description": "com.tecknobit.brownie.services.hostservices.dtos.CurrentServiceStatus.CurrentServiceStatus",
     "location": "backend/com.tecknobit.brownie.services.hostservices.dtos/-current-service-status/-current-service-status.html",
     "searchKeys": [
@@ -1651,52 +1611,12 @@
   },
   {
     "name": "constructor()",
-    "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.HostServicesService",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/-host-services-service.html",
-    "searchKeys": [
-      "HostServicesService",
-      "constructor()",
-      "com.tecknobit.brownie.services.hostservices.services.HostServicesService.HostServicesService"
-    ]
-  },
-  {
-    "name": "constructor()",
-    "description": "com.tecknobit.brownie.services.hostservices.services.ServicesConfigurationsService.ServicesConfigurationsService",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-services-configurations-service/-services-configurations-service.html",
-    "searchKeys": [
-      "ServicesConfigurationsService",
-      "constructor()",
-      "com.tecknobit.brownie.services.hostservices.services.ServicesConfigurationsService.ServicesConfigurationsService"
-    ]
-  },
-  {
-    "name": "constructor()",
-    "description": "com.tecknobit.brownie.services.session.controller.BrownieSessionController.BrownieSessionController",
-    "location": "backend/com.tecknobit.brownie.services.session.controller/-brownie-session-controller/-brownie-session-controller.html",
-    "searchKeys": [
-      "BrownieSessionController",
-      "constructor()",
-      "com.tecknobit.brownie.services.session.controller.BrownieSessionController.BrownieSessionController"
-    ]
-  },
-  {
-    "name": "constructor()",
     "description": "com.tecknobit.brownie.services.session.entity.BrownieSession.BrownieSession",
     "location": "backend/com.tecknobit.brownie.services.session.entity/-brownie-session/-brownie-session.html",
     "searchKeys": [
       "BrownieSession",
       "constructor()",
       "com.tecknobit.brownie.services.session.entity.BrownieSession.BrownieSession"
-    ]
-  },
-  {
-    "name": "constructor()",
-    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.DefaultBrownieController",
-    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/-default-brownie-controller.html",
-    "searchKeys": [
-      "DefaultBrownieController",
-      "constructor()",
-      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.DefaultBrownieController"
     ]
   },
   {
@@ -1747,6 +1667,16 @@
       "BrownieHostOverview",
       "constructor(host: BrownieHost, cpuUsage: CPUUsage, memoryUsage: BrownieHostStat, storageUsage: StorageUsage)",
       "com.tecknobit.brownie.services.hosts.dtos.BrownieHostOverview.BrownieHostOverview"
+    ]
+  },
+  {
+    "name": "constructor(hostsRepository: HostsRepository, eventsService: HostEventsService, servicesService: HostServicesService)",
+    "description": "com.tecknobit.brownie.services.hosts.services.HostsService.HostsService",
+    "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/-hosts-service.html",
+    "searchKeys": [
+      "HostsService",
+      "constructor(hostsRepository: HostsRepository, eventsService: HostEventsService, servicesService: HostServicesService)",
+      "com.tecknobit.brownie.services.hosts.services.HostsService.HostsService"
     ]
   },
   {
@@ -1830,6 +1760,16 @@
     ]
   },
   {
+    "name": "constructor(publisher: ApplicationEventPublisher, sessionsRepository: BrownieSessionsRepository)",
+    "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.BrownieSessionsService",
+    "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/-brownie-sessions-service.html",
+    "searchKeys": [
+      "BrownieSessionsService",
+      "constructor(publisher: ApplicationEventPublisher, sessionsRepository: BrownieSessionsRepository)",
+      "com.tecknobit.brownie.services.session.service.BrownieSessionsService.BrownieSessionsService"
+    ]
+  },
+  {
     "name": "constructor(rawStats: String)",
     "description": "com.tecknobit.brownie.services.hosts.dtos.BrownieHostStat.BrownieHostStat",
     "location": "backend/com.tecknobit.brownie.services.hosts.dtos/-brownie-host-stat/-brownie-host-stat.html",
@@ -1850,13 +1790,63 @@
     ]
   },
   {
-    "name": "constructor(sessionsRepository: BrownieSessionsRepository)",
-    "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.BrownieSessionsService",
-    "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/-brownie-sessions-service.html",
+    "name": "constructor(servicesConfigurationsRepository: ServicesConfigurationsRepository)",
+    "description": "com.tecknobit.brownie.services.hostservices.services.ServicesConfigurationsService.ServicesConfigurationsService",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-services-configurations-service/-services-configurations-service.html",
     "searchKeys": [
-      "BrownieSessionsService",
-      "constructor(sessionsRepository: BrownieSessionsRepository)",
-      "com.tecknobit.brownie.services.session.service.BrownieSessionsService.BrownieSessionsService"
+      "ServicesConfigurationsService",
+      "constructor(servicesConfigurationsRepository: ServicesConfigurationsRepository)",
+      "com.tecknobit.brownie.services.hostservices.services.ServicesConfigurationsService.ServicesConfigurationsService"
+    ]
+  },
+  {
+    "name": "constructor(servicesRepository: HostServicesRepository, hostEventsService: HostEventsService, configurationsService: ServicesConfigurationsService, serviceEvents: HostServiceEventsService)",
+    "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.HostServicesService",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/-host-services-service.html",
+    "searchKeys": [
+      "HostServicesService",
+      "constructor(servicesRepository: HostServicesRepository, hostEventsService: HostEventsService, configurationsService: ServicesConfigurationsService, serviceEvents: HostServiceEventsService)",
+      "com.tecknobit.brownie.services.hostservices.services.HostServicesService.HostServicesService"
+    ]
+  },
+  {
+    "name": "constructor(sessionsService: BrownieSessionsService, hostsService: HostsService)",
+    "description": "com.tecknobit.brownie.services.hosts.controller.HostsController.HostsController",
+    "location": "backend/com.tecknobit.brownie.services.hosts.controller/-hosts-controller/-hosts-controller.html",
+    "searchKeys": [
+      "HostsController",
+      "constructor(sessionsService: BrownieSessionsService, hostsService: HostsService)",
+      "com.tecknobit.brownie.services.hosts.controller.HostsController.HostsController"
+    ]
+  },
+  {
+    "name": "constructor(sessionsService: BrownieSessionsService, hostsService: HostsService)",
+    "description": "com.tecknobit.brownie.services.session.controller.BrownieSessionController.BrownieSessionController",
+    "location": "backend/com.tecknobit.brownie.services.session.controller/-brownie-session-controller/-brownie-session-controller.html",
+    "searchKeys": [
+      "BrownieSessionController",
+      "constructor(sessionsService: BrownieSessionsService, hostsService: HostsService)",
+      "com.tecknobit.brownie.services.session.controller.BrownieSessionController.BrownieSessionController"
+    ]
+  },
+  {
+    "name": "constructor(sessionsService: BrownieSessionsService, hostsService: HostsService)",
+    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.DefaultBrownieController",
+    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/-default-brownie-controller.html",
+    "searchKeys": [
+      "DefaultBrownieController",
+      "constructor(sessionsService: BrownieSessionsService, hostsService: HostsService)",
+      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.DefaultBrownieController"
+    ]
+  },
+  {
+    "name": "constructor(sessionsService: BrownieSessionsService, hostsService: HostsService, service: HostServicesService)",
+    "description": "com.tecknobit.brownie.services.hostservices.controller.HostServicesController.HostServicesController",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.controller/-host-services-controller/-host-services-controller.html",
+    "searchKeys": [
+      "HostServicesController",
+      "constructor(sessionsService: BrownieSessionsService, hostsService: HostsService, service: HostServicesService)",
+      "com.tecknobit.brownie.services.hostservices.controller.HostServicesController.HostServicesController"
     ]
   },
   {
@@ -3600,26 +3590,6 @@
     ]
   },
   {
-    "name": "private open var configurationsService: ServicesConfigurationsService",
-    "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.configurationsService",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/configurations-service.html",
-    "searchKeys": [
-      "configurationsService",
-      "private open var configurationsService: ServicesConfigurationsService",
-      "com.tecknobit.brownie.services.hostservices.services.HostServicesService.configurationsService"
-    ]
-  },
-  {
-    "name": "private open var eventsService: HostEventsService",
-    "description": "com.tecknobit.brownie.services.hosts.services.HostsService.eventsService",
-    "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/events-service.html",
-    "searchKeys": [
-      "eventsService",
-      "private open var eventsService: HostEventsService",
-      "com.tecknobit.brownie.services.hosts.services.HostsService.eventsService"
-    ]
-  },
-  {
     "name": "private open var host: BrownieHost",
     "description": "com.tecknobit.brownie.services.hosts.entities.HostHistoryEvent.host",
     "location": "backend/com.tecknobit.brownie.services.hosts.entities/-host-history-event/host.html",
@@ -3637,26 +3607,6 @@
       "host",
       "private open var host: BrownieHost",
       "com.tecknobit.brownie.services.hostservices.entities.BrownieHostService.host"
-    ]
-  },
-  {
-    "name": "private open var hostEventsService: HostEventsService",
-    "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.hostEventsService",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/host-events-service.html",
-    "searchKeys": [
-      "hostEventsService",
-      "private open var hostEventsService: HostEventsService",
-      "com.tecknobit.brownie.services.hostservices.services.HostServicesService.hostEventsService"
-    ]
-  },
-  {
-    "name": "private open var hostsRepository: HostsRepository",
-    "description": "com.tecknobit.brownie.services.hosts.services.HostsService.hostsRepository",
-    "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/hosts-repository.html",
-    "searchKeys": [
-      "hostsRepository",
-      "private open var hostsRepository: HostsRepository",
-      "com.tecknobit.brownie.services.hosts.services.HostsService.hostsRepository"
     ]
   },
   {
@@ -3687,56 +3637,6 @@
       "service",
       "private open var service: BrownieHostService",
       "com.tecknobit.brownie.services.hostservices.entities.ServiceEvent.service"
-    ]
-  },
-  {
-    "name": "private open var service: HostServicesService",
-    "description": "com.tecknobit.brownie.services.hostservices.controller.HostServicesController.service",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.controller/-host-services-controller/service.html",
-    "searchKeys": [
-      "service",
-      "private open var service: HostServicesService",
-      "com.tecknobit.brownie.services.hostservices.controller.HostServicesController.service"
-    ]
-  },
-  {
-    "name": "private open var serviceEvents: HostServiceEventsService",
-    "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.serviceEvents",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/service-events.html",
-    "searchKeys": [
-      "serviceEvents",
-      "private open var serviceEvents: HostServiceEventsService",
-      "com.tecknobit.brownie.services.hostservices.services.HostServicesService.serviceEvents"
-    ]
-  },
-  {
-    "name": "private open var servicesConfigurationsRepository: ServicesConfigurationsRepository",
-    "description": "com.tecknobit.brownie.services.hostservices.services.ServicesConfigurationsService.servicesConfigurationsRepository",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-services-configurations-service/services-configurations-repository.html",
-    "searchKeys": [
-      "servicesConfigurationsRepository",
-      "private open var servicesConfigurationsRepository: ServicesConfigurationsRepository",
-      "com.tecknobit.brownie.services.hostservices.services.ServicesConfigurationsService.servicesConfigurationsRepository"
-    ]
-  },
-  {
-    "name": "private open var servicesRepository: HostServicesRepository",
-    "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.servicesRepository",
-    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/services-repository.html",
-    "searchKeys": [
-      "servicesRepository",
-      "private open var servicesRepository: HostServicesRepository",
-      "com.tecknobit.brownie.services.hostservices.services.HostServicesService.servicesRepository"
-    ]
-  },
-  {
-    "name": "private open var servicesService: HostServicesService",
-    "description": "com.tecknobit.brownie.services.hosts.services.HostsService.servicesService",
-    "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/services-service.html",
-    "searchKeys": [
-      "servicesService",
-      "private open var servicesService: HostServicesService",
-      "com.tecknobit.brownie.services.hosts.services.HostsService.servicesService"
     ]
   },
   {
@@ -3880,6 +3780,16 @@
     ]
   },
   {
+    "name": "private val configurationsService: ServicesConfigurationsService",
+    "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.configurationsService",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/configurations-service.html",
+    "searchKeys": [
+      "configurationsService",
+      "private val configurationsService: ServicesConfigurationsService",
+      "com.tecknobit.brownie.services.hostservices.services.HostServicesService.configurationsService"
+    ]
+  },
+  {
     "name": "private val eventKey: String",
     "description": "com.tecknobit.brownie.helpers.LocalEventsHandler.LocalEvent.eventKey",
     "location": "backend/com.tecknobit.brownie.helpers/-local-events-handler/-local-event/event-key.html",
@@ -3887,6 +3797,36 @@
       "eventKey",
       "private val eventKey: String",
       "com.tecknobit.brownie.helpers.LocalEventsHandler.LocalEvent.eventKey"
+    ]
+  },
+  {
+    "name": "private val eventsService: HostEventsService",
+    "description": "com.tecknobit.brownie.services.hosts.services.HostsService.eventsService",
+    "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/events-service.html",
+    "searchKeys": [
+      "eventsService",
+      "private val eventsService: HostEventsService",
+      "com.tecknobit.brownie.services.hosts.services.HostsService.eventsService"
+    ]
+  },
+  {
+    "name": "private val hostEventsService: HostEventsService",
+    "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.hostEventsService",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/host-events-service.html",
+    "searchKeys": [
+      "hostEventsService",
+      "private val hostEventsService: HostEventsService",
+      "com.tecknobit.brownie.services.hostservices.services.HostServicesService.hostEventsService"
+    ]
+  },
+  {
+    "name": "private val hostsRepository: HostsRepository",
+    "description": "com.tecknobit.brownie.services.hosts.services.HostsService.hostsRepository",
+    "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/hosts-repository.html",
+    "searchKeys": [
+      "hostsRepository",
+      "private val hostsRepository: HostsRepository",
+      "com.tecknobit.brownie.services.hosts.services.HostsService.hostsRepository"
     ]
   },
   {
@@ -3910,6 +3850,36 @@
     ]
   },
   {
+    "name": "private val service: HostServicesService",
+    "description": "com.tecknobit.brownie.services.hostservices.controller.HostServicesController.service",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.controller/-host-services-controller/service.html",
+    "searchKeys": [
+      "service",
+      "private val service: HostServicesService",
+      "com.tecknobit.brownie.services.hostservices.controller.HostServicesController.service"
+    ]
+  },
+  {
+    "name": "private val serviceEvents: HostServiceEventsService",
+    "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.serviceEvents",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/service-events.html",
+    "searchKeys": [
+      "serviceEvents",
+      "private val serviceEvents: HostServiceEventsService",
+      "com.tecknobit.brownie.services.hostservices.services.HostServicesService.serviceEvents"
+    ]
+  },
+  {
+    "name": "private val servicesConfigurationsRepository: ServicesConfigurationsRepository",
+    "description": "com.tecknobit.brownie.services.hostservices.services.ServicesConfigurationsService.servicesConfigurationsRepository",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-services-configurations-service/services-configurations-repository.html",
+    "searchKeys": [
+      "servicesConfigurationsRepository",
+      "private val servicesConfigurationsRepository: ServicesConfigurationsRepository",
+      "com.tecknobit.brownie.services.hostservices.services.ServicesConfigurationsService.servicesConfigurationsRepository"
+    ]
+  },
+  {
     "name": "private val servicesMonitor: ScheduledExecutorService",
     "description": "com.tecknobit.brownie.services.session.service.BrownieSessionsService.servicesMonitor",
     "location": "backend/com.tecknobit.brownie.services.session.service/-brownie-sessions-service/services-monitor.html",
@@ -3917,6 +3887,26 @@
       "servicesMonitor",
       "private val servicesMonitor: ScheduledExecutorService",
       "com.tecknobit.brownie.services.session.service.BrownieSessionsService.servicesMonitor"
+    ]
+  },
+  {
+    "name": "private val servicesRepository: HostServicesRepository",
+    "description": "com.tecknobit.brownie.services.hostservices.services.HostServicesService.servicesRepository",
+    "location": "backend/com.tecknobit.brownie.services.hostservices.services/-host-services-service/services-repository.html",
+    "searchKeys": [
+      "servicesRepository",
+      "private val servicesRepository: HostServicesRepository",
+      "com.tecknobit.brownie.services.hostservices.services.HostServicesService.servicesRepository"
+    ]
+  },
+  {
+    "name": "private val servicesService: HostServicesService",
+    "description": "com.tecknobit.brownie.services.hosts.services.HostsService.servicesService",
+    "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/services-service.html",
+    "searchKeys": [
+      "servicesService",
+      "private val servicesService: HostServicesService",
+      "com.tecknobit.brownie.services.hosts.services.HostsService.servicesService"
     ]
   },
   {
@@ -3957,6 +3947,16 @@
       "HostEventsService",
       "protected constructor(hostEventsRepository: HostEventsRepository)",
       "com.tecknobit.brownie.services.hosts.services.HostEventsService.HostEventsService"
+    ]
+  },
+  {
+    "name": "protected constructor(publisher: ApplicationEventPublisher)",
+    "description": "com.tecknobit.brownie.events.BrownieEventsEmitter.BrownieEventsEmitter",
+    "location": "backend/com.tecknobit.brownie.events/-brownie-events-emitter/-brownie-events-emitter.html",
+    "searchKeys": [
+      "BrownieEventsEmitter",
+      "protected constructor(publisher: ApplicationEventPublisher)",
+      "com.tecknobit.brownie.events.BrownieEventsEmitter.BrownieEventsEmitter"
     ]
   },
   {
@@ -4130,26 +4130,6 @@
     ]
   },
   {
-    "name": "protected open var hostsService: HostsService",
-    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.hostsService",
-    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/hosts-service.html",
-    "searchKeys": [
-      "hostsService",
-      "protected open var hostsService: HostsService",
-      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.hostsService"
-    ]
-  },
-  {
-    "name": "protected open var sessionsService: BrownieSessionsService",
-    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.sessionsService",
-    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/sessions-service.html",
-    "searchKeys": [
-      "sessionsService",
-      "protected open var sessionsService: BrownieSessionsService",
-      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.sessionsService"
-    ]
-  },
-  {
     "name": "protected val BASH_SCRIPT_OPTION: String = \"-s\"",
     "description": "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.BASH_SCRIPT_OPTION",
     "location": "backend/com.tecknobit.brownie.helpers.shell/-shell-commands-executor/-b-a-s-h_-s-c-r-i-p-t_-o-p-t-i-o-n.html",
@@ -4277,6 +4257,26 @@
       "extra",
       "protected val extra: String",
       "com.tecknobit.brownie.services.shared.entities.BrownieEvent.extra"
+    ]
+  },
+  {
+    "name": "protected val hostsService: HostsService",
+    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.hostsService",
+    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/hosts-service.html",
+    "searchKeys": [
+      "hostsService",
+      "protected val hostsService: HostsService",
+      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.hostsService"
+    ]
+  },
+  {
+    "name": "protected val sessionsService: BrownieSessionsService",
+    "description": "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.sessionsService",
+    "location": "backend/com.tecknobit.brownie.services.shared.controllers/-default-brownie-controller/sessions-service.html",
+    "searchKeys": [
+      "sessionsService",
+      "protected val sessionsService: BrownieSessionsService",
+      "com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController.sessionsService"
     ]
   },
   {

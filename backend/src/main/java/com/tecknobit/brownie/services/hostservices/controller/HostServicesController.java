@@ -2,8 +2,10 @@ package com.tecknobit.brownie.services.hostservices.controller;
 
 import com.jcraft.jsch.JSchException;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.brownie.services.hosts.services.HostsService;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.services.HostServicesService;
+import com.tecknobit.brownie.services.session.service.BrownieSessionsService;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
 import com.tecknobit.equinoxbackend.environment.services.DefaultEquinoxController;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
@@ -40,8 +42,21 @@ public class HostServicesController extends DefaultBrownieController {
     /**
      * {@code service} the support service used to manage the services data
      */
+    private final HostServicesService service;
+
+    /**
+     * Constructor used to init the controller
+     *
+     * @param sessionsService The support service used to manage the sessions data
+     * @param hostsService    The support service used to manage the hosts data
+     * @param service         The support service used to manage the services data
+     */
     @Autowired
-    private HostServicesService service;
+    public HostServicesController(BrownieSessionsService sessionsService, HostsService hostsService,
+                                  HostServicesService service) {
+        super(sessionsService, hostsService);
+        this.service = service;
+    }
 
     /**
      * Endpoint used to add a service to a host

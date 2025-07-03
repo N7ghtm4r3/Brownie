@@ -27,19 +27,29 @@ public class DefaultBrownieController extends DefaultEquinoxController {
     /**
      * {@code sessionsService} the support service used to manage the sessions data
      */
-    @Autowired
-    protected BrownieSessionsService sessionsService;
+    protected final BrownieSessionsService sessionsService;
 
     /**
      * {@code hostsService} the support service used to manage the hosts data
      */
-    @Autowired
-    protected HostsService hostsService;
+    protected final HostsService hostsService;
 
     /**
      * {@code currentBrownieSession} the current Brownie's session used in the request
      */
     protected BrownieSession currentBrownieSession;
+
+    /**
+     * Constructor used to init the controller
+     *
+     * @param sessionsService The support service used to manage the sessions data
+     * @param hostsService    The support service used to manage the hosts data
+     */
+    @Autowired
+    public DefaultBrownieController(BrownieSessionsService sessionsService, HostsService hostsService) {
+        this.sessionsService = sessionsService;
+        this.hostsService = hostsService;
+    }
 
     /**
      * Method to check whether a session exists by its id

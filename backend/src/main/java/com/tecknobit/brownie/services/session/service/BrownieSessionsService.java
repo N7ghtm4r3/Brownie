@@ -12,6 +12,7 @@ import jakarta.annotation.PreDestroy;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 import java.security.NoSuchAlgorithmException;
@@ -55,12 +56,14 @@ public class BrownieSessionsService extends BrownieEventsEmitter {
     private final ScheduledExecutorService servicesMonitor;
 
     /**
-     * Constructor to instantiate the service
+     * Constructor used to init the service
      *
+     * @param publisher The publisher used to emit the events
      * @param sessionsRepository the dedicated repository to manage the {@link BrownieSession} entity
      */
     @Autowired
-    public BrownieSessionsService(BrownieSessionsRepository sessionsRepository) {
+    public BrownieSessionsService(ApplicationEventPublisher publisher, BrownieSessionsRepository sessionsRepository) {
+        super(publisher);
         this.sessionsRepository = sessionsRepository;
         servicesMonitor = Executors.newScheduledThreadPool((int) sessionsRepository.count());
     }

@@ -1,11 +1,14 @@
 package com.tecknobit.brownie.services.session.controller;
 
 import com.tecknobit.apimanager.apis.ServerProtector;
+import com.tecknobit.brownie.services.hosts.services.HostsService;
 import com.tecknobit.brownie.services.session.entity.BrownieSession;
+import com.tecknobit.brownie.services.session.service.BrownieSessionsService;
 import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieController;
 import com.tecknobit.equinoxbackend.environment.services.DefaultEquinoxController;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
 import com.tecknobit.equinoxcore.annotations.RequestPath;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 import java.security.NoSuchAlgorithmException;
@@ -16,7 +19,8 @@ import static com.tecknobit.browniecore.ConstantsKt.JOIN_CODE_KEY;
 import static com.tecknobit.browniecore.ConstantsKt.SESSIONS_KEY;
 import static com.tecknobit.browniecore.helpers.BrownieEndpoints.CONNECT_ENDPOINT;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
-import static com.tecknobit.equinoxcore.helpers.InputsValidator.*;
+import static com.tecknobit.equinoxcore.helpers.InputsValidator.Companion;
+import static com.tecknobit.equinoxcore.helpers.InputsValidator.DEFAULT_LANGUAGE;
 import static com.tecknobit.equinoxcore.network.EquinoxBaseEndpointsSet.BASE_EQUINOX_ENDPOINT;
 import static com.tecknobit.equinoxcore.network.RequestMethod.*;
 
@@ -37,6 +41,17 @@ public class BrownieSessionController extends DefaultBrownieController {
      * backend instance
      */
     public static ServerProtector brownieServerProtector;
+
+    /**
+     * Constructor used to init the controller
+     *
+     * @param sessionsService The support service used to manage the sessions data
+     * @param hostsService    The support service used to manage the hosts data
+     */
+    @Autowired
+    public BrownieSessionController(BrownieSessionsService sessionsService, HostsService hostsService) {
+        super(sessionsService, hostsService);
+    }
 
     /**
      * Endpoint used to create a new session

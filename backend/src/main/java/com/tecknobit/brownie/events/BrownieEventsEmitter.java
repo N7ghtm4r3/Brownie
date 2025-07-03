@@ -1,6 +1,8 @@
 package com.tecknobit.brownie.events;
 
 import com.tecknobit.equinoxbackend.events.EquinoxEventsEmitter;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;
 
 /**
@@ -14,4 +16,15 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public abstract class BrownieEventsEmitter extends EquinoxEventsEmitter<BrownieApplicationEventType> {
+
+    /**
+     * Constructor to init the emitter
+     *
+     * @param publisher The publisher used to emit the events
+     */
+    @Autowired
+    protected BrownieEventsEmitter(ApplicationEventPublisher publisher) {
+        super(publisher);
+    }
+
 }

@@ -43,20 +43,31 @@ public class HostsService {
     /**
      * {@code hostsRepository} instance used to access to the {@link HOSTS_KEY} table
      */
-    @Autowired
-    private HostsRepository hostsRepository;
+    private final HostsRepository hostsRepository;
 
     /**
      * {@code eventsService} the support service used to manage the host events data
      */
-    @Autowired
-    private HostEventsService eventsService;
+    private final HostEventsService eventsService;
 
     /**
      * {@code servicesService} the support service used to manage the services data
      */
+    private final HostServicesService servicesService;
+
+    /**
+     * Constructor used to init the service
+     *
+     * @param hostsRepository The instance used to access to the {@link HOSTS_KEY} table
+     * @param eventsService   The support service used to manage the host events data
+     * @param servicesService The support service used to manage the services data
+     */
     @Autowired
-    private HostServicesService servicesService;
+    public HostsService(HostsRepository hostsRepository, HostEventsService eventsService, HostServicesService servicesService) {
+        this.hostsRepository = hostsRepository;
+        this.eventsService = eventsService;
+        this.servicesService = servicesService;
+    }
 
     /**
      * Method used to get the list of the hosts
