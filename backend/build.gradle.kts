@@ -7,12 +7,11 @@ plugins {
 apply(plugin = "io.spring.dependency-management")
 
 group = "com.tecknobit.brownie"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
     maven("https://jitpack.io")
-    maven("https://repo.clojars.org")
 }
 
 dependencies {

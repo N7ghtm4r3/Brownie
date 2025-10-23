@@ -1,12 +1,13 @@
 [versions]
-agp = "8.6.1"
+agp = "8.12.3"
 apimanager = "2.2.4"
-dokka = "2.0.0"
-equinox = "1.1.3"
+dokka = "2.1.0"
+equinox-backend = "1.1.6"
+equinox = "1.1.7"
 # backend
 spring = "3.2.3"
 jacksonDatabind = "2.15.4"
-jsch = "2.27.2"
+jsch = "2.27.4"
 json = "20250517"
 mysqlConnectorJava = "8.0.33"
 # core
@@ -14,10 +15,10 @@ kotlinxSerializationJson = "1.9.0"
 
 [libraries]
 dokka-base = { module = "org.jetbrains.dokka:dokka-base", version.ref = "dokka" }
+equinox-backend = { module = "io.github.n7ghtm4r3:equinox-backend", version.ref = "equinox-backend" }
 equinox-core = { module = "io.github.n7ghtm4r3:equinox-core", version.ref = "equinox" }
 # backend
 apimanager = { module = "com.github.N7ghtm4r3:APIManager", version.ref = "apimanager" }
-equinox-backend = { module = "io.github.n7ghtm4r3:equinox-backend", version.ref = "equinox" }
 jsch = { module = "com.github.mwiede:jsch", version.ref = "jsch" }
 json = { module = "org.json:json", version.ref = "json" }
 spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring" }
