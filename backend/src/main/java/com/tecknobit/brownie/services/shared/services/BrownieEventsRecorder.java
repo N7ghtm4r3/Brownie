@@ -40,11 +40,11 @@ public abstract class BrownieEventsRecorder<T extends Enum<T>, E extends Brownie
      * @param eventOwnerId The identifier of the owner of the event
      * @return the running days since the last up event as {@code int}
      */
-    protected int calculateUpDays(String eventOwnerId) {
+    protected long calculateUpDays(String eventOwnerId) {
         Long lastRunningEvent = repository.getLastUpEvent(eventOwnerId);
         if (lastRunningEvent == null)
             lastRunningEvent = 0L;
-        return TimeFormatter.INSTANCE.daysUntilNow(lastRunningEvent);
+        return TimeFormatter.daysUntilNow(lastRunningEvent);
     }
 
     /**

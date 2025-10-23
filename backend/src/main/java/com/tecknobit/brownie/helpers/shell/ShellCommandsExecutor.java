@@ -15,8 +15,8 @@ import java.nio.charset.StandardCharsets;
 import java.util.*;
 
 import static com.tecknobit.apimanager.apis.ResourcesUtils.getResourceStream;
-import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.COMMA;
-import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.SINGLE_QUOTE;
+import static com.tecknobit.equinoxbackend.apis.database.SQLConstants.COMMA;
+import static com.tecknobit.equinoxbackend.apis.database.SQLConstants.SINGLE_QUOTE;
 
 /**
  * The {@code ShellCommandsExecutor} class is used to execute the bash commands on the shells of the hosts physical machines

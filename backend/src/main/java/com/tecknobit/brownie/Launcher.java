@@ -3,7 +3,7 @@ package com.tecknobit.brownie;
 import com.tecknobit.apimanager.apis.ServerProtector;
 import com.tecknobit.apimanager.exceptions.SaveData;
 import com.tecknobit.brownie.services.session.controller.BrownieSessionController;
-import com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider;
+import com.tecknobit.equinoxbackend.apis.resources.ResourcesProvider;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -16,8 +16,8 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import java.security.NoSuchAlgorithmException;
 
 import static com.tecknobit.brownie.services.session.controller.BrownieSessionController.brownieServerProtector;
-import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider.CUSTOM_CONFIGURATION_FILE_PATH;
-import static com.tecknobit.equinoxbackend.resourcesutils.ResourcesProvider.DEFAULT_CONFIGURATION_FILE_PATH;
+import static com.tecknobit.equinoxbackend.apis.resources.ResourcesProvider.CUSTOM_CONFIGURATION_FILE_PATH;
+import static com.tecknobit.equinoxbackend.apis.resources.ResourcesProvider.DEFAULT_CONFIGURATION_FILE_PATH;
 
 /**
  * The {@code Launcher} class is useful to launch <b>Brownie's backend service</b>
