@@ -19,21 +19,26 @@ public class WakeOnLanExecutor {
      * Method to execute the {@code Wake-on-Lan} routine to a remote host
      *
      * @param host The remote host to wake up
-     * @throws IOException when an error occurred during the execution
      */
-    public void execWoL(BrownieHost host) throws IOException {
-        byte[] macBytes = getMacBytes(host.getMacAddress());
-        byte[] magicPacket = new byte[102];
-        for (int i = 0; i < 6; i++)
-            magicPacket[i] = (byte) 0xFF;
-        for (int i = 6; i < magicPacket.length; i += macBytes.length)
-            System.arraycopy(macBytes, 0, magicPacket, i, macBytes.length);
-        InetAddress address = InetAddress.getByName(host.getBroadcastIp());
-        DatagramPacket packet = new DatagramPacket(magicPacket, magicPacket.length, address, 9);
-        DatagramSocket socket = new DatagramSocket();
-        socket.setBroadcast(true);
-        socket.send(packet);
-        socket.close();
+    public void execWoL(BrownieHost host) {
+        host.inSafeContext(safeHost -> {
+            try {
+                byte[] macBytes = getMacBytes(safeHost.getMacAddress());
+                byte[] magicPacket = new byte[102];
+                for (int i = 0; i < 6; i++)
+                    magicPacket[i] = (byte) 0xFF;
+                for (int i = 6; i < magicPacket.length; i += macBytes.length)
+                    System.arraycopy(macBytes, 0, magicPacket, i, macBytes.length);
+                InetAddress address = InetAddress.getByName(safeHost.getBroadcastIp());
+                DatagramPacket packet = new DatagramPacket(magicPacket, magicPacket.length, address, 9);
+                DatagramSocket socket = new DatagramSocket();
+                socket.setBroadcast(true);
+                socket.send(packet);
+                socket.close();
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+        });
     }
 
     /**

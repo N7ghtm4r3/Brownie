@@ -13,6 +13,7 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.tecknobit.apimanager.apis.ResourcesUtils.getResourceStream;
 import static com.tecknobit.equinoxbackend.apis.database.SQLConstants.COMMA;
@@ -412,8 +413,17 @@ public abstract class ShellCommandsExecutor {
      * @throws JSchException when an error occurred on remote host SSH connection
      */
     public static ShellCommandsExecutor getInstance(BrownieHost host) throws JSchException {
-        if (host.isRemoteHost())
-            return new RemoteShellCommandsExecutor(host);
+        if (host.isRemoteHost()) {
+            AtomicReference<RemoteShellCommandsExecutor> shellCommandsExecutor = new AtomicReference<>(null);
+            host.inSafeContext(safeHost -> {
+                try {
+                    shellCommandsExecutor.set(new RemoteShellCommandsExecutor(safeHost));
+                } catch (JSchException e) {
+                    throw new RuntimeException(e);
+                }
+            });
+            return shellCommandsExecutor.get();
+        }
         return new LocalShellCommandsExecutor();
     }
 

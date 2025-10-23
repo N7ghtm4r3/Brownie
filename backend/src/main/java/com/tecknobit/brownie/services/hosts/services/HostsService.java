@@ -12,7 +12,7 @@ import com.tecknobit.brownie.services.hosts.dtos.RemoteHostData;
 import com.tecknobit.brownie.services.hosts.dtos.usages.CPUUsage;
 import com.tecknobit.brownie.services.hosts.dtos.usages.StorageUsage;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
-import com.tecknobit.brownie.services.hosts.helpers.SSHSafeguarder;
+import com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder;
 import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.services.HostServicesService;
@@ -148,15 +148,8 @@ public class HostsService {
             hostsRepository.editHost(hostId, hostName, hostAddress);
         else {
             RemoteHostData hostData = safeguardHostData(hostId, sessionId, sshUser, sshPassword, hostAddress);
-            hostsRepository.editHost(
-                    hostId,
-                    hostName,
-                    hostAddress,
-                    hostData.getSshUser(),
-                    hostData.getSshPassword(),
-                    hostData.getMacAddress(),
-                    hostData.getBroadcastIp()
-            );
+            hostsRepository.editHost(hostId, hostName, hostAddress, hostData.getSshUser(), hostData.getSshPassword(),
+                    hostData.getMacAddress(), hostData.getBroadcastIp());
         }
     }
 
@@ -164,9 +157,9 @@ public class HostsService {
     @Returner
     private RemoteHostData safeguardHostData(String hostId, String sessionId, String sshUser, String sshPassword,
                                              String hostAddress) throws Exception {
-        SSHSafeguarder.generateHostSecretKey(hostId, sessionId);
+        HostSafeguarder.generateHostSecretKey(hostId, sessionId);
         Pair<String, String> details = getNetworkInterfaceDetails(sshUser, sshPassword, hostAddress);
-        RemoteHostData hostData = SSHSafeguarder.safeguardRemoteHostData(hostId, sessionId, sshUser, sshPassword, details);
+        RemoteHostData hostData = HostSafeguarder.safeguardRemoteHostData(hostId, sessionId, sshUser, sshPassword, details);
         sshUser = hostData.getSshUser();
         sshPassword = hostData.getSshPassword();
         String macAddress = hostData.getMacAddress();
@@ -184,9 +177,9 @@ public class HostsService {
      * @return the network interface details as {@link Pair} of {@link String}
      */
     @Returner
-    private Pair<String, String> getNetworkInterfaceDetails(String sshUser, String sshPassword, String hostAddress) throws Exception {
-        RemoteShellCommandsExecutor commandsExecutor = new RemoteShellCommandsExecutor(sshUser, hostAddress,
-                sshPassword);
+    private Pair<String, String> getNetworkInterfaceDetails(String sshUser, String sshPassword,
+                                                            String hostAddress) throws Exception {
+        RemoteShellCommandsExecutor commandsExecutor = new RemoteShellCommandsExecutor(sshUser, hostAddress, sshPassword);
         return commandsExecutor.getNetworkInterfaceDetails();
     }
 

@@ -243,7 +243,6 @@ public class HostsController extends DefaultBrownieController {
         try {
             hostsService.editHost(hostId, hostAddress, hostName, sshUser, sshPassword, sessionId);
         } catch (Exception e) {
-            e.printStackTrace();
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         }
         return successResponse();

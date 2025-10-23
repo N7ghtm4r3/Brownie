@@ -3,8 +3,10 @@ package com.tecknobit.brownie.services.hosts.helpers
 import com.tecknobit.apimanager.apis.APIRequest
 import com.tecknobit.apimanager.apis.APIRequest.SHA256_ALGORITHM
 import com.tecknobit.brownie.services.hosts.dtos.RemoteHostData
+import com.tecknobit.brownie.services.hosts.entities.BrownieHost
 import com.tecknobit.equinoxcore.annotations.Assembler
 import com.tecknobit.equinoxcore.annotations.Returner
+import com.tecknobit.equinoxcore.annotations.Wrapper
 import com.tecknobit.kassaforte.key.genspec.Algorithm.AES
 import com.tecknobit.kassaforte.key.genspec.BlockMode.CBC
 import com.tecknobit.kassaforte.key.genspec.EncryptionPadding.PKCS7
@@ -14,7 +16,8 @@ import com.tecknobit.kassaforte.key.usages.KeyPurposes
 import com.tecknobit.kassaforte.services.KassaforteSymmetricService
 import kotlinx.coroutines.runBlocking
 
-object SSHSafeguarder {
+// TODO: TO REMOVE THE ALIAS WHEN THE HOST DISCONNECTED OR CHANGE FROM REMOTE TO LOCAL 
+object HostSafeguarder {
 
     @Assembler
     @JvmStatic
@@ -42,6 +45,7 @@ object SSHSafeguarder {
     }
 
     // TODO: 23/10/2025 TO DOCU SINCE
+    @Wrapper
     @Returner
     @JvmStatic
     fun safeguardRemoteHostData(
@@ -51,22 +55,42 @@ object SSHSafeguarder {
         sshPassword: String,
         networkInterfaceDetails: Pair<String, String>,
     ): RemoteHostData {
+        return safeguardRemoteHostData(
+            hostId = hostId,
+            sessionId = sessionId,
+            sshUser = sshUser,
+            sshPassword = sshPassword,
+            macAddress = networkInterfaceDetails.first,
+            broadcastIp = networkInterfaceDetails.second
+        )
+    }
+
+    @Returner
+    @JvmStatic
+    fun safeguardRemoteHostData(
+        hostId: String,
+        sessionId: String,
+        sshUser: String,
+        sshPassword: String,
+        macAddress: String,
+        broadcastIp: String,
+    ): RemoteHostData {
         val keyAlias = resolveHostSecretKeyAlias(hostId, sessionId)
-        val encryptedUser = encryptCredential(
+        val encryptedUser = encryptData(
             keyAlias = keyAlias,
             data = sshUser
         )
-        val encryptedPassword = encryptCredential(
+        val encryptedPassword = encryptData(
             keyAlias = keyAlias,
             data = sshPassword
         )
-        val encryptedMacAddress = encryptCredential(
+        val encryptedMacAddress = encryptData(
             keyAlias = keyAlias,
-            data = networkInterfaceDetails.first
+            data = macAddress
         )
-        val encryptedBroadcastIp = encryptCredential(
+        val encryptedBroadcastIp = encryptData(
             keyAlias = keyAlias,
-            data = networkInterfaceDetails.second
+            data = broadcastIp
         )
         return RemoteHostData(
             sshUser = encryptedUser,
@@ -76,7 +100,7 @@ object SSHSafeguarder {
         )
     }
 
-    private fun encryptCredential(
+    private fun encryptData(
         keyAlias: String,
         data: String,
     ): String {
@@ -90,9 +114,53 @@ object SSHSafeguarder {
         }
     }
 
-    @Returner // TODO: 23/10/2025 TO DOCU SINCE
     @JvmStatic
-    fun resolveHostSecretKeyAlias(
+    fun decryptRemoteHostData(
+        host: BrownieHost,
+    ): RemoteHostData {
+        val hostId = host.id
+        val sessionId = host.session.id
+        val keyAlias = resolveHostSecretKeyAlias(hostId, sessionId)
+        val sshUser = decryptHostData(
+            keyAlias = keyAlias,
+            encryptedData = host.sshUser
+        )
+        val sshPassword = decryptHostData(
+            keyAlias = keyAlias,
+            encryptedData = host.sshPassword
+        )
+        val macAddress = decryptHostData(
+            keyAlias = keyAlias,
+            encryptedData = host.macAddress
+        )
+        val broadcastIp = decryptHostData(
+            keyAlias = keyAlias,
+            encryptedData = host.broadcastIp
+        )
+        return RemoteHostData(
+            sshUser = sshUser,
+            sshPassword = sshPassword,
+            macAddress = macAddress,
+            broadcastIp = broadcastIp
+        )
+    }
+
+    private fun decryptHostData(
+        keyAlias: String,
+        encryptedData: String,
+    ): String {
+        return runBlocking {
+            KassaforteSymmetricService.decrypt(
+                alias = keyAlias,
+                blockMode = CBC,
+                padding = PKCS7,
+                data = encryptedData
+            )
+        }
+    }
+
+    @Returner // TODO: 23/10/2025 TO DOCU SINCE
+    private fun resolveHostSecretKeyAlias(
         hostId: String,
         sessionId: String,
     ): String {
