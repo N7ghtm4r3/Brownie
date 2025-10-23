@@ -5,6 +5,8 @@ dokka = "2.1.0"
 equinox-backend = "1.1.6"
 equinox = "1.1.7"
 # backend
+kassaforte = "1.0.0beta-01"
+kotlinxCoroutinesCore = "1.10.2"
 spring = "3.2.3"
 jacksonDatabind = "2.15.4"
 jsch = "2.27.4"
@@ -21,10 +23,12 @@ equinox-core = { module = "io.github.n7ghtm4r3:equinox-core", version.ref = "equ
 apimanager = { module = "com.github.N7ghtm4r3:APIManager", version.ref = "apimanager" }
 jsch = { module = "com.github.mwiede:jsch", version.ref = "jsch" }
 json = { module = "org.json:json", version.ref = "json" }
+kotlinx-coroutines-core = { module = "org.jetbrains.kotlinx:kotlinx-coroutines-core", version.ref = "kotlinxCoroutinesCore" }
 spring-boot-starter-data-jpa = { module = "org.springframework.boot:spring-boot-starter-data-jpa", version.ref = "spring" }
 spring-boot-starter-web = { module = "org.springframework.boot:spring-boot-starter-web", version.ref = "spring" }
 mysql-connector-java = { module = "mysql:mysql-connector-java", version.ref = "mysqlConnectorJava" }
 jackson-databind = { module = "com.fasterxml.jackson.core:jackson-databind", version.ref = "jacksonDatabind" }
+kassaforte = { module = "io.github.n7ghtm4r3:kassaforte", version.ref = "kassaforte" }
 # core
 kotlinx-serialization-json = { module = "org.jetbrains.kotlinx:kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 

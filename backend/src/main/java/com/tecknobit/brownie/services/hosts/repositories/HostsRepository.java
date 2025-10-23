@@ -159,6 +159,10 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
             value = "UPDATE " + HOSTS_KEY + " SET " +
                     HOST_ADDRESS_KEY + "=:" + HOST_ADDRESS_KEY + "," +
                     NAME_KEY + "=:" + NAME_KEY +
+                    SSH_USER_KEY + "=: ''" +
+                    SSH_PASSWORD_KEY + "=: ''" +
+                    BROADCAST_IP_KEY + "=: ''" +
+                    MAC_ADDRESS_KEY + "=: ''" +
                     _WHERE_ + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
             nativeQuery = true
     )

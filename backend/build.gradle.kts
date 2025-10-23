@@ -24,5 +24,7 @@ dependencies {
     implementation(libs.jsch)
     implementation(libs.equinox.backend)
     implementation(libs.equinox.core)
+    implementation(libs.kassaforte)
+    implementation(libs.kotlinx.coroutines.core)
     implementation(project(":core"))
 }

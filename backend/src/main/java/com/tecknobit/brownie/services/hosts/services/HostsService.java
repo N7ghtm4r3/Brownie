@@ -8,15 +8,19 @@ import com.tecknobit.brownie.services.hosts.commands.WakeOnLanExecutor;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostOverview;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostStat;
 import com.tecknobit.brownie.services.hosts.dtos.CurrentHostStatus;
+import com.tecknobit.brownie.services.hosts.dtos.RemoteHostData;
 import com.tecknobit.brownie.services.hosts.dtos.usages.CPUUsage;
 import com.tecknobit.brownie.services.hosts.dtos.usages.StorageUsage;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.brownie.services.hosts.helpers.SSHSafeguarder;
 import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.services.HostServicesService;
 import com.tecknobit.browniecore.enums.HostStatus;
+import com.tecknobit.equinoxcore.annotations.Returner;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
+import com.tecknobit.kassaforte.services.KassaforteSymmetricService;
 import kotlin.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -54,6 +58,9 @@ public class HostsService {
      * {@code servicesService} the support service used to manage the services data
      */
     private final HostServicesService servicesService;
+
+    // TODO: 23/10/2025 TO DOCU SINCE
+    private static final KassaforteSymmetricService kassaforteService = KassaforteSymmetricService.INSTANCE;
 
     /**
      * Constructor used to init the service
@@ -115,9 +122,11 @@ public class HostsService {
         String macAddress = null;
         String broadcastIp = null;
         if (sshUser != null) {
-            Pair<String, String> details = getNetworkInterfaceDetails(sshUser, sshPassword, hostAddress);
-            macAddress = details.getFirst();
-            broadcastIp = details.getSecond();
+            RemoteHostData hostData = safeguardHostData(hostId, sessionId, sshUser, sshPassword, hostAddress);
+            sshUser = hostData.getSshUser();
+            sshPassword = hostData.getSshPassword();
+            macAddress = hostData.getMacAddress();
+            broadcastIp = hostData.getBroadcastIp();
         }
         hostsRepository.registerHost(hostId, hostName, hostAddress, sshUser, sshPassword, ONLINE.name(), sessionId,
                 System.currentTimeMillis(), broadcastIp, macAddress);
@@ -131,16 +140,38 @@ public class HostsService {
      * @param hostName The name of the host
      * @param sshUser The user to use for the SSH connection
      * @param sshPassword The password to use for the SSH connection
+     * @param sessionId The identifier of the session owner of the host
      */
-    public void editHost(String hostId, String hostAddress, String hostName, String sshUser, String sshPassword) throws Exception {
+    public void editHost(String hostId, String hostAddress, String hostName, String sshUser, String sshPassword,
+                         String sessionId) throws Exception {
         if (sshUser == null)
             hostsRepository.editHost(hostId, hostName, hostAddress);
         else {
-            Pair<String, String> details = getNetworkInterfaceDetails(sshUser, sshPassword, hostAddress);
-            String macAddress = details.getFirst();
-            String broadcastIp = details.getSecond();
-            hostsRepository.editHost(hostId, hostName, hostAddress, sshUser, sshPassword, broadcastIp, macAddress);
+            RemoteHostData hostData = safeguardHostData(hostId, sessionId, sshUser, sshPassword, hostAddress);
+            hostsRepository.editHost(
+                    hostId,
+                    hostName,
+                    hostAddress,
+                    hostData.getSshUser(),
+                    hostData.getSshPassword(),
+                    hostData.getMacAddress(),
+                    hostData.getBroadcastIp()
+            );
         }
+    }
+
+    // TODO: 23/10/2025 TO DOCU SINCE
+    @Returner
+    private RemoteHostData safeguardHostData(String hostId, String sessionId, String sshUser, String sshPassword,
+                                             String hostAddress) throws Exception {
+        SSHSafeguarder.generateHostSecretKey(hostId, sessionId);
+        Pair<String, String> details = getNetworkInterfaceDetails(sshUser, sshPassword, hostAddress);
+        RemoteHostData hostData = SSHSafeguarder.safeguardRemoteHostData(hostId, sessionId, sshUser, sshPassword, details);
+        sshUser = hostData.getSshUser();
+        sshPassword = hostData.getSshPassword();
+        String macAddress = hostData.getMacAddress();
+        String broadcastIp = hostData.getBroadcastIp();
+        return new RemoteHostData(sshUser, sshPassword, macAddress, broadcastIp);
     }
 
     /**
@@ -152,6 +183,7 @@ public class HostsService {
      *
      * @return the network interface details as {@link Pair} of {@link String}
      */
+    @Returner
     private Pair<String, String> getNetworkInterfaceDetails(String sshUser, String sshPassword, String hostAddress) throws Exception {
         RemoteShellCommandsExecutor commandsExecutor = new RemoteShellCommandsExecutor(sshUser, hostAddress,
                 sshPassword);
