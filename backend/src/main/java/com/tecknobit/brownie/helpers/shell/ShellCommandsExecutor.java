@@ -413,18 +413,17 @@ public abstract class ShellCommandsExecutor {
      * @throws JSchException when an error occurred on remote host SSH connection
      */
     public static ShellCommandsExecutor getInstance(BrownieHost host) throws JSchException {
-        if (host.isRemoteHost()) {
-            AtomicReference<RemoteShellCommandsExecutor> shellCommandsExecutor = new AtomicReference<>(null);
-            host.inSafeContext(safeHost -> {
-                try {
-                    shellCommandsExecutor.set(new RemoteShellCommandsExecutor(safeHost));
-                } catch (JSchException e) {
-                    throw new RuntimeException(e);
-                }
-            });
-            return shellCommandsExecutor.get();
-        }
-        return new LocalShellCommandsExecutor();
+        if (!host.isRemoteHost())
+            return new LocalShellCommandsExecutor();
+        AtomicReference<RemoteShellCommandsExecutor> shellCommandsExecutor = new AtomicReference<>(null);
+        host.inSafeContext(safeHost -> {
+            try {
+                shellCommandsExecutor.set(new RemoteShellCommandsExecutor(safeHost));
+            } catch (JSchException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return shellCommandsExecutor.get();
     }
 
 }

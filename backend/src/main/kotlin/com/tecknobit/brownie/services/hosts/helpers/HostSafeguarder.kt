@@ -16,12 +16,30 @@ import com.tecknobit.kassaforte.key.usages.KeyPurposes
 import com.tecknobit.kassaforte.services.KassaforteSymmetricService
 import kotlinx.coroutines.runBlocking
 
-// TODO: TO REMOVE THE ALIAS WHEN THE HOST DISCONNECTED OR CHANGE FROM REMOTE TO LOCAL 
+/**
+ * The `HostSafeguarder` object allows to handle the sensitive data of a remote host, such as `sshUser`, `sshPassword`, etc...
+ *
+ * This API is a functional wrapper for Java to handle the Kassaforte's library which works with coroutines and suspendable
+ * methods
+ *
+ * @author N7ghtm4r3 - Tecknobit
+ *
+ * @since 1.0.4
+ */
 object HostSafeguarder {
 
+    /**
+     * Method used to generate a new secret key for a host
+     *
+     * @param hostId The identifier of the host
+     * @param sessionId The identifier of the session where the host is attached
+     */
     @Assembler
     @JvmStatic
-    fun generateHostSecretKey(hostId: String, sessionId: String) {
+    fun generateHostSecretKey(
+        hostId: String,
+        sessionId: String,
+    ) {
         val keyAlias: String = resolveHostSecretKeyAlias(
             hostId = hostId,
             sessionId = sessionId
@@ -44,7 +62,17 @@ object HostSafeguarder {
         }
     }
 
-    // TODO: 23/10/2025 TO DOCU SINCE
+    /**
+     * Method used to safeguard the sensitive data of a remote host
+     *
+     * @param hostId The identifier of the host
+     * @param sessionId The identifier of the session owner of the host
+     * @param sshUser The user to use for the SSH connection
+     * @param sshPassword The password to use for the SSH connection
+     * @param networkInterfaceDetails The details of the network interface of the remote host
+     *
+     * @return the sensitive data of the remote host encrypted as [RemoteHostData]
+     */
     @Wrapper
     @Returner
     @JvmStatic
@@ -65,6 +93,18 @@ object HostSafeguarder {
         )
     }
 
+    /**
+     * Method used to safeguard the sensitive data of a remote host
+     *
+     * @param hostId The identifier of the host
+     * @param sessionId The identifier of the session owner of the host
+     * @param sshUser The user to use for the SSH connection
+     * @param sshPassword The password to use for the SSH connection
+     * @param macAddress    The physical mac address of the remote host network interface
+     * @param broadcastIp   The ip address of the remote host network interface
+     *
+     * @return the sensitive data of the remote host encrypted as [RemoteHostData]
+     */
     @Returner
     @JvmStatic
     fun safeguardRemoteHostData(
@@ -100,6 +140,14 @@ object HostSafeguarder {
         )
     }
 
+    /**
+     * Method used to encrypt a data of the remote host
+     *
+     * @param keyAlias The alias of the secret key of the host
+     * @param data The data to encrypt
+     *
+     * @return the data encrypted as [String]
+     */
     private fun encryptData(
         keyAlias: String,
         data: String,
@@ -114,6 +162,13 @@ object HostSafeguarder {
         }
     }
 
+    /**
+     * Method used to decrypt the remote host data previously encrypted
+     *
+     * @param host The remote host from decrypt the sensitive data
+     *
+     * @return the sensitive data of the remote host decrypted as [RemoteHostData]
+     */
     @JvmStatic
     fun decryptRemoteHostData(
         host: BrownieHost,
@@ -145,6 +200,14 @@ object HostSafeguarder {
         )
     }
 
+    /**
+     * Method used to decrypt a data of the remote host
+     *
+     * @param keyAlias The alias of the secret key of the host
+     * @param encryptedData The encrypted data to decrypt
+     *
+     * @return the data decrypted as [String]
+     */
     private fun decryptHostData(
         keyAlias: String,
         encryptedData: String,
@@ -159,7 +222,15 @@ object HostSafeguarder {
         }
     }
 
-    @Returner // TODO: 23/10/2025 TO DOCU SINCE
+    /**
+     * Method used to resolve the alias of the secret key of a host
+     *
+     * @param hostId The identifier of the host
+     * @param sessionId The identifier of the session owner of the host
+     *
+     * @return the resolved alias as [String]
+     */
+    @Returner
     private fun resolveHostSecretKeyAlias(
         hostId: String,
         sessionId: String,

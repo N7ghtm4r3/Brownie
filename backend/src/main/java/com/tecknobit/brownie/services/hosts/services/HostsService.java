@@ -153,7 +153,15 @@ public class HostsService {
         }
     }
 
-    // TODO: 23/10/2025 TO DOCU SINCE
+    /**
+     * Method used to safeguard the sensitive data of a remote host
+     *
+     * @param hostId      The identifier of the host
+     * @param sessionId   The identifier of the session owner of the host
+     * @param sshUser     The user to use for the SSH connection
+     * @param sshPassword The password to use for the SSH connection
+     * @param hostAddress The address of the host
+     */
     @Returner
     private RemoteHostData safeguardHostData(String hostId, String sessionId, String sshUser, String sshPassword,
                                              String hostAddress) throws Exception {

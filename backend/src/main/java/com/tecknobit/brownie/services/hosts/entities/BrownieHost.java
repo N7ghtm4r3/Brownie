@@ -347,7 +347,12 @@ public class BrownieHost extends EquinoxItem {
         return servicePids;
     }
 
-    // TODO: 23/10/2025 TO DOCU SINCE
+    /**
+     * Method used to handle the remote host's sensitive data, decrypting and after custom usage, encrypting again
+     *
+     * @param usage Custom usage to use the sensitive data of the host in a safe context
+     * @since 1.0.4
+     */
     public void inSafeContext(Consumer<BrownieHost> usage) {
         if (!isRemoteHost())
             return;
@@ -359,12 +364,22 @@ public class BrownieHost extends EquinoxItem {
         }
     }
 
+    /**
+     * Method used to decrypt the remote host's sensitive data
+     *
+     * @since 1.0.4
+     */
     @Wrapper
     private void decryptSensitiveData() {
         RemoteHostData hostData = HostSafeguarder.decryptRemoteHostData(this);
         handleSensitiveData(hostData);
     }
 
+    /**
+     * Method used to encrypt the remote host's sensitive data
+     *
+     * @since 1.0.4
+     */
     @Wrapper
     private void encryptSensitiveData() {
         RemoteHostData hostData = HostSafeguarder.safeguardRemoteHostData(id, session.getId(), sshUser, sshPassword,
@@ -372,6 +387,14 @@ public class BrownieHost extends EquinoxItem {
         handleSensitiveData(hostData);
     }
 
+    /**
+     * Method used to handle the sensitive data of the remote host, assigning the encrypted or decrypted values to the
+     * fields
+     *
+     * @param hostData The remote host's data to assign
+     *
+     * @since 1.0.4
+     */
     private void handleSensitiveData(RemoteHostData hostData) {
         sshUser = hostData.getSshUser();
         sshPassword = hostData.getSshPassword();
