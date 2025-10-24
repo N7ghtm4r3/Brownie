@@ -1,7 +1,7 @@
 [versions]
 agp = "8.12.3"
 apimanager = "2.2.4"
-dokka = "2.1.0"
+dokka = "2.0.0"
 equinox-backend = "1.1.6"
 equinox = "1.1.7"
 # backend
