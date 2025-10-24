@@ -20,7 +20,6 @@ import com.tecknobit.browniecore.enums.HostStatus;
 import com.tecknobit.equinoxcore.annotations.Returner;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
-import com.tecknobit.kassaforte.services.KassaforteSymmetricService;
 import kotlin.Pair;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
@@ -58,9 +57,6 @@ public class HostsService {
      * {@code servicesService} the support service used to manage the services data
      */
     private final HostServicesService servicesService;
-
-    // TODO: 23/10/2025 TO DOCU SINCE
-    private static final KassaforteSymmetricService kassaforteService = KassaforteSymmetricService.INSTANCE;
 
     /**
      * Constructor used to init the service
@@ -144,9 +140,10 @@ public class HostsService {
      */
     public void editHost(String hostId, String hostAddress, String hostName, String sshUser, String sshPassword,
                          String sessionId) throws Exception {
-        if (sshUser == null)
+        if (sshUser == null) {
+            HostSafeguarder.removeHostSecretKey(hostId, sessionId);
             hostsRepository.editHost(hostId, hostName, hostAddress);
-        else {
+        } else {
             RemoteHostData hostData = safeguardHostData(hostId, sessionId, sshUser, sshPassword, hostAddress);
             hostsRepository.editHost(hostId, hostName, hostAddress, hostData.getSshUser(), hostData.getSshPassword(),
                     hostData.getMacAddress(), hostData.getBroadcastIp());
@@ -217,9 +214,8 @@ public class HostsService {
      * Method used to start the remote host
      *
      * @param host The remote host to start
-     * @throws Exception when an error occurred during the execution
      */
-    public void startHost(BrownieHost host) throws Exception {
+    public void startHost(BrownieHost host) {
         WakeOnLanExecutor wakeOnLanExecutor = new WakeOnLanExecutor();
         wakeOnLanExecutor.execWoL(host);
         waitForHostRestart(host, new AtomicInteger(0), () -> {
@@ -400,9 +396,14 @@ public class HostsService {
     /**
      * Method used to unregister a host from the system
      *
-     * @param hostId The identifier of the host to unregister
+     * @param host The host to unregister
      */
-    public void unregisterHost(String hostId) {
+    public void unregisterHost(BrownieHost host) {
+        String hostId = host.getId();
+        if (host.isRemoteHost()) {
+            String sessionId = host.getSession().getId();
+            HostSafeguarder.removeHostSecretKey(hostId, sessionId);
+        }
         hostsRepository.unregisterHost(hostId);
     }
 

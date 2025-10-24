@@ -223,6 +223,29 @@ object HostSafeguarder {
     }
 
     /**
+     * Method used to remove the alias of the secret key of a host
+     *
+     * @param hostId The identifier of the host
+     * @param sessionId The identifier of the session owner of the host
+     */
+    @JvmStatic
+    fun removeHostSecretKey(
+        hostId: String,
+        sessionId: String,
+    ) {
+        val keyAlias = resolveHostSecretKeyAlias(
+            hostId = hostId,
+            sessionId = sessionId
+        )
+        try {
+            KassaforteSymmetricService.deleteKey(
+                alias = keyAlias
+            )
+        } catch (_: RuntimeException) {
+        }
+    }
+
+    /**
      * Method used to resolve the alias of the secret key of a host
      *
      * @param hostId The identifier of the host

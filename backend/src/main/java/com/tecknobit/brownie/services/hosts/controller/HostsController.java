@@ -439,7 +439,7 @@ public class HostsController extends DefaultBrownieController {
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        hostsService.unregisterHost(hostId);
+        hostsService.unregisterHost(host);
         return successResponse();
     }
 
