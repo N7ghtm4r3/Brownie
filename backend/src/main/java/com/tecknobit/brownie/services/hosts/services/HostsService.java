@@ -8,13 +8,16 @@ import com.tecknobit.brownie.services.hosts.commands.WakeOnLanExecutor;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostOverview;
 import com.tecknobit.brownie.services.hosts.dtos.BrownieHostStat;
 import com.tecknobit.brownie.services.hosts.dtos.CurrentHostStatus;
+import com.tecknobit.brownie.services.hosts.dtos.RemoteHostData;
 import com.tecknobit.brownie.services.hosts.dtos.usages.CPUUsage;
 import com.tecknobit.brownie.services.hosts.dtos.usages.StorageUsage;
 import com.tecknobit.brownie.services.hosts.entities.BrownieHost;
+import com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder;
 import com.tecknobit.brownie.services.hosts.repositories.HostsRepository;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.services.HostServicesService;
 import com.tecknobit.browniecore.enums.HostStatus;
+import com.tecknobit.equinoxcore.annotations.Returner;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;
 import kotlin.Pair;
@@ -115,9 +118,11 @@ public class HostsService {
         String macAddress = null;
         String broadcastIp = null;
         if (sshUser != null) {
-            Pair<String, String> details = getNetworkInterfaceDetails(sshUser, sshPassword, hostAddress);
-            macAddress = details.getFirst();
-            broadcastIp = details.getSecond();
+            RemoteHostData hostData = safeguardHostData(hostId, sessionId, sshUser, sshPassword, hostAddress);
+            sshUser = hostData.getSshUser();
+            sshPassword = hostData.getSshPassword();
+            macAddress = hostData.getMacAddress();
+            broadcastIp = hostData.getBroadcastIp();
         }
         hostsRepository.registerHost(hostId, hostName, hostAddress, sshUser, sshPassword, ONLINE.name(), sessionId,
                 System.currentTimeMillis(), broadcastIp, macAddress);
@@ -131,16 +136,40 @@ public class HostsService {
      * @param hostName The name of the host
      * @param sshUser The user to use for the SSH connection
      * @param sshPassword The password to use for the SSH connection
+     * @param sessionId The identifier of the session owner of the host
      */
-    public void editHost(String hostId, String hostAddress, String hostName, String sshUser, String sshPassword) throws Exception {
-        if (sshUser == null)
+    public void editHost(String hostId, String hostAddress, String hostName, String sshUser, String sshPassword,
+                         String sessionId) throws Exception {
+        if (sshUser == null) {
+            HostSafeguarder.removeHostSecretKey(hostId, sessionId);
             hostsRepository.editHost(hostId, hostName, hostAddress);
-        else {
-            Pair<String, String> details = getNetworkInterfaceDetails(sshUser, sshPassword, hostAddress);
-            String macAddress = details.getFirst();
-            String broadcastIp = details.getSecond();
-            hostsRepository.editHost(hostId, hostName, hostAddress, sshUser, sshPassword, broadcastIp, macAddress);
+        } else {
+            RemoteHostData hostData = safeguardHostData(hostId, sessionId, sshUser, sshPassword, hostAddress);
+            hostsRepository.editHost(hostId, hostName, hostAddress, hostData.getSshUser(), hostData.getSshPassword(),
+                    hostData.getMacAddress(), hostData.getBroadcastIp());
         }
+    }
+
+    /**
+     * Method used to safeguard the sensitive data of a remote host
+     *
+     * @param hostId      The identifier of the host
+     * @param sessionId   The identifier of the session owner of the host
+     * @param sshUser     The user to use for the SSH connection
+     * @param sshPassword The password to use for the SSH connection
+     * @param hostAddress The address of the host
+     */
+    @Returner
+    private RemoteHostData safeguardHostData(String hostId, String sessionId, String sshUser, String sshPassword,
+                                             String hostAddress) throws Exception {
+        HostSafeguarder.generateHostSecretKey(hostId, sessionId);
+        Pair<String, String> details = getNetworkInterfaceDetails(sshUser, sshPassword, hostAddress);
+        RemoteHostData hostData = HostSafeguarder.safeguardRemoteHostData(hostId, sessionId, sshUser, sshPassword, details);
+        sshUser = hostData.getSshUser();
+        sshPassword = hostData.getSshPassword();
+        String macAddress = hostData.getMacAddress();
+        String broadcastIp = hostData.getBroadcastIp();
+        return new RemoteHostData(sshUser, sshPassword, macAddress, broadcastIp);
     }
 
     /**
@@ -152,9 +181,10 @@ public class HostsService {
      *
      * @return the network interface details as {@link Pair} of {@link String}
      */
-    private Pair<String, String> getNetworkInterfaceDetails(String sshUser, String sshPassword, String hostAddress) throws Exception {
-        RemoteShellCommandsExecutor commandsExecutor = new RemoteShellCommandsExecutor(sshUser, hostAddress,
-                sshPassword);
+    @Returner
+    private Pair<String, String> getNetworkInterfaceDetails(String sshUser, String sshPassword,
+                                                            String hostAddress) throws Exception {
+        RemoteShellCommandsExecutor commandsExecutor = new RemoteShellCommandsExecutor(sshUser, hostAddress, sshPassword);
         return commandsExecutor.getNetworkInterfaceDetails();
     }
 
@@ -184,9 +214,8 @@ public class HostsService {
      * Method used to start the remote host
      *
      * @param host The remote host to start
-     * @throws Exception when an error occurred during the execution
      */
-    public void startHost(BrownieHost host) throws Exception {
+    public void startHost(BrownieHost host) {
         WakeOnLanExecutor wakeOnLanExecutor = new WakeOnLanExecutor();
         wakeOnLanExecutor.execWoL(host);
         waitForHostRestart(host, new AtomicInteger(0), () -> {
@@ -367,9 +396,14 @@ public class HostsService {
     /**
      * Method used to unregister a host from the system
      *
-     * @param hostId The identifier of the host to unregister
+     * @param host The host to unregister
      */
-    public void unregisterHost(String hostId) {
+    public void unregisterHost(BrownieHost host) {
+        String hostId = host.getId();
+        if (host.isRemoteHost()) {
+            String sessionId = host.getSession().getId();
+            HostSafeguarder.removeHostSecretKey(hostId, sessionId);
+        }
         hostsRepository.unregisterHost(hostId);
     }
 

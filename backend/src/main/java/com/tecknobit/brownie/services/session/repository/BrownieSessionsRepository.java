@@ -8,7 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import static com.tecknobit.browniecore.ConstantsKt.JOIN_CODE_KEY;
 import static com.tecknobit.browniecore.ConstantsKt.SESSIONS_KEY;
-import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper._WHERE_;
+import static com.tecknobit.equinoxbackend.apis.database.SQLConstants._WHERE_;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.PASSWORD_KEY;
 
 /**

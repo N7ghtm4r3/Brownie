@@ -10,7 +10,7 @@ import com.tecknobit.brownie.services.hostservices.dtos.CurrentServiceStatus;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.hostservices.repositories.HostServicesRepository;
 import com.tecknobit.browniecore.enums.ServiceStatus;
-import com.tecknobit.equinoxbackend.events.EquinoxEventsCollector;
+import com.tecknobit.equinoxbackend.apis.events.EquinoxEventsCollector;
 import com.tecknobit.equinoxcore.annotations.CustomParametersOrder;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 import com.tecknobit.equinoxcore.pagination.PaginatedResponse;

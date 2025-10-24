@@ -1870,6 +1870,16 @@
     ]
   },
   {
+    "name": "constructor(sshUser: String, sshPassword: String, macAddress: String, broadcastIp: String)",
+    "description": "com.tecknobit.brownie.services.hosts.dtos.RemoteHostData.RemoteHostData",
+    "location": "backend/com.tecknobit.brownie.services.hosts.dtos/-remote-host-data/-remote-host-data.html",
+    "searchKeys": [
+      "RemoteHostData",
+      "constructor(sshUser: String, sshPassword: String, macAddress: String, broadcastIp: String)",
+      "com.tecknobit.brownie.services.hosts.dtos.RemoteHostData.RemoteHostData"
+    ]
+  },
+  {
     "name": "constructor(usageValue: String, clock: String)",
     "description": "com.tecknobit.brownie.services.hosts.dtos.usages.CPUUsage.CPUUsage",
     "location": "backend/com.tecknobit.brownie.services.hosts.dtos.usages/-c-p-u-usage/-c-p-u-usage.html",
@@ -1890,6 +1900,16 @@
     ]
   },
   {
+    "name": "data class RemoteHostData(val sshUser: String, val sshPassword: String, val macAddress: String, val broadcastIp: String)",
+    "description": "com.tecknobit.brownie.services.hosts.dtos.RemoteHostData",
+    "location": "backend/com.tecknobit.brownie.services.hosts.dtos/-remote-host-data/index.html",
+    "searchKeys": [
+      "RemoteHostData",
+      "data class RemoteHostData(val sshUser: String, val sshPassword: String, val macAddress: String, val broadcastIp: String)",
+      "com.tecknobit.brownie.services.hosts.dtos.RemoteHostData"
+    ]
+  },
+  {
     "name": "enum BrownieApplicationEventType",
     "description": "com.tecknobit.brownie.events.BrownieApplicationEventType",
     "location": "backend/com.tecknobit.brownie.events/-brownie-application-event-type/index.html",
@@ -1907,6 +1927,56 @@
       "LocalEvent",
       "enum LocalEvent",
       "com.tecknobit.brownie.helpers.LocalEventsHandler.LocalEvent"
+    ]
+  },
+  {
+    "name": "fun decryptRemoteHostData(host: BrownieHost): RemoteHostData",
+    "description": "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.decryptRemoteHostData",
+    "location": "backend/com.tecknobit.brownie.services.hosts.helpers/-host-safeguarder/decrypt-remote-host-data.html",
+    "searchKeys": [
+      "decryptRemoteHostData",
+      "fun decryptRemoteHostData(host: BrownieHost): RemoteHostData",
+      "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.decryptRemoteHostData"
+    ]
+  },
+  {
+    "name": "fun generateHostSecretKey(hostId: String, sessionId: String)",
+    "description": "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.generateHostSecretKey",
+    "location": "backend/com.tecknobit.brownie.services.hosts.helpers/-host-safeguarder/generate-host-secret-key.html",
+    "searchKeys": [
+      "generateHostSecretKey",
+      "fun generateHostSecretKey(hostId: String, sessionId: String)",
+      "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.generateHostSecretKey"
+    ]
+  },
+  {
+    "name": "fun removeHostSecretKey(hostId: String, sessionId: String)",
+    "description": "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.removeHostSecretKey",
+    "location": "backend/com.tecknobit.brownie.services.hosts.helpers/-host-safeguarder/remove-host-secret-key.html",
+    "searchKeys": [
+      "removeHostSecretKey",
+      "fun removeHostSecretKey(hostId: String, sessionId: String)",
+      "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.removeHostSecretKey"
+    ]
+  },
+  {
+    "name": "fun safeguardRemoteHostData(hostId: String, sessionId: String, sshUser: String, sshPassword: String, macAddress: String, broadcastIp: String): RemoteHostData",
+    "description": "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.safeguardRemoteHostData",
+    "location": "backend/com.tecknobit.brownie.services.hosts.helpers/-host-safeguarder/safeguard-remote-host-data.html",
+    "searchKeys": [
+      "safeguardRemoteHostData",
+      "fun safeguardRemoteHostData(hostId: String, sessionId: String, sshUser: String, sshPassword: String, macAddress: String, broadcastIp: String): RemoteHostData",
+      "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.safeguardRemoteHostData"
+    ]
+  },
+  {
+    "name": "fun safeguardRemoteHostData(hostId: String, sessionId: String, sshUser: String, sshPassword: String, networkInterfaceDetails: Pair<String, String>): RemoteHostData",
+    "description": "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.safeguardRemoteHostData",
+    "location": "backend/com.tecknobit.brownie.services.hosts.helpers/-host-safeguarder/safeguard-remote-host-data.html",
+    "searchKeys": [
+      "safeguardRemoteHostData",
+      "fun safeguardRemoteHostData(hostId: String, sessionId: String, sshUser: String, sshPassword: String, networkInterfaceDetails: Pair<String, String>): RemoteHostData",
+      "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.safeguardRemoteHostData"
     ]
   },
   {
@@ -2007,6 +2077,16 @@
       "ServicesConfigurationsRepository",
       "interface ServicesConfigurationsRepository : JpaRepository<T, ID> ",
       "com.tecknobit.brownie.services.hostservices.repositories.ServicesConfigurationsRepository"
+    ]
+  },
+  {
+    "name": "object HostSafeguarder",
+    "description": "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder",
+    "location": "backend/com.tecknobit.brownie.services.hosts.helpers/-host-safeguarder/index.html",
+    "searchKeys": [
+      "HostSafeguarder",
+      "object HostSafeguarder",
+      "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder"
     ]
   },
   {
@@ -2500,12 +2580,12 @@
     ]
   },
   {
-    "name": "open fun editHost(hostId: String, hostAddress: String, hostName: String, sshUser: String, sshPassword: String)",
+    "name": "open fun editHost(hostId: String, hostAddress: String, hostName: String, sshUser: String, sshPassword: String, sessionId: String)",
     "description": "com.tecknobit.brownie.services.hosts.services.HostsService.editHost",
     "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/edit-host.html",
     "searchKeys": [
       "editHost",
-      "open fun editHost(hostId: String, hostAddress: String, hostName: String, sshUser: String, sshPassword: String)",
+      "open fun editHost(hostId: String, hostAddress: String, hostName: String, sshUser: String, sshPassword: String, sessionId: String)",
       "com.tecknobit.brownie.services.hosts.services.HostsService.editHost"
     ]
   },
@@ -2757,6 +2837,16 @@
       "hostSuspendedEventIsRegistered",
       "open fun hostSuspendedEventIsRegistered(): Boolean",
       "com.tecknobit.brownie.helpers.LocalEventsHandler.hostSuspendedEventIsRegistered"
+    ]
+  },
+  {
+    "name": "open fun inSafeContext(usage: Consumer<BrownieHost>)",
+    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.inSafeContext",
+    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/in-safe-context.html",
+    "searchKeys": [
+      "inSafeContext",
+      "open fun inSafeContext(usage: Consumer<BrownieHost>)",
+      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.inSafeContext"
     ]
   },
   {
@@ -3300,12 +3390,12 @@
     ]
   },
   {
-    "name": "open fun unregisterHost(hostId: String)",
+    "name": "open fun unregisterHost(host: BrownieHost)",
     "description": "com.tecknobit.brownie.services.hosts.services.HostsService.unregisterHost",
     "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/unregister-host.html",
     "searchKeys": [
       "unregisterHost",
-      "open fun unregisterHost(hostId: String)",
+      "open fun unregisterHost(host: BrownieHost)",
       "com.tecknobit.brownie.services.hosts.services.HostsService.unregisterHost"
     ]
   },
@@ -3380,6 +3470,46 @@
     ]
   },
   {
+    "name": "open val broadcastIp: String",
+    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.broadcastIp",
+    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/broadcast-ip.html",
+    "searchKeys": [
+      "broadcastIp",
+      "open val broadcastIp: String",
+      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.broadcastIp"
+    ]
+  },
+  {
+    "name": "open val macAddress: String",
+    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.macAddress",
+    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/mac-address.html",
+    "searchKeys": [
+      "macAddress",
+      "open val macAddress: String",
+      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.macAddress"
+    ]
+  },
+  {
+    "name": "open val sshPassword: String",
+    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.sshPassword",
+    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/ssh-password.html",
+    "searchKeys": [
+      "sshPassword",
+      "open val sshPassword: String",
+      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.sshPassword"
+    ]
+  },
+  {
+    "name": "open val sshUser: String",
+    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.sshUser",
+    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/ssh-user.html",
+    "searchKeys": [
+      "sshUser",
+      "open val sshUser: String",
+      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.sshUser"
+    ]
+  },
+  {
     "name": "open var brownieServerProtector: ServerProtector",
     "description": "com.tecknobit.brownie.services.session.controller.BrownieSessionController.brownieServerProtector",
     "location": "backend/com.tecknobit.brownie.services.session.controller/-brownie-session-controller/brownie-server-protector.html",
@@ -3400,6 +3530,36 @@
     ]
   },
   {
+    "name": "private fun decryptHostData(keyAlias: String, encryptedData: String): String",
+    "description": "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.decryptHostData",
+    "location": "backend/com.tecknobit.brownie.services.hosts.helpers/-host-safeguarder/decrypt-host-data.html",
+    "searchKeys": [
+      "decryptHostData",
+      "private fun decryptHostData(keyAlias: String, encryptedData: String): String",
+      "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.decryptHostData"
+    ]
+  },
+  {
+    "name": "private fun encryptData(keyAlias: String, data: String): String",
+    "description": "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.encryptData",
+    "location": "backend/com.tecknobit.brownie.services.hosts.helpers/-host-safeguarder/encrypt-data.html",
+    "searchKeys": [
+      "encryptData",
+      "private fun encryptData(keyAlias: String, data: String): String",
+      "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.encryptData"
+    ]
+  },
+  {
+    "name": "private fun resolveHostSecretKeyAlias(hostId: String, sessionId: String): String",
+    "description": "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.resolveHostSecretKeyAlias",
+    "location": "backend/com.tecknobit.brownie.services.hosts.helpers/-host-safeguarder/resolve-host-secret-key-alias.html",
+    "searchKeys": [
+      "resolveHostSecretKeyAlias",
+      "private fun resolveHostSecretKeyAlias(hostId: String, sessionId: String): String",
+      "com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder.resolveHostSecretKeyAlias"
+    ]
+  },
+  {
     "name": "private open fun SSHCredentialsAreValid(sshUser: String, sshPassword: String): Boolean",
     "description": "com.tecknobit.brownie.services.hosts.controller.HostsController.SSHCredentialsAreValid",
     "location": "backend/com.tecknobit.brownie.services.hosts.controller/-hosts-controller/-s-s-h-credentials-are-valid.html",
@@ -3407,6 +3567,26 @@
       "SSHCredentialsAreValid",
       "private open fun SSHCredentialsAreValid(sshUser: String, sshPassword: String): Boolean",
       "com.tecknobit.brownie.services.hosts.controller.HostsController.SSHCredentialsAreValid"
+    ]
+  },
+  {
+    "name": "private open fun decryptSensitiveData()",
+    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.decryptSensitiveData",
+    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/decrypt-sensitive-data.html",
+    "searchKeys": [
+      "decryptSensitiveData",
+      "private open fun decryptSensitiveData()",
+      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.decryptSensitiveData"
+    ]
+  },
+  {
+    "name": "private open fun encryptSensitiveData()",
+    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.encryptSensitiveData",
+    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/encrypt-sensitive-data.html",
+    "searchKeys": [
+      "encryptSensitiveData",
+      "private open fun encryptSensitiveData()",
+      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.encryptSensitiveData"
     ]
   },
   {
@@ -3467,6 +3647,16 @@
       "handleHostStatus",
       "private open fun handleHostStatus(hostId: String, status: HostStatus)",
       "com.tecknobit.brownie.services.hosts.services.HostsService.handleHostStatus"
+    ]
+  },
+  {
+    "name": "private open fun handleSensitiveData(hostData: RemoteHostData)",
+    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.handleSensitiveData",
+    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/handle-sensitive-data.html",
+    "searchKeys": [
+      "handleSensitiveData",
+      "private open fun handleSensitiveData(hostData: RemoteHostData)",
+      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.handleSensitiveData"
     ]
   },
   {
@@ -3547,6 +3737,16 @@
       "retrieveStoppedServices",
       "private open fun retrieveStoppedServices(command: String, host: BrownieHost): Collection<Long>",
       "com.tecknobit.brownie.helpers.shell.ShellCommandsExecutor.retrieveStoppedServices"
+    ]
+  },
+  {
+    "name": "private open fun safeguardHostData(hostId: String, sessionId: String, sshUser: String, sshPassword: String, hostAddress: String): RemoteHostData",
+    "description": "com.tecknobit.brownie.services.hosts.services.HostsService.safeguardHostData",
+    "location": "backend/com.tecknobit.brownie.services.hosts.services/-hosts-service/safeguard-host-data.html",
+    "searchKeys": [
+      "safeguardHostData",
+      "private open fun safeguardHostData(hostId: String, sessionId: String, sshUser: String, sshPassword: String, hostAddress: String): RemoteHostData",
+      "com.tecknobit.brownie.services.hosts.services.HostsService.safeguardHostData"
     ]
   },
   {
@@ -3980,12 +4180,12 @@
     ]
   },
   {
-    "name": "protected open fun calculateUpDays(eventOwnerId: String): Int",
+    "name": "protected open fun calculateUpDays(eventOwnerId: String): Long",
     "description": "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder.calculateUpDays",
     "location": "backend/com.tecknobit.brownie.services.shared.services/-brownie-events-recorder/calculate-up-days.html",
     "searchKeys": [
       "calculateUpDays",
-      "protected open fun calculateUpDays(eventOwnerId: String): Int",
+      "protected open fun calculateUpDays(eventOwnerId: String): Long",
       "com.tecknobit.brownie.services.shared.services.BrownieEventsRecorder.calculateUpDays"
     ]
   },
@@ -4311,12 +4511,12 @@
   },
   {
     "name": "val broadcastIp: String",
-    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.broadcastIp",
-    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/broadcast-ip.html",
+    "description": "com.tecknobit.brownie.services.hosts.dtos.RemoteHostData.broadcastIp",
+    "location": "backend/com.tecknobit.brownie.services.hosts.dtos/-remote-host-data/broadcast-ip.html",
     "searchKeys": [
       "broadcastIp",
       "val broadcastIp: String",
-      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.broadcastIp"
+      "com.tecknobit.brownie.services.hosts.dtos.RemoteHostData.broadcastIp"
     ]
   },
   {
@@ -4451,12 +4651,12 @@
   },
   {
     "name": "val macAddress: String",
-    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.macAddress",
-    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/mac-address.html",
+    "description": "com.tecknobit.brownie.services.hosts.dtos.RemoteHostData.macAddress",
+    "location": "backend/com.tecknobit.brownie.services.hosts.dtos/-remote-host-data/mac-address.html",
     "searchKeys": [
       "macAddress",
       "val macAddress: String",
-      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.macAddress"
+      "com.tecknobit.brownie.services.hosts.dtos.RemoteHostData.macAddress"
     ]
   },
   {
@@ -4571,22 +4771,22 @@
   },
   {
     "name": "val sshPassword: String",
-    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.sshPassword",
-    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/ssh-password.html",
+    "description": "com.tecknobit.brownie.services.hosts.dtos.RemoteHostData.sshPassword",
+    "location": "backend/com.tecknobit.brownie.services.hosts.dtos/-remote-host-data/ssh-password.html",
     "searchKeys": [
       "sshPassword",
       "val sshPassword: String",
-      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.sshPassword"
+      "com.tecknobit.brownie.services.hosts.dtos.RemoteHostData.sshPassword"
     ]
   },
   {
     "name": "val sshUser: String",
-    "description": "com.tecknobit.brownie.services.hosts.entities.BrownieHost.sshUser",
-    "location": "backend/com.tecknobit.brownie.services.hosts.entities/-brownie-host/ssh-user.html",
+    "description": "com.tecknobit.brownie.services.hosts.dtos.RemoteHostData.sshUser",
+    "location": "backend/com.tecknobit.brownie.services.hosts.dtos/-remote-host-data/ssh-user.html",
     "searchKeys": [
       "sshUser",
       "val sshUser: String",
-      "com.tecknobit.brownie.services.hosts.entities.BrownieHost.sshUser"
+      "com.tecknobit.brownie.services.hosts.dtos.RemoteHostData.sshUser"
     ]
   },
   {

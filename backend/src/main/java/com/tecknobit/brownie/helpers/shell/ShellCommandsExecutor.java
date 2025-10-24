@@ -13,10 +13,11 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.*;
+import java.util.concurrent.atomic.AtomicReference;
 
 import static com.tecknobit.apimanager.apis.ResourcesUtils.getResourceStream;
-import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.COMMA;
-import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper.SINGLE_QUOTE;
+import static com.tecknobit.equinoxbackend.apis.database.SQLConstants.COMMA;
+import static com.tecknobit.equinoxbackend.apis.database.SQLConstants.SINGLE_QUOTE;
 
 /**
  * The {@code ShellCommandsExecutor} class is used to execute the bash commands on the shells of the hosts physical machines
@@ -412,9 +413,17 @@ public abstract class ShellCommandsExecutor {
      * @throws JSchException when an error occurred on remote host SSH connection
      */
     public static ShellCommandsExecutor getInstance(BrownieHost host) throws JSchException {
-        if (host.isRemoteHost())
-            return new RemoteShellCommandsExecutor(host);
-        return new LocalShellCommandsExecutor();
+        if (!host.isRemoteHost())
+            return new LocalShellCommandsExecutor();
+        AtomicReference<RemoteShellCommandsExecutor> shellCommandsExecutor = new AtomicReference<>(null);
+        host.inSafeContext(safeHost -> {
+            try {
+                shellCommandsExecutor.set(new RemoteShellCommandsExecutor(safeHost));
+            } catch (JSchException e) {
+                throw new RuntimeException(e);
+            }
+        });
+        return shellCommandsExecutor.get();
     }
 
 }

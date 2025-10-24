@@ -33,7 +33,7 @@ repositories {
 tasks.withType<DokkaMultiModuleTask> {
     outputDirectory.set(layout.projectDirectory.dir("docs"))
     pluginConfiguration<DokkaBase, DokkaBaseConfiguration> {
-        customAssets = listOf(file("docs/logo-icon.svg"))
+        customAssets = listOf(file("images/logo-icon.svg"))
         footerMessage = "(c) 2025 Tecknobit"
     }
 }

@@ -13,8 +13,8 @@ import org.springframework.stereotype.Repository;
 import java.util.List;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
-import static com.tecknobit.equinoxbackend.configuration.IndexesCreator._IN_BOOLEAN_MODE;
-import static com.tecknobit.equinoxbackend.environment.services.builtin.service.EquinoxItemsHelper._WHERE_;
+import static com.tecknobit.equinoxbackend.apis.database.SQLConstants._IN_BOOLEAN_MODE;
+import static com.tecknobit.equinoxbackend.apis.database.SQLConstants._WHERE_;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.*;
 
 /**
@@ -158,7 +158,11 @@ public interface HostsRepository extends JpaRepository<BrownieHost, String> {
     @Query(
             value = "UPDATE " + HOSTS_KEY + " SET " +
                     HOST_ADDRESS_KEY + "=:" + HOST_ADDRESS_KEY + "," +
-                    NAME_KEY + "=:" + NAME_KEY +
+                    NAME_KEY + "=:" + NAME_KEY + "," +
+                    SSH_USER_KEY + "= NULL," +
+                    SSH_PASSWORD_KEY + "= NULL," +
+                    BROADCAST_IP_KEY + "= NULL," +
+                    MAC_ADDRESS_KEY + "= NULL" +
                     _WHERE_ + IDENTIFIER_KEY + "=:" + IDENTIFIER_KEY,
             nativeQuery = true
     )

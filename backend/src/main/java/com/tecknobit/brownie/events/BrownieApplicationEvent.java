@@ -1,6 +1,6 @@
 package com.tecknobit.brownie.events;
 
-import com.tecknobit.equinoxbackend.events.EquinoxApplicationEvent;
+import com.tecknobit.equinoxbackend.apis.events.EquinoxApplicationEvent;
 import com.tecknobit.equinoxcore.annotations.Wrapper;
 
 /**

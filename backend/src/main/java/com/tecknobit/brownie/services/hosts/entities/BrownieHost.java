@@ -3,6 +3,9 @@ package com.tecknobit.brownie.services.hosts.entities;
 import com.fasterxml.jackson.annotation.JsonGetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import com.tecknobit.apimanager.annotations.Wrapper;
+import com.tecknobit.brownie.services.hosts.dtos.RemoteHostData;
+import com.tecknobit.brownie.services.hosts.helpers.HostSafeguarder;
 import com.tecknobit.brownie.services.hostservices.entities.BrownieHostService;
 import com.tecknobit.brownie.services.session.entity.BrownieSession;
 import com.tecknobit.browniecore.enums.HostStatus;
@@ -15,6 +18,7 @@ import org.hibernate.annotations.OnDeleteAction;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.function.Consumer;
 
 import static com.tecknobit.browniecore.ConstantsKt.*;
 import static com.tecknobit.equinoxcore.helpers.CommonKeysKt.HOST_ADDRESS_KEY;
@@ -51,13 +55,13 @@ public class BrownieHost extends EquinoxItem {
      * {@code sshUser} the user to use for the SSH connection
      */
     @Column(name = SSH_USER_KEY)
-    private final String sshUser;
+    private String sshUser;
 
     /**
      * {@code sshPassword} the password to use for the SSH connection
      */
     @Column(name = SSH_PASSWORD_KEY)
-    private final String sshPassword;
+    private String sshPassword;
 
     /**
      * {@code session} the owner session of the host
@@ -71,13 +75,13 @@ public class BrownieHost extends EquinoxItem {
      * {@code macAddress} the physical mac address of the remote host network interface
      */
     @Column(name = MAC_ADDRESS_KEY)
-    private final String macAddress;
+    private String macAddress;
 
     /**
      * {@code broadcastIp} the ip address of the remote host network interface
      */
     @Column(name = BROADCAST_IP_KEY)
-    private final String broadcastIp;
+    private String broadcastIp;
 
     /**
      * {@code events} the events related to the lifecycle of the host
@@ -341,6 +345,61 @@ public class BrownieHost extends EquinoxItem {
             if (service.isRunning())
                 servicePids.add(service.getPid());
         return servicePids;
+    }
+
+    /**
+     * Method used to handle the remote host's sensitive data, decrypting and after custom usage, encrypting again
+     *
+     * @param usage Custom usage to use the sensitive data of the host in a safe context
+     * @since 1.0.4
+     */
+    public void inSafeContext(Consumer<BrownieHost> usage) {
+        if (!isRemoteHost())
+            return;
+        decryptSensitiveData();
+        try {
+            usage.accept(this);
+        } finally {
+            encryptSensitiveData();
+        }
+    }
+
+    /**
+     * Method used to decrypt the remote host's sensitive data
+     *
+     * @since 1.0.4
+     */
+    @Wrapper
+    private void decryptSensitiveData() {
+        RemoteHostData hostData = HostSafeguarder.decryptRemoteHostData(this);
+        handleSensitiveData(hostData);
+    }
+
+    /**
+     * Method used to encrypt the remote host's sensitive data
+     *
+     * @since 1.0.4
+     */
+    @Wrapper
+    private void encryptSensitiveData() {
+        RemoteHostData hostData = HostSafeguarder.safeguardRemoteHostData(id, session.getId(), sshUser, sshPassword,
+                macAddress, broadcastIp);
+        handleSensitiveData(hostData);
+    }
+
+    /**
+     * Method used to handle the sensitive data of the remote host, assigning the encrypted or decrypted values to the
+     * fields
+     *
+     * @param hostData The remote host's data to assign
+     *
+     * @since 1.0.4
+     */
+    private void handleSensitiveData(RemoteHostData hostData) {
+        sshUser = hostData.getSshUser();
+        sshPassword = hostData.getSshPassword();
+        macAddress = hostData.getMacAddress();
+        broadcastIp = hostData.getBroadcastIp();
     }
 
 }

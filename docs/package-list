@@ -12,6 +12,7 @@ com.tecknobit.brownie.services.hosts.controller
 com.tecknobit.brownie.services.hosts.dtos
 com.tecknobit.brownie.services.hosts.dtos.usages
 com.tecknobit.brownie.services.hosts.entities
+com.tecknobit.brownie.services.hosts.helpers
 com.tecknobit.brownie.services.hosts.repositories
 com.tecknobit.brownie.services.hosts.services
 com.tecknobit.brownie.services.hostservices.controller

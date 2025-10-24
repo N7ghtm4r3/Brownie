@@ -7,12 +7,11 @@ plugins {
 apply(plugin = "io.spring.dependency-management")
 
 group = "com.tecknobit.brownie"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     mavenCentral()
     maven("https://jitpack.io")
-    maven("https://repo.clojars.org")
 }
 
 dependencies {
@@ -25,5 +24,7 @@ dependencies {
     implementation(libs.jsch)
     implementation(libs.equinox.backend)
     implementation(libs.equinox.core)
+    implementation(libs.kassaforte)
+    implementation(libs.kotlinx.coroutines.core)
     implementation(project(":core"))
 }

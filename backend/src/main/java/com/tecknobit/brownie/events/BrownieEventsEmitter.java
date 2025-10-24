@@ -1,6 +1,6 @@
 package com.tecknobit.brownie.events;
 
-import com.tecknobit.equinoxbackend.events.EquinoxEventsEmitter;
+import com.tecknobit.equinoxbackend.apis.events.EquinoxEventsEmitter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationEventPublisher;
 import org.springframework.stereotype.Service;

@@ -10,7 +10,7 @@ plugins {
 }
 
 group = "com.tecknobit.browniecore"
-version = "1.0.2"
+version = "1.0.3"
 
 repositories {
     google()
@@ -47,8 +47,6 @@ kotlin {
         binaries.executable()
         browser {
             webpackTask {
-                dependencies {
-                }
             }
         }
     }
@@ -70,7 +68,7 @@ kotlin {
 
 android {
     namespace = "com.tecknobit.browniecore"
-    compileSdk = 35
+    compileSdk = 36
     defaultConfig {
         minSdk = 24
     }
@@ -82,7 +80,7 @@ afterEvaluate {
             create<MavenPublication>("maven") {
                 groupId = "com.tecknobit.browniecore"
                 artifactId = "browniecore"
-                version = "1.0.2"
+                version = "1.0.3"
                 from(components["kotlin"])
             }
         }

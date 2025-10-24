@@ -1,6 +1,6 @@
 # Brownie
 
-**v1.0.2**
+**v1.0.3**
 
 This project is based on the **Compose Multiplatform** and **Spring Boot** technologies and is a
 self-hosted VPS manager.
@@ -45,7 +45,7 @@ repositories {
 }
 
 dependencies {
-  implementation 'com.tecknobit.browniecore:browniecore:1.0.2'
+  implementation 'com.tecknobit.browniecore:browniecore:1.0.3'
 }
 ```
 
@@ -58,7 +58,7 @@ repositories {
 }
 
 dependencies {
-  implementation("com.tecknobit.browniecore:browniecore:1.0.2")
+  implementation("com.tecknobit.browniecore:browniecore:1.0.3")
 }
 ```
 
@@ -67,14 +67,14 @@ dependencies {
 ### Clients
 
 - [Android](https://play.google.com/store/apps/details?id=com.tecknobit.brownie)
-- [Brownie desktop version](https://github.com/N7ghtm4r3/Brownie-Clients/releases/tag/1.0.3)
+- [Brownie desktop version](https://github.com/N7ghtm4r3/Brownie-Clients/releases/tag/1.0.4)
 - iOS -> source code available, but cannot distribute due
   missing [Apple Developer Program license](https://developer.apple.com/programs/)
 - [Brownie webapp version](https://github.com/N7ghtm4r3/Brownie-WebApp)
 
 ### Backend
 
-- <a href="https://github.com/N7ghtm4r3/Brownie/releases/tag/1.0.2">Backend service "out-of-the-box"</a>
+- <a href="https://github.com/N7ghtm4r3/Brownie/releases/tag/1.0.3">Backend service "out-of-the-box"</a>
 
 ### Backend configuration
 

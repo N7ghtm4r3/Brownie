@@ -8,6 +8,7 @@ import com.tecknobit.brownie.services.shared.controllers.DefaultBrownieControlle
 import com.tecknobit.equinoxbackend.environment.services.DefaultEquinoxController;
 import com.tecknobit.equinoxbackend.environment.services.builtin.controller.EquinoxController;
 import com.tecknobit.equinoxcore.annotations.RequestPath;
+import com.tecknobit.equinoxcore.annotations.Validator;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
@@ -240,7 +241,7 @@ public class HostsController extends DefaultBrownieController {
         if (!SSHCredentialsAreValid(sshUser, sshPassword))
             return failedResponse(WRONG_SSH_CREDENTIALS_MESSAGE);
         try {
-            hostsService.editHost(hostId, hostAddress, hostName, sshUser, sshPassword);
+            hostsService.editHost(hostId, hostAddress, hostName, sshUser, sshPassword, sessionId);
         } catch (Exception e) {
             return failedResponse(WRONG_PROCEDURE_MESSAGE);
         }
@@ -272,6 +273,7 @@ public class HostsController extends DefaultBrownieController {
      *
      * @return whether the credentials are valid as {@code boolean}
      */
+    @Validator
     private boolean SSHCredentialsAreValid(String sshUser, String sshPassword) {
         boolean sshUserFilled = sshUser != null && !sshUser.isEmpty();
         boolean sshPasswordFilled = sshPassword != null && !sshPassword.isEmpty();
@@ -437,7 +439,7 @@ public class HostsController extends DefaultBrownieController {
         BrownieHost host = getBrownieHostIfAllowed(sessionId, hostId);
         if (host == null)
             return failedResponse(NOT_AUTHORIZED_OR_WRONG_DETAILS_MESSAGE);
-        hostsService.unregisterHost(hostId);
+        hostsService.unregisterHost(host);
         return successResponse();
     }
 

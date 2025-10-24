@@ -1,6 +1,7 @@
 package com.tecknobit.brownie.events;
 
-import com.tecknobit.equinoxbackend.events.EquinoxEventsCollector;
+
+import com.tecknobit.equinoxbackend.apis.events.EquinoxEventsCollector;
 
 /**
  * The {@code BrownieEventsCollector} is the interface that allows to collect all the events emitted by the
